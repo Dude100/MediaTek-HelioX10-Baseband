@@ -1,0 +1,6 @@
+#
+# Format: "symbol name"
+# The symbol list below will not be showed in final result
+#
+Test_Symbol_1
+Test_Symbol_2

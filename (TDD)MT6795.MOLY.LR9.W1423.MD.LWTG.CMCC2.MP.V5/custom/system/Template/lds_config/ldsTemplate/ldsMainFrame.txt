@@ -1,0 +1,20 @@
+OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
+OUTPUT_ARCH(arm)
+ENTRY(INT_Vectors)
+MEMORY
+{
+[ldsGen_GenMEMORY]
+}
+
+CACHELINESIZE = 32;
+
+SECTIONS
+{
+[ldsGen_GenSECTIONS]
+    /DISCARD/ : 
+    {
+        * (SHOULD_NOT_USED_RODATA)
+        * (SHOULD_NOT_USED_FUNCTION)
+    }
+    PROVIDE (end = .);
+}

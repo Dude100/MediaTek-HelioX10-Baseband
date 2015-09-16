@@ -1,0 +1,4 @@
+VARS kal_uint32 ""
+{
+    {ul2sTestPatternBufPoolAddr}  UL1V_PATTERN_GV0;
+};

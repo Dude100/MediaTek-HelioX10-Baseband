@@ -1,0 +1,347 @@
+{ Validation }
+Title 		= "[13_R7R8]R8-FACHDRX-01: UE DRX Behavior with data drx_cycle=4, burst=1, and hsdsch interruption = true"
+ModuleID 	= MOD_DUMMYURR
+MsgID 		= MSG_ID_UDPS_R8_FACHDRX_01
+
+/******************************************************************************
+* Data Structure accomnying the above primitive
+typedef struct
+{
+    kal_uint8           ref_count;
+    kal_uint16         msg_len;
+
+    
+    kal_uint16         uarfcn_bts1;
+    kal_uint16         psc_bts1; 
+    kal_int8             max_tx_power;
+    kal_int8	       cpich_tx_power; //RACH use	
+    kal_bool             sttd_ind;       //RACH use
+    kal_uint32          ul_sc;           
+    kal_int8        max_tx_power;
+    kal_int8        UL_interference;    //range: -110~-70 dBm
+    kal_uint8      available_SF;
+    kal_uint8       preamble_sc;
+    kal_uint16      sig_index;
+    kal_uint16      sub_CH_index; 	
+    kal_uint8       RACH_TTI; 
+    kal_int8        const_value; 
+    kal_uint8       pwr_ramp_size;  
+    kal_uint8       preamble_reTx_max; 
+    kal_uint8       Mmax; 
+    kal_uint8       NBO1min;     
+    kal_uint8       NBO1max; 
+    kal_uint8       OVSFaich;
+    kal_int8        aich_pwr_off; 
+    kal_uint8       aich_timing;
+
+    //dpch
+    kal_uint8           s_offset;
+    kal_uint32          ul_sc;                
+    kal_uint16          OVSFdpch_rl1;   
+    //HSDPA parameters
+    kal_uint8            ssc_of_hsscch;
+    kal_uint8            num_of_hsscch;
+    kal_uint16          ovsf_of_hsscch_0;    
+    kal_uint16          ovsf_of_hsscch_1; 
+    kal_uint16          ovsf_of_hsscch_2; 
+    kal_uint16          ovsf_of_hsscch_3;     
+    kal_int8              meas_po ;// -12~26 * 0.5
+    hs_cqi_k_E       cqi_k;
+    kal_uint8            cqi_repetition_factor; 
+    kal_uint8            delta_cqi;
+    
+    kal_uint8            delta_nack;
+    kal_uint8            delta_ack;
+    kal_uint8            acknack_repe_factor;    
+    kal_uint8            harq_preamble_mode;  
+    
+    kal_uint8            process_num;
+
+    //E-DCH parameters
+    kal_bool          pri_e_rnti_valid;
+    kal_uint16       pri_e_rnti;     //0~65535
+    kal_bool          sec_e_rnti_valid;            
+    kal_uint16       sec_e_rnti;   //0~65535              
+    edch_tti_E       edch_tti;   //EDCH_TTI_2, EDCH_TTI_10
+
+    kal_uint16       eagch_ovsf; //E-AGCH OVSF code (0 ~ 255)
+
+    kal_uint8        ehich_info_num; // Number of E-HICH info: 1~4
+    kal_uint16       ehich_ovsf_rl1;  // E-HICH OVSF code of RL1 (0 ~ 127)
+    kal_uint8         ehich_SignatureSeq_rl1; // E-HICH signature sequence of RL1 (0~39)
+    kal_uint8         ehich_TpcIndex_rl1;  // E-HICH TPC combination index of RL1 (0 ~ 5)
+    kal_uint8         ergch_info_num;   // Number of E-RGCH info: 0~4
+    kal_uint8         ergch_SignatureSeq_rl1;  // E-RGCH signature sequence of RL1 (0~39)
+    kal_uint8         ergch_RgCombIndex_rl1; // E-RGCH RG combination index of RL1 (0 ~ 5)
+
+    kal_uint8         etfci_table_index;      // E-TFCI table index. 0~1
+    edch_sf_E         max_ch_code;      // Max. channelisation code (EDCH_SF256, EDCH_SF128, ..., EDCH_2SF2, EDCH_2SF2AND2SF4)
+    kal_uint8         pl_non_max;      // PLnon-max= pl_non_max * 0.04; pl_non_max: Integer(11..25)
+    kal_uint8         etfci_under_test;      // E-TFCI under test: (0..129)
+    //kal_uint8           r8_fachdrx_01_par_idx;
+    kal_uint8           rxd_mode;    
+}udps_r8_fachdrx_01_struct;
+
+*
+*******************************************************************************/
+
+
+{Parameters}
+/******************************************************************************
+* 1. The following is the constrained range for the input of this value.
+* 2. Some combination of the following bit-fields may be suported
+* 3. The parameter range can be changed to support combinations of different bands
+*******************************************************************************/
+
+/* [Variable Name] "corresponding label showen on GUI" */
+[uarfcn_bts1] "UARFCN of Serving Cell "
+10562~10838
+@10630
+
+[psc_bts1] "PSC of Serving Cell"
+0~511
+@10
+
+
+
+/******************************************
+* Setup RACH of BTS2 
+******************************************/
+[max_tx_power] "Maximum allowed UL TX power [dBm]"
+-50~33
+@24
+
+[UL_interference] "UL_interference [dBm]"
+-110~-70
+@-92
+
+/******************************************
+* For RACH 
+******************************************/
+[available_SF] "(RACH)Min allowed SF for"
+@SF32  32
+SF64  64
+SF128 128
+SF256 256
+
+[preamble_sc] "(RACH) Preamble scrambling code"
+0~15
+@5
+
+[sig_index] "(RACH) Available signature. Bit string (16)"
+0~65535
+@1
+
+[sub_CH_index] "(RACH) Available sub-channel. Bit string (12)"
+0~4095
+@4095
+
+
+
+[const_value] "(RACH) Constant Value [dB]"
+-35~-10
+@-10
+
+[pwr_ramp_size] "(RACH) Preamble Power Ramping Step [dB]"
+1~8
+@3
+
+[preamble_reTx_max] "(RACH) Max preamble retransmission"
+1~64
+@12
+
+[Mmax] "(RACH) Max. of ramping cycle"
+1~32
+@2
+
+[NBO1min] "(RACH) Lower bound for random back-off"
+0~50
+@0
+
+[NBO1max] "(RACH) Upper bound for random back-off"
+0~50
+@0
+
+[OVSFaich] "(RACH) OVSF code of AICH"
+0~255
+@3
+
+[aich_pwr_off] "(RACH) AICH's Power offset to CPICH [dB]"
+-22~5
+@5
+
+[aich_timing] "(RACH) AICH Tx timing, i.e. Tau_p_a"
+@slots_3  0
+slots_5  1
+
+
+/* The same for BTS1 and BTS2 */
+[cpich_tx_power] "CPICH TX power [dBm]"
+-10~50
+@0
+
+[sttd_ind] "Use STTD or not"
+@KAL_FALSE
+
+/******************************************
+* For DCH 
+******************************************/
+[s_offset] "s_offset value"
+0~9
+@0
+
+[ul_sc] "(DCH) UL Scrambling code Num."
+0~16777215
+@13
+
+[OVSFdpch_rl1] "(DCH) OVSF code of DL DCH: 0~SF-1"
+0~511
+@7
+
+
+
+
+/******************************************
+* For HS-DSCH 
+******************************************/
+[ssc_of_hsscch] "sc of hs_scch"
+0~16
+@0
+
+[num_of_hsscch] " number of HS-SCCH "
+1~4
+@4
+
+[ovsf_of_hsscch_0] "ovsf_of_hsscch_0"
+0~127
+@8
+
+[ovsf_of_hsscch_1] "ovsf_of_hsscch_1"
+0~127
+@9
+
+[ovsf_of_hsscch_2] "ovsf_of_hsscch_2"
+0~127
+@10
+
+[ovsf_of_hsscch_3] "ovsf_of_hsscch_3"
+0~127
+@11
+
+[meas_po]  "Measurement power offset. Range: -12~26"
+-12~26
+@0
+
+[cqi_k] "0=0ms,1=2ms,2=4ms,3=8ms,4=10ms,5=20ms,6=40ms,7=80ms,8=160ms"
+0~8
+@1
+[cqi_repetition_factor] " CQI repetition factor "
+1~4
+@1
+[delta_cqi] " delta CQI 0~8 "
+0~8
+@5
+[acknack_repe_factor] " HARQ ACK/NACK repetition factor "
+1~4
+@1
+
+[delta_nack] " delta NACK 0~8 "
+0~8
+@5
+
+[delta_ack] " delta ACK 0~8 "
+0~8
+@5
+
+[harq_preamble_mode] "enable preamble or not"
+0~1
+@0
+
+[process_num]  "number of harq process"
+1~8
+@6
+
+/******************************************
+* For E-DCH 
+******************************************/
+[pri_e_rnti_valid] "If primary E-RNTI field is valid or not"
+@KAL_TRUE
+
+[pri_e_rnti] "Primary E-RNTI assigned to UE"
+0~65535
+@43690
+
+[sec_e_rnti_valid] "If secondary E-RNTI field is valid or not"
+@KAL_FALSE
+
+[sec_e_rnti] "Secondary E-RNTI assigned to UE"
+0~65535
+@21845
+
+
+[eagch_ovsf] "E-AGCH OVSF code:(0~255)"
+0~255
+@24
+
+
+
+[ehich_ovsf_rl1] "E-HICH OVSF code of RL1:(0~127)"
+0~127
+@13
+
+
+[ehich_SignatureSeq_rl1] "E-HICH signature sequence of RL1:(0~39)"
+0~39
+@1
+
+
+[ehich_TpcIndex_rl1] "E-HICH TPC combination index of RL1:(0~5)"
+0~5
+@0
+
+
+[ergch_info_num] "Number of E-RGCH info:(0 ~ 4)"
+0~4
+@1
+
+[ergch_SignatureSeq_rl1] "E-RGCH signature sequence of RL1:(0~39)"
+0~39
+@0
+
+
+[ergch_RgCombIndex_rl1] "E-RGCH RG combination index of RL1:(0~5)"
+0~5
+@0
+
+
+[etfci_table_index] "E-TFCI table index:(0~1)"
+0~1
+@0
+
+[max_ch_code] "Max. channelisation code"
+EDCH_SF256
+EDCH_SF128
+EDCH_SF64
+EDCH_SF32
+EDCH_SF16
+EDCH_SF8
+EDCH_SF4
+EDCH_2SF4 
+EDCH_2SF2
+@EDCH_2SF2AND2SF4
+
+
+[pl_non_max] "PLnon-max= pl_non_max * 0.04; pl_non_max: Integer(11..25)"
+11~25
+@13
+
+[etfci_under_test] "E-TFCI under test: (0..129)"
+0~129
+@5
+
+
+
+
+[rxd_mode] "rxd mode 0~1"
+0~1
+@0

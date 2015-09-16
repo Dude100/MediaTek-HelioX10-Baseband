@@ -1,0 +1,123 @@
+/*****************************************************************************
+*  Copyright Statement:
+*  --------------------
+*  This software is protected by Copyright and the information contained
+*  herein is confidential. The software may not be copied and the information
+*  contained herein may not be used or disclosed except with the written
+*  permission of MediaTek Inc. (C) 2005
+*
+*  BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+*  THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+*  RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
+*  AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+*  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+*  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+*  NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+*  SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+*  SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
+*  THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
+*  NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
+*  SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
+*
+*  BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
+*  LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+*  AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+*  OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
+*  MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE. 
+*
+*  THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
+*  WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
+*  LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
+*  RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
+*  THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
+*
+*****************************************************************************/
+/*******************************************************************************
+*  Modification Notice:
+*  --------------------------
+*  This software is modified by MediaTek Inc. and the information contained
+*  herein is confidential. The software may not be copied and the information
+*  contained herein may not be used or disclosed except with the written
+*  permission of MediaTek Inc. (C) 2001
+*
+*******************************************************************************/
+
+/*******************************************************************************
+ * Filename:
+ * ---------
+ *   ft_fnc_fat.h
+ *
+ * Project:
+ * --------
+ *   MAUI
+ *
+ * Description:
+ * ------------
+ *   FT FAT operation header file
+ *
+ * Author:
+ * -------
+ * -------
+ *
+ *==============================================================================
+ * 				HISTORY
+ * Below this line, this part is controlled by PVCS VM. DO NOT MODIFY!!
+ *------------------------------------------------------------------------------
+ * removed!
+ * removed!
+ * removed!
+ *
+ * removed!
+ * removed!
+ * removed!
+ *
+ *------------------------------------------------------------------------------
+ * Upper this line, this part is controlled by PVCS VM. DO NOT MODIFY!!
+ *==============================================================================
+ *******************************************************************************/
+
+#ifndef _FT_FNC_FAT_H_
+#define _FT_FNC_FAT_H_
+#include "ft_msg.h"
+
+#ifdef	__cplusplus
+extern "C" {
+#endif
+
+/*******************************************************************************
+*
+*  FAT directory structure traverse
+*
+*******************************************************************************/
+#define FT_FAT_FIND_NOT_FOUND	0xFF
+
+typedef	enum {
+	FT_FAT_FIND_FILE = 0,
+	FT_FAT_FIND_FILE_RECURSIVE,
+	FT_FAT_FIND_DIR_RECURSIVE
+}FT_FAT_FIND_MODE;
+
+typedef	kal_int8 (*FT_FAT_FIND_CALLBACK)(const WCHAR *fullpath, const FS_DOSDirEntry  *dos_info, void *usr_arg);
+
+extern kal_uint8 ft_fat_find(const WCHAR *base_path, const WCHAR *find_pattern, FT_FAT_FIND_MODE  mode, FT_FAT_FIND_CALLBACK  cb, void *usr_arg);
+
+/* FAT */
+#define FT_FAT_ASSERT_UNKNOWN_OP	0
+#define FT_FAT_MAX_FULLPATH			FS_MAX_PATH
+#define FT_FAT_MAX_FILENAME		 (FS_MAX_PATH-20)
+#define FT_FAT_MAX_DIR_DEPTH		300
+
+typedef struct {
+	FS_HANDLE	fs_handle;
+}ft_fat_dir_info;
+
+extern void FT_FAT_Operation(FT_FAT_OPERATION *ft_fat_op, peer_buff_struct *peer_buff_in);
+kal_int32 FT_GetDiskFreeSpace(const WCHAR* pathname);
+kal_int32 ft_CreateFullDirectory(const WCHAR *pathname);
+kal_int16 FT_GetAvailableDrive(kal_int32 size);
+
+#ifdef __cplusplus
+}
+#endif // #ifdef __cplusplus
+
+#endif // #ifndef _FT_FNC_FAT_H_

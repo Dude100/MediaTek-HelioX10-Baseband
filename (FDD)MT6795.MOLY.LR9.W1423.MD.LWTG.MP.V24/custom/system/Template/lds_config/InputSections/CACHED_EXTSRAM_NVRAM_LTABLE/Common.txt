@@ -1,0 +1,19 @@
+        _nvram_ltable$$Base = .;
+         * (_nvram_ltable)
+         /* KEEP(* (_nvram_ltable)) */
+        _nvram_ltable$$Limit = .;
+        _nvram_ltable$$Length = ABSOLUTE(_nvram_ltable$$Limit - _nvram_ltable$$Base);
+        _indirect_init$$Base = .;
+         * (_indirect_init)
+         /* KEEP(* (_indirect_init)) */
+        _indirect_init$$Limit = .;
+        _indirect_init$$Length = ABSOLUTE(_indirect_init$$Limit - _indirect_init$$Base);
+        _fs_filetable$$Base = .;
+         * (_fs_filetable)
+         /* KEEP(* (_fs_filetable)) */
+        _fs_filetable$$Limit = .;
+        _fs_filetable$$Length = ABSOLUTE(_fs_filetable$$Limit - _fs_filetable$$Base);
+        _nvram_callback_tbl$$Base = .;
+         * (_nvram_callback_tbl)
+        _nvram_callback_tbl$$Limit = .;
+        _nvram_callback_tbl$$Length = ABSOLUTE(_nvram_callback_tbl$$Limit - _nvram_callback_tbl$$Base);

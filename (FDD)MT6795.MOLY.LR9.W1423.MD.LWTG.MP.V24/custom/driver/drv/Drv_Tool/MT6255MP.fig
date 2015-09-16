@@ -1,0 +1,189 @@
+[Chip Type]
+Chip = MT6255
+GPIO_ModeNum = 8
+GPIO_Pull_Sel=1
+PMIC_Config=1
+PMIC_Volt_Format = 1
+
+[GPIO]
+GPIO0   = MODE0(GPIO0)   MODE1(SPI_MOSI)  MODE2(CLKM1)     MODE3(SCL)        MODE4(LSCE1B)      MODE5(BPI_BUS6)           MODE6(dbg_usb_din[0])        MODE7()                     PD
+GPIO1   = MODE0(GPIO1)   MODE1(SPI_MISO)  MODE2(PWM_B)     MODE3(UCTS2)      MODE4(EINT12)      MODE5(BPI_BUS7)           MODE6(dbg_usb_din[1])        MODE7()	                   PD
+GPIO2   = MODE0(GPIO2)   MODE1(SPI_SCK)   MODE2(SRCLKENAN) MODE3(URTS2)      MODE4(PTA1)        MODE5(BPI_BUS8)           MODE6(dbg_usb_din[2])        MODE7()	                   PD
+GPIO3   = MODE0(GPIO3)   MODE1(SPI_CS_N)  MODE2()          MODE3(SDA)        MODE4(PTA0)        MODE5(BPI_BUS9)           MODE6(dbg_usb_din[3])        MODE7()	                   PD
+GPIO4   = MODE0(GPIO4)   MODE1(URXD1)     MODE2()          MODE3(MC2INS)     MODE4(PTA1)        MODE5(PWM_C)              MODE6(dbg_usb_din[4])        MODE7(UTXD1)	           PU
+GPIO5   = MODE0(GPIO5)   MODE1(UTXD1)     MODE2(CLKM3)     MODE3(MC1INS)     MODE4(PTA0)        MODE5()                   MODE6(dbg_usb_din[5])        MODE7(URXD1)	           PU
+GPIO6   = MODE0(GPIO6)   MODE1(UCTS1)     MODE2(URXD3)     MODE3(EINT7)      MODE4(SRCLKENAI)   MODE5(SCL)                MODE6(dbg_usb_din[6])        MODE7()	                   PU
+GPIO7   = MODE0(GPIO7)   MODE1(URTS1)     MODE2(UTXD3)     MODE3(EINT8)      MODE4(SRCLKENA)    MODE5(SDA)                MODE6(dbg_usb_din[7])        MODE7()	                   PU
+GPIO8   = MODE0(GPIO8)   MODE1(URXD2)     MODE2(UCTS3)     MODE3(MC2INS)     MODE4(PTA1)        MODE5(CLKM2)              MODE6(dbg_usb_din[8])        MODE7(UTXD2)	           PD
+GPIO9   = MODE0(GPIO9)   MODE1(UTXD2)     MODE2(URTS3)     MODE3(MC1INS)     MODE4(PTA0)        MODE5()                   MODE6()                      MODE7(URXD2)	           PD
+GPIO10  = MODE0(GPIO10)  MODE1(LSA0)      MODE2(URXD3)     MODE3(PWM_IN)     MODE4(EDICK)       MODE5(SRCLKENA)           MODE6(TDMA_SDAT[1])          MODE7(UTXD3)	           PD
+GPIO11  = MODE0(GPIO11)  MODE1(LSCK)      MODE2(UTXD3)     MODE3(PWM_A)      MODE4(EDIWS)       MODE5(SRCLKENAI)          MODE6()                      MODE7(URXD3)	           PD
+GPIO12  = MODE0(GPIO12)  MODE1(LSDA)      MODE2(LPCE3B)    MODE3(EINT10)     MODE4(EDIDAT)      MODE5(SRCLKENAN)          MODE6(TDMA_SDAT[0])          MODE7()	                   PD
+GPIO13  = MODE0(GPIO13)  MODE1(LPCE2B)    MODE2(LSCE1B)    MODE3()           MODE4()            MODE5()                   MODE6()                      MODE7()	                   PU
+GPIO14  = MODE0(GPIO14)  MODE1(LPCE1B)    MODE2()          MODE3()           MODE4()            MODE5()                   MODE6()                      MODE7()	                   PU
+GPIO15  = MODE0(GPIO15)  MODE1(LPCE0B)    MODE2()          MODE3()           MODE4()            MODE5()                   MODE6()                      MODE7()	                   PU
+GPIO16  = MODE0(GPIO16)  MODE1(LPTE)      MODE2()          MODE3()           MODE4()            MODE5()                   MODE6()                      MODE7()	                   PD
+GPIO17  = MODE0(GPIO17)  MODE1(LRSTB)     MODE2()          MODE3()           MODE4()            MODE5()                   MODE6()                      MODE7()	                   PD
+GPIO18  = MODE0(GPIO18)  MODE1(LRDB)      MODE2()          MODE3()           MODE4()            MODE5()                   MODE6()                      MODE7()	                   PU
+GPIO19  = MODE0(GPIO19)  MODE1(LPA0)      MODE2()          MODE3()           MODE4()            MODE5()                   MODE6()                      MODE7()	                   PD
+GPIO20  = MODE0(GPIO20)  MODE1(LWRB)      MODE2()          MODE3()           MODE4()            MODE5()                   MODE6()                      MODE7()	                   PU
+GPIO21  = MODE0(GPIO21)  MODE1(NLD17)     MODE2(URXD3)     MODE3()           MODE4()            MODE5()                   MODE6()                      MODE7()	                   PD
+GPIO22  = MODE0(GPIO22)  MODE1(NLD16)     MODE2(UTXD3)     MODE3()           MODE4()            MODE5()                   MODE6()                      MODE7()	                   PD
+GPIO23  = MODE0(GPIO23)  MODE1(NLD15)     MODE2(SFIO0)     MODE3()           MODE4()            MODE5()                   MODE6()                      MODE7()	                   PD
+GPIO24  = MODE0(GPIO24)  MODE1(NLD14)     MODE2(SFIO1)     MODE3()           MODE4()            MODE5()                   MODE6(dbg_CLKSW_DIO[12])     MODE7()	                   PD
+GPIO25  = MODE0(GPIO25)  MODE1(NLD13)     MODE2(SFIO3)     MODE3()           MODE4()            MODE5()                   MODE6(dbg_CLKSW_A_FUNC_DCK)  MODE7(dbg_MIXED_A_FUNC_DCK) PD
+GPIO26  = MODE0(GPIO26)  MODE1(NLD12)     MODE2()          MODE3()           MODE4()            MODE5()                   MODE6()                      MODE7()	                   PD
+GPIO27  = MODE0(GPIO27)  MODE1(NLD11)     MODE2(SFCS)      MODE3()           MODE4()            MODE5()                   MODE6(dbg_CLKSW_DIO[11])     MODE7()	                   PD
+GPIO28  = MODE0(GPIO28)  MODE1(NLD10)     MODE2(SFIO2)     MODE3()           MODE4()            MODE5()                   MODE6(dbg_CLKSW_DIO[10])     MODE7()	                   PD
+GPIO29  = MODE0(GPIO29)  MODE1(NLD9)      MODE2(SFCLK)     MODE3()           MODE4()            MODE5(dbg_usb_dout[9])    MODE6(dbg_CLKSW_DIO[9])      MODE7()	                   PD
+GPIO30  = MODE0(GPIO30)  MODE1(NLD8)      MODE2()          MODE3()           MODE4()            MODE5(dbg_usb_dout[8])    MODE6(dbg_CLKSW_DIO[8])      MODE7()	                   PD
+GPIO31  = MODE0(GPIO31)  MODE1(NLD7)      MODE2()          MODE3()           MODE4()            MODE5(dbg_usb_dout[7])    MODE6(dbg_CLKSW_DIO[7])      MODE7(dbg_MIXED_DIO[7])	   PD
+GPIO32  = MODE0(GPIO32)  MODE1(NLD6)      MODE2()          MODE3()           MODE4()            MODE5(dbg_usb_dout[6])    MODE6(dbg_CLKSW_DIO[6])      MODE7(dbg_MIXED_DIO[6])	   PD
+GPIO33  = MODE0(GPIO33)  MODE1(NLD5)      MODE2()          MODE3()           MODE4()            MODE5(dbg_usb_dout[5])    MODE6(dbg_CLKSW_DIO[5])      MODE7(dbg_MIXED_DIO[5])	   PD
+GPIO34  = MODE0(GPIO34)  MODE1(NLD4)      MODE2()          MODE3()           MODE4()            MODE5(dbg_usb_dout[4])    MODE6(dbg_CLKSW_DIO[4])      MODE7(dbg_MIXED_DIO[4])	   PD
+GPIO35  = MODE0(GPIO35)  MODE1(NLD3)      MODE2()          MODE3()           MODE4()            MODE5(dbg_usb_dout[3])    MODE6(dbg_CLKSW_DIO[3])      MODE7(dbg_MIXED_DIO[3])	   PD
+GPIO36  = MODE0(GPIO36)  MODE1(NLD2)      MODE2()          MODE3()           MODE4()            MODE5(dbg_usb_dout[2])    MODE6(dbg_CLKSW_DIO[2])      MODE7(dbg_MIXED_DIO[2])	   PD
+GPIO37  = MODE0(GPIO37)  MODE1(NLD1)      MODE2()          MODE3()           MODE4()            MODE5(dbg_usb_dout[1])    MODE6(dbg_CLKSW_DIO[1])      MODE7(dbg_MIXED_DIO[1])	   PD
+GPIO38  = MODE0(GPIO38)  MODE1(NLD0)      MODE2()          MODE3()           MODE4()            MODE5(dbg_usb_dout[0])    MODE6(dbg_CLKSW_DIO[0])      MODE7(dbg_MIXED_DIO[0])	   PD
+GPIO39  = MODE0(GPIO39)  MODE1(NRNB)      MODE2()          MODE3()           MODE4()            MODE5()                   MODE6()                      MODE7()	                   PU
+GPIO40  = MODE0(GPIO40)  MODE1(NCLE)      MODE2(KROW7)     MODE3(MC1DA4)     MODE4()            MODE5()                   MODE6()                      MODE7()	                   PD
+GPIO41  = MODE0(GPIO41)  MODE1(NALE)      MODE2(KCOL7)     MODE3(MC1DA5)     MODE4()            MODE5()                   MODE6()                      MODE7()	                   PD
+GPIO42  = MODE0(GPIO42)  MODE1(NWEB)      MODE2()          MODE3()           MODE4()            MODE5()                   MODE6()                      MODE7()	                   PU
+GPIO43  = MODE0(GPIO43)  MODE1(NREB)      MODE2()          MODE3(MC1DA7)     MODE4()            MODE5()                   MODE6()                      MODE7()	                   PU
+GPIO44  = MODE0(GPIO44)  MODE1(NCE0B)     MODE2(KROW6)     MODE3(MC1DA6)     MODE4()            MODE5()                   MODE6()                      MODE7()	                   PU
+GPIO45  = MODE0(GPIO45)  MODE1(CMRST)     MODE2()          MODE3(D2_TID1)    MODE4(dbg_mon[0])  MODE5()                   MODE6()                      MODE7()	                   PD
+GPIO46  = MODE0(GPIO46)  MODE1(CMPDN)     MODE2()          MODE3(D2_TID2)    MODE4(dbg_mon[1])  MODE5(dbg_bt_ids_in)      MODE6()                      MODE7(dbg_fm_ids_out[12])   PD
+GPIO47  = MODE0(GPIO47)  MODE1(CMVSYNC)   MODE2()          MODE3()           MODE4(dbg_mon[2])  MODE5(dbg_bt_ids_out[11]) MODE6(dbg_rf_test_sdatai)    MODE7(dbg_fm_ids_out[11])   PD
+GPIO48  = MODE0(GPIO48)  MODE1(CMHSYNC)   MODE2()          MODE3()           MODE4(dbg_mon[3])  MODE5(dbg_bt_ids_out[10]) MODE6(dbg_rf_test_en)        MODE7(dbg_fm_ids_out[10])   PD
+GPIO49  = MODE0(GPIO49)  MODE1(CMPCLK)    MODE2(CM_SSCK)   MODE3()           MODE4(dbg_mon[4])  MODE5(dbg_bt_ids_out[9])  MODE6(dbg_rf_test_sclk)      MODE7(dbg_fm_ids_out[9])	   PD
+GPIO50  = MODE0(GPIO50)  MODE1(CMMCLK)    MODE2()          MODE3()           MODE4(dbg_mon[5])  MODE5(dbg_bt_ids_out[8])  MODE6(dbg_rf_test_auxout)    MODE7(dbg_fm_ids_out[8])	   PD
+GPIO51  = MODE0(GPIO51)  MODE1(CMDAT7)    MODE2(BPI_BUS6)  MODE3(D2_TID3)    MODE4(dbg_mon[6])  MODE5(dbg_bt_ids_out[7])  MODE6(dbg_rf_test_dcxodelay) MODE7(dbg_fm_ids_out[7])	   PD
+GPIO52  = MODE0(GPIO52)  MODE1(CMDAT6)    MODE2(BPI_BUS7)  MODE3(D2_TID4)    MODE4(dbg_mon[7])  MODE5(dbg_bt_ids_out[6])  MODE6(dbg_rf_test_enext)     MODE7(dbg_fm_ids_out[6])	   PD
+GPIO53  = MODE0(GPIO53)  MODE1(CMDAT5)    MODE2(BPI_BUS8)  MODE3(D2_TID5)    MODE4(dbg_mon[8])  MODE5(dbg_bt_ids_out[5])  MODE6(dbg_rf_test_enbt)      MODE7(dbg_fm_ids_out[5])	   PD
+GPIO54  = MODE0(GPIO54)  MODE1(CMDAT4)    MODE2(BPI_BUS9)  MODE3(D2_TID6)    MODE4(dbg_mon[9])  MODE5(dbg_bt_ids_out[4])  MODE6(dbg_rf_test_enbb)      MODE7(dbg_fm_ids_out[4])	   PD
+GPIO55  = MODE0(GPIO55)  MODE1(CMDAT3)    MODE2()          MODE3(D2_TID7)    MODE4(dbg_mon[10]) MODE5(dbg_bt_ids_out[3])  MODE6(dbg_rf_test_sdatao)    MODE7(dbg_fm_ids_out[3])	   PD
+GPIO56  = MODE0(GPIO56)  MODE1(CMDAT2)    MODE2()          MODE3(D2_TID0)    MODE4(dbg_mon[11]) MODE5(dbg_bt_ids_out[2])  MODE6(dbg_rf_test_sdatai)    MODE7(dbg_fm_ids_out[2])	   PD
+GPIO57  = MODE0(GPIO57)  MODE1(CMDAT1)    MODE2()          MODE3()           MODE4(dbg_mon[12]) MODE5(dbg_bt_ids_out[1])  MODE6(dbg_rf_test_en)        MODE7(dbg_fm_ids_out[1])	   PD
+GPIO58  = MODE0(GPIO58)  MODE1(CMDAT0)    MODE2(CM_SSDA)   MODE3(D2ICK)      MODE4(dbg_mon[13]) MODE5(dbg_bt_ids_out[0])  MODE6(dbg_rf_test_sclk)      MODE7(dbg_fm_ids_out[0])	   PD
+GPIO59  = MODE0(GPIO59)  MODE1(SCL)       MODE2()          MODE3(D2ID)       MODE4(dbg_mon[14]) MODE5(dbg_srclkena)       MODE6(dbg_ABBSYS_DIO[0])     MODE7(dbg_MIXED_DIO[0])	   PD
+GPIO60  = MODE0(GPIO60)  MODE1(SDA)       MODE2()          MODE3(D2IMS)      MODE4(dbg_mon[15]) MODE5()                   MODE6(dbg_ABBSYS_DIO[1])     MODE7(dbg_MIXED_DIO[1])     PD
+GPIO61  = MODE0(GPIO61)  MODE1(EINT0)     MODE2(LSCE0B)    MODE3(CLKM6)      MODE4()            MODE5(NCE1B)              MODE6(dbg_ABBSYS_DIO[2])     MODE7(dbg_MIXED_DIO[2])     PD
+GPIO62  = MODE0(GPIO62)  MODE1(EINT1)     MODE2(CIRQ0)     MODE3(CLKM7)      MODE4()            MODE5()                   MODE6(dbg_ABBSYS_DIO[3])     MODE7(dbg_MIXED_DIO[3])     PD
+GPIO63  = MODE0(GPIO63)  MODE1(EINT2)     MODE2(CIRQ1)     MODE3()           MODE4()            MODE5()                   MODE6(dbg_ABBSYS_DIO[4])     MODE7(dbg_MIXED_DIO[4])     PD
+GPIO64  = MODE0(GPIO64)  MODE1(EINT3)     MODE2(CIRQ2)     MODE3(UCTS3)      MODE4()            MODE5()                   MODE6(dbg_ABBSYS_DIO[5])     MODE7(dbg_MIXED_DIO[5])     PD
+GPIO65  = MODE0(GPIO65)  MODE1(EINT4)     MODE2(PWM_C)     MODE3(URTS3)      MODE4(LSDI)        MODE5()                   MODE6(dbg_ABBSYS_DIO[6])     MODE7(dbg_MIXED_DIO[6])     PD
+GPIO66  = MODE0(GPIO66)  MODE1(DAICLK)    MODE2(KROW6)     MODE3(MC1INS)     MODE4()            MODE5()                   MODE6(dbg_ABBSYS_DIO[7])     MODE7(dbg_MIXED_DIO[7])     PD
+GPIO67  = MODE0(GPIO67)  MODE1(DAIPCMOUT) MODE2(EDICK)     MODE3(KCOL7)      MODE4(SRCLKENAN)   MODE5()                   MODE6(dbg_ABBSYS_DIO[8])     MODE7()	                   PD
+GPIO68  = MODE0(GPIO68)  MODE1(DAIPCMIN)  MODE2(EDIWS)     MODE3(CLKM4)      MODE4(SCL)         MODE5()                   MODE6(dbg_ABBSYS_DIO[9])     MODE7()	                   PD
+GPIO69  = MODE0(GPIO69)  MODE1(DAIRST)    MODE2(EDIDAT)    MODE3(SRCLKENA)   MODE4(SDA)         MODE5()                   MODE6(dbg_ABBSYS_DIO[10])    MODE7()	                   PD
+GPIO70  = MODE0(GPIO70)  MODE1(DAISYNC)   MODE2(KROW7)     MODE3(LSDI)       MODE4(PWM_IN)      MODE5()                   MODE6(dbg_ABBSYS_A_FUNC_DCK) MODE7(dbg_MIXED_A_FUNC_DCK) PD
+GPIO71  = MODE0(GPIO71)  MODE1(KCOL6)     MODE2(MC2INS)    MODE3(LSDI)       MODE4(PWM_IN)      MODE5(EINT4)              MODE6()                      MODE7()	                   PU
+GPIO72  = MODE0(GPIO72)  MODE1(KCOL5)     MODE2(EINT5)     MODE3()           MODE4()            MODE5()                   MODE6()                      MODE7()	                   PU
+GPIO73  = MODE0(GPIO73)  MODE1(KCOL4)     MODE2(SCL)       MODE3()           MODE4()            MODE5(CLKSW_HMON_DATA[3]) MODE6(ABBSYS_HMON_DATA[3])   MODE7(MIXED_HMON_DATA[3])   PU
+GPIO74  = MODE0(GPIO74)  MODE1(KCOL3)     MODE2()          MODE3()           MODE4()            MODE5(CLKSW_HMON_DATA[2]) MODE6(ABBSYS_HMON_DATA[2])   MODE7(MIXED_HMON_DATA[2])   PU
+GPIO75  = MODE0(GPIO75)  MODE1(KCOL2)     MODE2()          MODE3()           MODE4()            MODE5(CLKSW_HMON_DATA[1]) MODE6(ABBSYS_HMON_DATA[1])   MODE7(MIXED_HMON_DATA[1])   PU
+GPIO76  = MODE0(GPIO76)  MODE1(KCOL1)     MODE2()          MODE3()           MODE4()            MODE5(CLKSW_HMON_DATA[0]) MODE6(ABBSYS_HMON_DATA[0])   MODE7(MIXED_HMON_DATA[0])   PU
+GPIO77  = MODE0(GPIO77)  MODE1(KCOL0)     MODE2()          MODE3()           MODE4()            MODE5()                   MODE6()                      MODE7()	                   PU
+GPIO78  = MODE0(GPIO78)  MODE1(KROW5)     MODE2(EINT11)    MODE3(SRCLKENAI)  MODE4(MC2WP)       MODE5(CLKSW_LMON_DATA[3]) MODE6(ABBSYS_LMON_DATA[3])   MODE7(MIXED_LMON_DATA[3])   PD
+GPIO79  = MODE0(GPIO79)  MODE1(KROW4)     MODE2(PWM_D)     MODE3(CLKM5)      MODE4(MC1WP)       MODE5(EINT6)              MODE6(dbg_ABBSYS_DIO[11])    MODE7()                     PD
+GPIO80  = MODE0(GPIO80)  MODE1(KROW3)     MODE2(SDA)       MODE3()           MODE4()            MODE5()                   MODE6(dbg_ABBSYS_DIO[12])    MODE7()                     PD
+GPIO81  = MODE0(GPIO81)  MODE1(KROW2)     MODE2()          MODE3()           MODE4()            MODE5(CLKSW_LMON_DATA[2]) MODE6(ABBSYS_LMON_DATA[2])   MODE7(MIXED_LMON_DATA[2])   PD
+GPIO82  = MODE0(GPIO82)  MODE1(KROW1)     MODE2()          MODE3()           MODE4()            MODE5(CLKSW_LMON_DATA[1]) MODE6(ABBSYS_LMON_DATA[1])   MODE7(MIXED_LMON_DATA[1])   PD
+GPIO83  = MODE0(GPIO83)  MODE1(KROW0)     MODE2()          MODE3()           MODE4()            MODE5(CLKSW_LMON_DATA[0]) MODE6(ABBSYS_LMON_DATA[0])   MODE7(MIXED_LMON_DATA[0])   PD
+GPIO84  = MODE0(GPIO84)  MODE1(MC1RST)    MODE2(MC1WP)     MODE3(LSCE0B)     MODE4(PTA1)        MODE5()                   MODE6()                      MODE7()	                   PU
+GPIO85  = MODE0(GPIO85)  MODE1(MC1CK_FB)  MODE2(MC2WP)     MODE3()           MODE4(PTA0)        MODE5(BT_DBGI_N)          MODE6()                      MODE7()	                   PU
+GPIO86  = MODE0(GPIO86)  MODE1(MC1CM0)    MODE2()          MODE3()           MODE4()            MODE5(BT_TRST_B)          MODE6(dbg_mon[0])            MODE7(dbg_usb_dio[0])       PU
+GPIO87  = MODE0(GPIO87)  MODE1(MC1DA0)    MODE2()          MODE3()           MODE4()            MODE5(BT_TCK)             MODE6(dbg_mon[1])            MODE7(dbg_usb_dio[1])       PU
+GPIO88  = MODE0(GPIO88)  MODE1(MC1DA1)    MODE2()          MODE3()           MODE4()            MODE5(BT_TDI)             MODE6(dbg_mon[2])            MODE7(dbg_usb_dio[2])       PU
+GPIO89  = MODE0(GPIO89)  MODE1(MC1DA2)    MODE2()          MODE3()           MODE4()            MODE5(BT_TMS)             MODE6(dbg_mon[3])            MODE7(dbg_usb_dio[3])       PU
+GPIO90  = MODE0(GPIO90)  MODE1(MC1DA3)    MODE2()          MODE3()           MODE4()            MODE5(BT_TDO)             MODE6(dbg_mon[4])            MODE7(dbg_usb_dio[4])       PU
+GPIO91  = MODE0(GPIO91)  MODE1(MC1CK)     MODE2(EINT13)    MODE3()           MODE4()            MODE5(BT_DBGACK_N)        MODE6()                      MODE7()	                   PU
+GPIO92  = MODE0(GPIO92)  MODE1(MC2CM0)    MODE2(MC1DA4)    MODE3(KROW7)      MODE4(URXD2)       MODE5(PTA1)               MODE6(dbg_mon[5])            MODE7(dbg_usb_dio[5])       PD
+GPIO93  = MODE0(GPIO93)  MODE1(MC2DA0)    MODE2(MC1DA5)    MODE3(KCOL7)      MODE4(UTXD2)       MODE5(PTA0)               MODE6(dbg_mon[6])            MODE7(dbg_usb_dio[6])       PD
+GPIO94  = MODE0(GPIO94)  MODE1(MC2DA1)    MODE2(MC1DA6)    MODE3(KROW6)      MODE4(PWM_A)       MODE5(EDICK)              MODE6(dbg_mon[7])            MODE7(dbg_usb_dio[7])       PD
+GPIO95  = MODE0(GPIO95)  MODE1(MC2CK)     MODE2(MC1DA7)    MODE3(PWM_IN)     MODE4(CLKM0)       MODE5(SRCLKENAI)          MODE6()                      MODE7()	                   PD
+GPIO96  = MODE0(GPIO96)  MODE1(BPI_BUS0)  MODE2()          MODE3()           MODE4()            MODE5()                   MODE6(dbg_mon[10])           MODE7(dbg_usb_dio[10])      PD
+GPIO97  = MODE0(GPIO97)  MODE1(BPI_BUS1)  MODE2(LSCE0B)    MODE3()           MODE4()            MODE5()                   MODE6(dbg_mon[11])           MODE7(dbg_usb_dio[11])      PD
+GPIO98  = MODE0(GPIO98)  MODE1(BPI_BUS2)  MODE2()          MODE3()           MODE4()            MODE5()                   MODE6(dbg_mon[12])           MODE7(dbg_usb_dio[12])      PD
+GPIO99  = MODE0(GPIO99)  MODE1(BPI_BUS3)  MODE2()          MODE3()           MODE4()            MODE5()                   MODE6(dbg_mon[13])           MODE7(dbg_usb_dio[13])      PD
+GPIO100 = MODE0(GPIO100) MODE1(BPI_BUS4)  MODE2(MC2INS)    MODE3(LSCE1B)     MODE4()            MODE5()                   MODE6(dbg_mon[14])           MODE7(dbg_usb_dio[14])      PD
+GPIO101 = MODE0(GPIO101) MODE1(BPI_BUS5)  MODE2(MC1INS)    MODE3(EINT14)     MODE4()            MODE5(SRCLKENAI)          MODE6(dbg_mon[15])           MODE7(dbg_usb_dio[15])      PD
+GPIO102 = MODE0(GPIO102) MODE1(MC2DA2)    MODE2(EINT6)     MODE3()           MODE4(PWM_D)       MODE5(EDIWS)              MODE6(dbg_mon[8])            MODE7(dbg_usb_dio[8])       PD
+GPIO103 = MODE0(GPIO103) MODE1(MC2DA3)    MODE2(EINT9)     MODE3()           MODE4(MC1INS)      MODE5(EDIDAT)             MODE6(dbg_mon[9])            MODE7(dbg_usb_dio[9])       PD
+GPIO104 = MODE0(GPIO104) MODE1(EINT5)     MODE2(MC1INS)    MODE3(PWM_IN)     MODE4(CLKM8)       MODE5()                   MODE6()                      MODE7()	                   PD
+
+[GPO]
+
+[EINT]
+EINT_COUNT=16
+EINT_DEBOUNCE_TIME_COUNT=16
+
+[EINT_EX_PIN]  
+0              
+1              
+2              
+3              
+4              
+5              
+6              
+7              
+8              
+9              
+10             
+11             
+12             
+13             
+14             
+22
+               
+[EINT_INT_PIN] 
+
+
+[ADC]
+ADC_COUNT = 5
+
+[ADC_INT_CH]
+0 = ADC_VBAT
+1 = ADC_VISENSE
+2 = ADC_VCHARGER
+3 = ADC_VBATTMP
+
+
+[ADC_EX_CH]
+6 
+7 
+13 
+14 
+15 
+
+
+[KEYPAD]
+KEY_ROW=8
+KEY_COLUMN=9
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

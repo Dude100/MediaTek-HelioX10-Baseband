@@ -1,0 +1,1 @@
+         *                     (EXT_BL_SIGNATURE_SECTION)

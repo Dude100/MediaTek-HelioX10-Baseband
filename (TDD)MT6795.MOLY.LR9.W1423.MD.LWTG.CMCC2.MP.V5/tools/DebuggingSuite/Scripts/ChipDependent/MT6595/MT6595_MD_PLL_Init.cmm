@@ -1,0 +1,271 @@
+;; /*****************************************************************************
+;; *  Copyright Statement:
+;; *  --------------------
+;; *  This software is protected by Copyright and the information contained
+;; *  herein is confidential. The software may not be copied and the information
+;; *  contained herein may not be used or disclosed except with the written
+;; *  permission of MediaTek Inc. (C) 2005
+;; *
+;; *  BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+;; *  THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+;; *  RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
+;; *  AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+;; *  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+;; *  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+;; *  NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+;; *  SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+;; *  SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
+;; *  THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
+;; *  NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
+;; *  SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
+;; *
+;; *  BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
+;; *  LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+;; *  AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+;; *  OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
+;; *  MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE. 
+;; *
+;; *  THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
+;; *  WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
+;; *  LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
+;; *  RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
+;; *  THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
+;; *
+;; *****************************************************************************/
+
+;; /*****************************************************************************
+;;  *
+;;  * Filename:
+;;  * ---------
+;;  *   md_pll_init.cmm
+;;  *
+;;  * Project:
+;;  * --------
+;;  *   Maui_Software
+;;  *
+;;  * Description:
+;;  * ------------
+;;  *   This Module defines the MD PLL initialization flow in cmm script.
+;;  *
+;;  * Author:
+;;  * -------
+;;  *   astone.lin  (mtk02525)
+;;  *
+;;  *============================================================================
+;;  *             HISTORY
+;;  * Below this line, this part is controlled by PVCS VM. DO NOT MODIFY!!
+;;  *------------------------------------------------------------------------------
+;;  * change 2013/02/18:  DCM should be off
+;;  *------------------------------------------------------------------------------
+;;  * Upper this line, this part is controlled by PVCS VM. DO NOT MODIFY!!
+;;  *============================================================================
+;;  ****************************************************************************/
+
+;;;;;;;;;; register base 
+&PLL_MIXEDSYS_base=0x80120000
+&CONFIG_base=0x80000000
+&MEM_CLASS="sd"
+
+;;;;;;;;;; options
+&WHPLL_TDD_MODE=0
+&MCUPLL_ON=1
+&WHPLL_TDD_MODE=0
+&PLL_DIV=0
+&SIM_26M=0
+&WHPLL_ON=0
+
+;;;;;;;;;; register address 
+
+&PLL_PLL_CON1=(&PLL_MIXEDSYS_base+0x044)
+&PLL_PLL_CON2=(&PLL_MIXEDSYS_base+0x048)
+&PLL_PLL_CON3=(&PLL_MIXEDSYS_base+0x04C)
+
+&PLL_CLKSW_CKSEL0=(&PLL_MIXEDSYS_base+0x060)
+&PLL_CLKSW_CKSEL1=(&PLL_MIXEDSYS_base+0x064)
+&PLL_CLKSW_CKSEL2=(&PLL_MIXEDSYS_base+0x068)
+&PLL_CLKSW_CKSEL3=(&PLL_MIXEDSYS_base+0x06C)
+
+&PLL_CLKSW_FDIV0=(&PLL_MIXEDSYS_base+0x070)
+&PLL_CLKSW_FDIV1=(&PLL_MIXEDSYS_base+0x074)
+&PLL_CLKSW_FDIV2=(&PLL_MIXEDSYS_base+0x078)
+&PLL_CLKSW_FDIV3=(&PLL_MIXEDSYS_base+0x07C)
+&PLL_CLKSW_FDIV4=(&PLL_MIXEDSYS_base+0x080)
+&PLL_CLKSW_FDIV5=(&PLL_MIXEDSYS_base+0x084)
+&PLL_CLKSW_FDIV6=(&PLL_MIXEDSYS_base+0x088)
+&PLL_CLKSW_FDIV7=(&PLL_MIXEDSYS_base+0x08C)
+
+&PLL_CLKSW_CONN_CON0=(&PLL_MIXEDSYS_base+0x090)
+
+&PLL_DFS_CON7=(&PLL_MIXEDSYS_base+0x0AC)
+&PLL_DFS_CON8=(&PLL_MIXEDSYS_base+0x0B0)
+&PLL_DFS_CON9=(&PLL_MIXEDSYS_base+0x0B4)
+
+&PLL_MDPLL_CON0=(&PLL_MIXEDSYS_base+0x100)
+&PLL_MDPLL_CON1=(&PLL_MIXEDSYS_base+0x104)
+&PLL_MDPLL_CON2=(&PLL_MIXEDSYS_base+0x108)
+&PLL_MDPLL_CON3=(&PLL_MIXEDSYS_base+0x10C)
+&PLL_MDPLL_CON4=(&PLL_MIXEDSYS_base+0x110)
+
+&PLL_MCUPLL_CON0=(&PLL_MIXEDSYS_base+0x140)
+&PLL_MCUPLL_CON1=(&PLL_MIXEDSYS_base+0x144)
+&PLL_MCUPLL_CON2=(&PLL_MIXEDSYS_base+0x148)
+&PLL_MCUPLL_CON3=(&PLL_MIXEDSYS_base+0x14C)
+
+&PLL_WPLL_CON0=(&PLL_MIXEDSYS_base+0x1C0)
+&PLL_WPLL_CON1=(&PLL_MIXEDSYS_base+0x1C4)
+&PLL_WPLL_CON2=(&PLL_MIXEDSYS_base+0x1C8)
+&PLL_WPLL_CON3=(&PLL_MIXEDSYS_base+0x1CC)
+
+&PLL_WHPLL_CON0=(&PLL_MIXEDSYS_base+0x200)
+&PLL_WHPLL_CON1=(&PLL_MIXEDSYS_base+0x204)
+&PLL_WHPLL_CON2=(&PLL_MIXEDSYS_base+0x208)
+&PLL_WHPLL_CON3=(&PLL_MIXEDSYS_base+0x20C)
+&PLL_WHPLL_CON4=(&PLL_MIXEDSYS_base+0x210)
+
+&PLL_RSV_CON0=(&PLL_MIXEDSYS_base+0x360)
+
+&PLL_PLLTD_CON0=(&PLL_MIXEDSYS_base+0x700)
+&PLL_PLLTD_CON1=(&PLL_MIXEDSYS_base+0x704)
+&PLL_PLLTD_CON2=(&PLL_MIXEDSYS_base+0x708)
+&PLL_PLLTD_CON3=(&PLL_MIXEDSYS_base+0x70C)
+&PLL_PLLTD_CON4=(&PLL_MIXEDSYS_base+0x710)
+&PLL_PLLTD_CON5=(&PLL_MIXEDSYS_base+0x714)
+&PLL_PLLTD_CON6=(&PLL_MIXEDSYS_base+0x718)
+&PLL_PLLTD_CON7=(&PLL_MIXEDSYS_base+0x71C)
+
+&PLL_FH_CON4=(&PLL_MIXEDSYS_base+0x510)
+&PLL_FH_CON5=(&PLL_MIXEDSYS_base+0x514)
+&PLL_FH_CON6=(&PLL_MIXEDSYS_base+0x518)
+&PLL_FH_CON7=(&PLL_MIXEDSYS_base+0x51C)
+
+&PLL_MD_GLOBAL_CON1=(&CONFIG_base+0x45C)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 	// Sequence to enable PLL
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; 	//wait  100us  for CLKSQ and BIAS_LPF enable settle, but no need to wait when boot up
+wait 1.ms    
+
+;; 	// force 26M and PLL on
+d.s &PLL_DFS_CON7 %word %le 0x003F		;;  // 0x801200AC, bit 0~5 set to 1 to force 26M and PLL on
+
+;; 	// enable MTCMOS control
+d.s &PLL_PLL_CON3 %word %le 0x8300		;; // 0x8012004C, bit 12, 4 set to 0 to enable MTCMOS control
+
+;; 	// enable MTCMOS and TOPSM control
+d.s &PLL_PLL_CON3 %word %le 0x0000		;; // 0x8012004C, bit 15, 8, 1 and 0 set to 0 to enable MTCMOS control
+
+;; 	// enable TOPSM control
+d.s &PLL_PLL_CON2 %word %le 0x0000		;; // 0x80120048, bit 12, 10, 8, 6 and 2 set to 0 to enable TOPSM control
+
+;; 	// enable delay control
+d.s &PLL_PLLTD_CON0 %word %le 0x0010		;; //0x80120700, bit 0 set to 0 to enable delay control
+
+if (&WHPLL_TDD_MODE==1)
+(
+ d.s &PLL_WHPLL_CON2 %word %le 0x8028 		;; //0x80120200, bit 15 set to 1 to enable WHPLL
+ d.s &PLL_WHPLL_CON3 %word %le 0x0000 		;; //13-0 fractional set to 0
+);; #endif //#if defined (WHPLL_TDD_MODE)
+
+
+;; 	//enable MDPLL
+d.s &PLL_MDPLL_CON0 %word %le data.word(&MEM_CLASS:&PLL_MDPLL_CON0)|0x8000		;; //0x80120100, bit 15 set to 1 to enable MDPLL
+
+;; 	//enable MCUPLL
+d.s &PLL_MCUPLL_CON0 %word %le data.word(&MEM_CLASS:&PLL_MCUPLL_CON0)|0x8000		;; //0x80120140, bit 15 set to 1 to enable MCUPLL1
+
+;; 	//enable WPLL
+d.s &PLL_WPLL_CON0 %word %le data.word(&MEM_CLASS:&PLL_WPLL_CON0)|0x8000		;; //0x801201C0, bit 15 set to 1 to enable WPLL
+
+;; 	//enable WHPLL
+d.s &PLL_WHPLL_CON0 %word %le data.word(&MEM_CLASS:&PLL_WHPLL_CON0)|0x8000		;; //0x80120200, bit 15 set to 1 to enable WHPLL
+
+
+;; 	for(loop_var=0; loop_var<20; loop_var++);
+wait 1.ms
+;; 	// enable FH delay control
+d.s &PLL_PLLTD_CON0 %word %le 0x0000		;; //0x80120700, bit 4 set to 0 to enable FH delay control
+
+;; 	for(loop_var=0; loop_var<5; loop_var++);
+wait 1.ms
+
+
+;; /* To disable "disable AUTOK",
+;;  * for workaround of HW issue that MDPLL fbdiv will sync a temperorily unstable value at reset.
+;;  * Using AUTOK for each reset, to avoid this unstablibility.
+;;  **/
+;; 	/*     //Disable AUTOK of MDPLL **/
+;; 	/* temp_reg = * MDPLL_CON4; **/
+;; 	/*       temp_reg  &= 0xFFFE; **/
+;; 	/*       *MDPLL_CON4  = temp_reg ; //0x80120110, bit 0 set to 0 to disable AUTOK of MDPLL to reduce calibration time **/
+
+if (&MCUPLL_ON==1)
+(
+ d.s &PLL_FH_CON5 %word %le 0x0076		;;
+ d.s &PLL_FH_CON4 %word %le 0xA455		;;
+) ;; #endif //#ifdef MCUPLL_ON
+
+if (&WHPLL_TDD_MODE==1)
+(
+ d.s &PLL_FH_CON7 %word %le 0x0080		;;
+ d.s &PLL_FH_CON6 %word %le 0xA455		;;
+) ;; #endif //#ifdef WHPLL_TDD_MODE
+
+;; 	for (loop_var=0; loop_var < 60; loop_var++);
+wait 1.ms
+d.s &PLL_MDPLL_CON0 %word %le data.word(&MEM_CLASS:&PLL_MDPLL_CON0)&0x7FFF		;;
+d.s &PLL_MDPLL_CON4 %word %le data.word(&MEM_CLASS:&PLL_MDPLL_CON4)&0xFFFE		;;
+
+;; 	for(loop_var=0; loop_var<1; loop_var++);
+wait 1.ms
+d.s &PLL_MDPLL_CON0 %word %le data.word(&MEM_CLASS:&PLL_MDPLL_CON0)|0x8000		;;
+
+
+;; ///	*PLL_PLLTD_CON2 = 0x0514;  //removed @ programming_note.v4
+;; 	for(loop_var=0; loop_var<15; loop_var++);   //added @ programming_note.v4
+wait 1.ms
+
+if (&PLL_DIV==1)
+(
+ d.s &PLL_CLKSW_FDIV0 %word %le 0x0420		;;
+ d.s &PLL_CLKSW_FDIV2 %word %le 0x0020		;;
+ d.s &PLL_CLKSW_FDIV6 %word %le data.word(&MEM_CLASS:&PLL_CLKSW_FDIV6)|0x0017		;;
+ d.s &PLL_CLKSW_FDIV6 %word %le data.word(&MEM_CLASS:&PLL_CLKSW_FDIV6)|0x05C0		;;
+ d.s &PLL_CLKSW_FDIV6 %word %le data.word(&MEM_CLASS:&PLL_CLKSW_FDIV6)&0xFA3F		;;
+) ;; #endif //#ifdef PLL_DIV
+d.s &PLL_CLKSW_FDIV7 %word %le 0xC100		;;
+d.s &PLL_MD_GLOBAL_CON1 %long %le data.long(&MEM_CLASS:&PLL_MD_GLOBAL_CON1)|0x20000000		;;
+
+
+if (&SIM_26M==0)
+(
+ d.s &PLL_CLKSW_CKSEL0 %word %le 0x2020		;;
+ d.s &PLL_CLKSW_CKSEL1 %word %le 0x2000		;;
+ if (&WHPLL_ON==1)
+ (
+   d.s &PLL_CLKSW_CKSEL2 %word %le 0x2240		;;
+ )
+ else ;; //#ifdef WHPLL_ON
+ (
+   d.s &PLL_CLKSW_CKSEL2 %word %le 0x2220		;;
+ ) ;; #endif //#ifdef WHPLL_ON
+
+ if (&MCUPLL_ON==1)
+ (
+   d.s &PLL_CLKSW_CKSEL3 %word %le 0x0112		;;
+ ) ;; #endif //#ifdef MCUPLL_ON
+);; #endif //#ifndef SIM_26M
+
+if (&MCUPLL_ON==0)
+(
+ d.s &PLL_PLL_CON2 %word %le data.word(&MEM_CLASS:&PLL_PLL_CON2)|0x0100		;;
+ d.s &PLL_MCUPLL_CON0 %word %le data.word(&MEM_CLASS:&PLL_MCUPLL_CON0)&~0x8000		;;
+) ;; #endif //#ifndef MCUPLL_ON
+if (&WHPLL_ON==0)
+(
+ d.s &PLL_PLL_CON2 %word %le data.word(&MEM_CLASS:&PLL_PLL_CON2)|0x0001		;;
+ d.s &PLL_WHPLL_CON0 %word %le data.word(&MEM_CLASS:&PLL_WHPLL_CON0)&~0x8000		;;
+) ;; #endif //#ifndef WHPLL_ON
+
+

@@ -1,0 +1,51 @@
+[Chip Type]
+Chip = MT6290m
+IOMUX_ModeNum = 6
+GPIO_COUNT = 64
+GPIO_Pull_Sel = 1
+PMIC_Config=1
+
+[EINT]
+EINT_COUNT = 16
+EINT_DEBOUNCE_TIME_COUNT = 255
+DEDICATED_EINT_COUNT = 4
+
+[IOMUX_MODE]
+SEL_NFI_0    		= MODE0(NFI)     		MODE1()         		 				MODE2(SRCLKEN_OUT)      		MODE3(EHPI_SLV)      MODE4(GPIO)         MODE5(DBG)     
+SEL_NFI_1   		= MODE0(NFI)     		MODE1()         		 				MODE2()              	 			MODE3(EHPI_SLV)      MODE4(GPO)          MODE5(DBG)         
+SEL_NFI_2   		= MODE0(NFI)     		MODE1()         		 				MODE2(PCM)     			   			MODE3(EHPI_SLV)      MODE4(GPIO)         MODE5(DBG)     
+SEL_NFI_3  			= MODE0(NFI)     		MODE1()             				MODE2(IDC)    			     		MODE3(EHPI_SLV)      MODE4(GPIO)         MODE5(DBG)     
+SEL_NFI_4    		= MODE0(NFI)     		MODE1()             				MODE2(AGPS_OUT)         		MODE3(EHPI_SLV)    	 MODE4(GPIO)         MODE5(DBG)     
+SEL_JTAG  			= MODE0(TDO)     		MODE1(2GDSP_SICE)   				MODE2(MD32)        	   			MODE3()         		 MODE4()             MODE5(DBG)              
+SEL_SPI0    		= MODE0(SPI)     		MODE1(STP0)         				MODE2()       				   		MODE3()              MODE4(GPIO)         MODE5(DBG)              
+SEL_SPI1  			= MODE0(SPI)     		MODE1(STP0)         				MODE2()     					  	 	MODE3(SRCLKEN_OUT)   MODE4(GPIO)         MODE5(DBG)         
+SEL_SUART0 		  = MODE0(SUART0)  		MODE1(EXT_FRAME_SYNC)  			MODE2()              				MODE3()        			 MODE4()             MODE5()             
+SEL_SDIO  			= MODE0(SDIO)    		MODE1(F32K_CLK_OUT)         MODE2()              				MODE3()       			 MODE4(GPIO)    		 MODE5(DBG)        
+SEL_MSDC0P_0  	= MODE0(MSDC0P)  		MODE1(STP1)         				MODE2(MAS_CCDDIF)           MODE3()       			 MODE4(GPIO)         MODE5(DBG)    
+SEL_MSDC0P_1  	= MODE0(MSDC0P)  		MODE1(STP1)         				MODE2(MAS_CCDDIF)           MODE3()        			 MODE4(GPIO)         MODE5(DBG)     
+SEL_MSDC0P_2  	= MODE0(MSDC0P)  		MODE1(STP1)         				MODE2(SLV_CCDDIF)           MODE3()      				 MODE4(GPIO)         MODE5(DBG)       
+SEL_MSDC1P      = MODE0(MSDC1P)     MODE1()         						MODE2(SLV_CCDDIF)           MODE3()      				 MODE4(GPIO)         MODE5(DBG)              
+SEL_PMIC_BSI    = MODE0(PMIC_BSI)   MODE1()         						MODE2()              				MODE3(SRCLKEN_OUT)   MODE4(GPIO)         MODE5(DBG)              
+SEL_RFIC1_BSI   = MODE0(RFIC1_BSI)  MODE1()         						MODE2() 										MODE3()         		 MODE4(GPIO)         MODE5(DBG)          
+SEL_MISC_BSI_0  = MODE0(MISC_BSI)   MODE1(MIPI)         				MODE2(USIM)              		MODE3()     				 MODE4(GPO/GPIO58)   MODE5(DBG)         
+SEL_MISC_BSI_1  = MODE0(MISC_BSI)   MODE1()         						MODE2()              				MODE3()     				 MODE4(GPIO)         MODE5(DBG)         
+SEL_I2C   			= MODE0(I2C)        MODE1()         						MODE2()              				MODE3()         		 MODE4(GPIO)         MODE5(DBG)             
+SEL_BPI_0 			= MODE0(BPI)        MODE1()         						MODE2()              				MODE3()         		 MODE4()             MODE5(DBG)              
+SEL_BPI_1  			= MODE0(BPI)        MODE1()         						MODE2()              				MODE3()         		 MODE4()             MODE5(DBG)            
+SEL_BPI_2  			= MODE0(BPI)        MODE1()         						MODE2()              				MODE3()         		 MODE4()             MODE5(DBG)              
+SEL_BPI_3   		= MODE0(BPI)        MODE1()        							MODE2()              				MODE3()         		 MODE4()             MODE5(DBG)              
+SEL_BPI_4  			= MODE0(BPI)        MODE1()         						MODE2()              				MODE3()         		 MODE4()             MODE5(DBG)              
+SEL_BPI_5  			= MODE0(BPI)        MODE1()         						MODE2()              				MODE3()         		 MODE4()             MODE5(DBG)              
+SEL_USIM1  			= MODE0(USIM0)      MODE1()         						MODE2()              				MODE3()         		 MODE4(GPO)          MODE5(DBG)              
+SEL_USIM2   		= MODE0(USIM1)      MODE1(F32K_CLK_OUT)         MODE2()              				MODE3()         		 MODE4(GPO)          MODE5(DBG)             
+SEL_GPIO_0_0  	= MODE0(LED)        MODE1(STP0_1)         			MODE2(CA_INTF)              MODE3(MII)         	 MODE4(GPIO)          MODE5(DBG)              
+SEL_GPIO_0_1 		= MODE0(LED)        MODE1(STP0)         				MODE2(CA_INTF)              MODE3(MII)         	 MODE4(GPIO)         MODE5(DBG)              
+SEL_GPIO_1   		= MODE0(LED)        MODE1(STP0)         				MODE2(CA_INTF)              MODE3(MII)         	 MODE4(GPIO)         MODE5(DBG)             
+SEL_GPIO_2_0   	= MODE0(LED)        MODE1(STP0)         				MODE2(CA_INTF)              MODE3(MII)         	 MODE4(GPIO)         MODE5(DBG)              
+SEL_GPIO_2_1  	= MODE0(LED)        MODE1(STP0)         				MODE2(CA_INTF)              MODE3(MII)         	 MODE4(GPIO)         MODE5(DBG)             
+SEL_GPIO_3  		= MODE0(LED)        MODE1(STP1)         				MODE2(CA_INTF)              MODE3(MII)         	 MODE4(GPIO)         MODE5(DBG)              
+SEL_GPIO_4   		= MODE0(IDC)        MODE1(STP1)         				MODE2(MAS_CCDDIF)           MODE3(MII)         	 MODE4(GPIO)         MODE5(DBG)              
+SEL_SDIO_INT  	= MODE0(SDIO_HOST_INTB)    MODE1()         			MODE2()              				MODE3()         		 MODE4(GPO)          MODE5(DBG)             
+SEL_DMCMDPHY   	= MODE0(GPO)        MODE1()         						MODE2()              				MODE3()         		 MODE4()             MODE5(DBG)              
+
+

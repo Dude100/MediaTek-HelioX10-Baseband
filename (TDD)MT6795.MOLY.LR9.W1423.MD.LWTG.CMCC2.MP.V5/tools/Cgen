@@ -1,0 +1,3 @@
+#!/bin/bash
+tools/Cgen_V7/Cgen $@
+tools/Cgen_V5 $@

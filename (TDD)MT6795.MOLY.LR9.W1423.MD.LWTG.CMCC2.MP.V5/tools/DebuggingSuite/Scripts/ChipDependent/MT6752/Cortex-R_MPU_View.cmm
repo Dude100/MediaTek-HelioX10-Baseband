@@ -1,0 +1,415 @@
+;*****************************************************************************
+;  Copyright Statement:
+;  --------------------
+;  This software is protected by Copyright and the information contained
+;  herein is confidential. The software may not be copied and the information
+;  contained herein may not be used or disclosed except with the written
+;  permission of MediaTek Inc. (C) 2001
+;
+;*****************************************************************************
+;
+;*****************************************************************************
+;
+; Filename:
+; ---------
+;   Cortex-R_MPU_View.cmm (v.1.0)
+;
+; Project:
+; --------
+;   MT6280
+;
+; Description:
+; ------------
+;   This file generates human readable memory map from MPU CP15 registers
+;
+; Author:
+; -------
+;   Ted Chou (mtk03742)
+;
+;============================================================================
+;             HISTORY
+; Below this line, this part is controlled by PVCS VM. DO NOT MODIFY!!
+;------------------------------------------------------------------------------
+; * $Revision$
+; * $Modtime$
+; * $Log$
+; *
+; * 01 08 2014 i-chun.liu
+; * [MOLY00052859] [MT6595][SS] Update MPU Parse CMM File
+; * 	mpu parsing update to support multiple sub-region
+;------------------------------------------------------------------------------
+; Upper this line, this part is controlled by PVCS VM. DO NOT MODIFY!!
+;============================================================================
+; Configuration
+;============================================================================
+; Parsing Range
+&START_ADDRESS=0x0
+&END_ADDRESS=0xFFFFFFFF
+&SHOW_REGION=0
+
+; Region Settings
+&MAX_REGION_COUNT=0xC
+
+
+;============================================================================
+; Main Program
+;============================================================================
+start:
+;AREA.CLOSE mpuviewer
+AREA.CREATE mpuviewer 80. 25.
+AREA.SELECT mpuviewer
+AREA.CLEAR mpuviewer
+AREA.VIEW mpuviewer
+
+&REGION_HIT=0
+&CURRENT_ADDRESS=&START_ADDRESS
+&NEXT_ADDRESS=&START_ADDRESS
+&BR=DATA.LONG(C15:0x0001)&0x20000
+IF (DATA.LONG(C15:0x0001)&0x1)==0
+(
+  PRINT "[WARNING: MPU is currently disabled!!!]"
+)
+PRINT "MPU Region Parser Start!"
+PRINT "======================================================================"
+WHILE &CURRENT_ADDRESS<&END_ADDRESS
+(
+  &CURRENT_REGION_NUM=0
+  &RACR=0xFFFFFFFF
+  WHILE &CURRENT_REGION_NUM<&MAX_REGION_COUNT
+  (
+    D.S C15:0x0026 %LONG &CURRENT_REGION_NUM                  ; Select Region
+    &REGION_START=DATA.LONG(C15:0x0016)                       ; Read region start address
+    &RSER=DATA.LONG(C15:0x0216)                               ; Region Size Enable Register
+    &REGION_SIZE=1<<(((&RSER&0x3E)>>1+1))                     ; Region total size
+    &REGION_ENABLE=&RSER&0x1                                  ; Region enable
+    &REGION_END=&REGION_START+&REGION_SIZE                    ; Calculate region end
+    &REAL_REGION_END=&REGION_END
+
+    ; By pass disabled regions and the region which is ahead of current address
+    IF (&REGION_ENABLE!=0x1)||(&REGION_END<=&CURRENT_ADDRESS)
+    (
+      GOTO next_region
+    )
+
+    &SUB_REGION_MASK=(&RSER&0x0000FF00)>>8                    ; Fetch sub region mask
+    IF (&REGION_SIZE<0x100)
+      &SUB_REGION_MASK=0
+
+    ; For the regions that are behind current address, we still need to check their start address
+    ; and update next address
+    IF (&REGION_START>&CURRENT_ADDRESS)
+    (
+      WHILE (&SUB_REGION_MASK&0x1)==0x1
+      (
+        &REGION_START=&REGION_START+(&REGION_SIZE>>3)
+        &SUB_REGION_MASK=&SUB_REGION_MASK>>1
+      )
+
+      ; update next address if needed
+      IF ((&CURRENT_ADDRESS==&NEXT_ADDRESS)||(&REGION_START<&NEXT_ADDRESS))&&(&REGION_START>&CURRENT_ADDRESS)
+      (
+        &NEXT_ADDRESS=&REGION_START
+      )
+      GOTO next_region
+    )
+
+    ; To here, we are dealing with the region which covers current region
+    &SUB_REGION_MASK=(&RSER&0x0000FF00)>>8                    ; Fetch sub region mask
+    IF (&REGION_SIZE<0x100)
+      &SUB_REGION_MASK=0
+    ; If there are no sub-region disabled, we found a region for current address
+    IF &SUB_REGION_MASK==0
+    (
+      ; If we have not update the next address or current region end is smaller than next address
+      ; update the next address
+      IF (&NEXT_ADDRESS==&CURRENT_ADDRESS)||(&REGION_END<&NEXT_ADDRESS)
+        &NEXT_ADDRESS=&REGION_END
+
+      ; Record current region attribute, and advanced to next region
+      GOTO record_attribute
+    )
+
+    ; For the regions which has sub region disabled, we need to find the real region start address
+    ; so that we can determine if current address is in the region
+    WHILE &SUB_REGION_MASK!=0                                 ; Parse sub region
+    (
+      WHILE ((&SUB_REGION_MASK&0x1)==0x1)
+      (
+        &REGION_START=&REGION_START+(&REGION_SIZE>>3)
+        ; We have assumption here CURRENT_ADDRESS <= NEXT_ADDRESS
+        ;IF (&CURRENT_ADDRESS>&NEXT_ADDRESS) ; This is just for debugging, to be removed
+        ;(
+        ;  PRINT "FATAL ERROR: CURRENT_ADDRESS > NEXT_ADDRESS"
+          ;ENDDO
+        ;)
+        &SUB_REGION_MASK=&SUB_REGION_MASK>>1
+      )
+
+      ; If current sub-region start address is larger than current address
+      ; It means that current region does not cover current address
+      ; Update the next address if needed, and advanced to next region
+      IF &REGION_START>&CURRENT_ADDRESS
+      (
+        IF (&NEXT_ADDRESS==&CURRENT_ADDRESS)||(&REGION_START<&NEXT_ADDRESS)
+          &NEXT_ADDRESS=&REGION_START
+        GOTO next_region
+      )
+
+      ; We found a sub-region which starts before or equal to current address,
+      ; need to find the end of this sub-region to make sure if it covers current address
+
+      ;If sub-region is not zero now, it means the region end address may be smaller because some sub-regions are disabled at the end
+      ;so we need to find the real end address
+      &REGION_END=&REGION_START
+      WHILE ((&SUB_REGION_MASK&0x1)==0)
+      (
+        IF (&REGION_END<&REAL_REGION_END)
+        (
+          &REGION_END=&REGION_END+(&REGION_SIZE>>3)
+          &SUB_REGION_MASK=&SUB_REGION_MASK>>1
+        )
+        ELSE
+          GOTO  subregion_end
+      )
+
+
+subregion_end:
+
+      IF (&REGION_START<=&CURRENT_ADDRESS)&&(&REGION_END>&CURRENT_ADDRESS) ; actually &REGION_START<=&CURRENT_ADDRESS is always true at this point
+      (
+        ; we find a sub region covers current address
+        ; update next address, and record attribute, go to next region
+
+        &NEXT_ADDRESS=&REGION_END
+
+        ; Record current region attribute, and advanced to next region
+        GOTO record_attribute
+      )
+      IF &CURRENT_ADDRESS<&REGION_END
+      (
+        &NEXT_ADDRESS=&REGION_END
+      )
+      &REGION_START=&REGION_END
+      ; If current sub-region does not covers current address, go to next sub region
+    )
+    ; to here, we have confirmed that current region does not covers current address (due to sub-region disable)
+    ; so go to next region directly
+    GOTO next_region
+
+record_attribute:
+    &RACR=DATA.LONG(C15:0x0416)
+    &REGION_HIT=&CURRENT_REGION_NUM
+
+next_region:
+    &CURRENT_REGION_NUM=&CURRENT_REGION_NUM+1
+  )
+  IF &CURRENT_ADDRESS==&NEXT_ADDRESS
+  (
+    ; did not find any region behind current address
+    ; set next address as 4GB, to signal the end of processing
+    &NEXT_ADDRESS=0x100000000
+  )
+
+  ; Parse RACR, and print attribute
+  &ATTRIBUTE_STRING=""
+  IF &RACR==0xFFFFFFFF
+  (
+    &REGION_HIT=0xFFFFFFFF
+    IF &BR==0
+    (
+      &ATTRIBUTE_STRING="[P:No access / U:No access]"
+    )
+    ELSE
+    (
+      &ATTRIBUTE_STRING="[P:Background / U:No access]"
+    )
+  )
+  ELSE
+  (
+    ;XN
+    IF (&RACR&0x1000)!=0
+    (
+      &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[ExecuteNever]"
+    )
+
+    ;AP
+    &AP=(&RACR&0x700)>>8
+    IF &AP==0x0
+    (
+      &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[P:No access / U:No access]"
+    )
+    IF &AP==0x1
+    (
+      &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[P:RW / U:No access]"
+    )
+    IF &AP==0x2
+    (
+      &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[P:RW / U:RO]"
+    )
+    IF &AP==0x3
+    (
+      &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[P:RW / U:RW]"
+    )
+    IF &AP==0x4
+    (
+      &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[P:UNP / U:UNP]"
+    )
+    IF &AP==0x5
+    (
+      &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[P:RO / U:No access]"
+    )
+    IF &AP==0x6
+    (
+      &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[P:RO / U:RO]"
+    )
+    IF &AP==0x7
+    (
+      &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[P:UNP / U:UNP]"
+    )
+    ;TEX,C,B,S
+    &TEX=(&RACR&0x38)>>3
+    &CB=(&RACR&0x3)
+    &S=(&RACR&0x4)>>2
+    IF &TEX==0x0
+    (
+      IF (&CB==0x0)
+      (
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[Strongly-ordered]"
+      )
+      IF (&CB==0x1)
+      (
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[Sharable Device]"
+      )
+      IF (&CB==0x2)
+      (
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[Normal]"
+        IF &S==1
+          &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[Shared]"
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[Cacheable][WT]"
+      )
+      IF (&CB==0x3)
+      (
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[Normal]"
+        IF &S==1
+          &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[Shared]"
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[Cacheable][WB]"
+      )
+    )
+    IF &TEX==0x1
+    (
+      IF (&CB==0x0)
+      (
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[Normal]"
+        IF &S==1
+          &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[Shared]"
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[Non-cacheable]"
+      )
+      IF (&CB==0x1)
+      (
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[TEX,C,B,S Error]"
+      )
+      IF (&CB==0x2)
+      (
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[TEX,C,B,S Error]"
+      )
+      IF (&CB==0x3)
+      (
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[Normal]"
+        IF &S==1
+          &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[Shared]"
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[Cacheable][WB][WA]"
+      )
+    )
+    IF &TEX==0x2
+    (
+      IF (&CB==0x0)
+      (
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[Non-shareable Device]"
+      )
+      ELSE
+      (
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[TEX,C,B,S Error]"
+      )
+    )
+    IF &TEX==0x3
+    (
+      &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[TEX,C,B,S Error]"
+    )
+    IF &TEX>=0x4
+    (
+      &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[Normal]"
+      IF &S==1
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[Shared]"
+      &OCB=&TEX&0x3
+      ; Inner cache
+      IF &CB==0x0
+      (
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[IN:Non-cacheable]"
+      )
+      IF &CB==0x1
+      (
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[IN:WB/WA]"
+      )
+      IF &CB==0x2
+      (
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[IN:WT]"
+      )
+      IF &CB==0x3
+      (
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[IN:WB]"
+      )
+
+      ; Outer cache
+      IF &OCB==0x0
+      (
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[OUT:Non-cacheable]"
+      )
+      IF &OCB==0x1
+      (
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[OUT:WB/WA]"
+      )
+      IF &OCB==0x2
+      (
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[OUT:WT]"
+      )
+      IF &OCB==0x3
+      (
+        &ATTRIBUTE_STRING="&ATTRIBUTE_STRING"+"[OUT:WB]"
+      )
+    )
+
+  )
+
+  IF &SHOW_REGION==1
+  (
+    IF &REGION_HIT!=0xFFFFFFFF
+      PRINT "[Region: " &REGION_HIT "]"
+    ELSE
+      PRINT "[Region: N/A]"
+  )
+  PRINT &CURRENT_ADDRESS "--" (&NEXT_ADDRESS-1) "       " "&ATTRIBUTE_STRING"
+  &CURRENT_ADDRESS=&NEXT_ADDRESS
+)
+
+end:
+PRINT "======================================================================"
+PRINT "End of processing!!"
+
+menu:
+PRINT ""
+PRINT "Check address (input 'a' show whole memory map): "
+ENTER &START_ADDRESS
+IF "&START_ADDRESS"=="a"
+(
+  &START_ADDRESS=0
+  &END_ADDRESS=0xFFFFFFFF
+  &SHOW_REGION=0
+)
+ELSE
+(
+  &END_ADDRESS=&START_ADDRESS+1
+  &SHOW_REGION=1
+)
+GOTO start
+
+ENDDO

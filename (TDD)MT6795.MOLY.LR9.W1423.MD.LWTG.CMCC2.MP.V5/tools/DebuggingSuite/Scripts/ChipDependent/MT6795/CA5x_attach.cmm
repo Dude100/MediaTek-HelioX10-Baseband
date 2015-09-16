@@ -1,0 +1,43 @@
+PRINT "--------------------------------------------------------------"
+PRINT "CA5x_attach.cmm"
+PRINT "---------------"
+
+system.reset
+SYSTEM.OPTION ENRESET ON
+SYStem.Option ResBreak OFF
+SYStem.Option WaitReset OFF
+SYStem.JtagClock 10.MHz
+
+SYStem.CPU CORTEXA53
+
+;R-T Memory Access
+SYSTEM.MULTICORE MEMORYACCESSPORT 0
+SYSTEM.MULTICORE DEBUGACCESSPORT 1
+
+;Setting Core debug register access
+SYStem.CONFIG CORENUMBER 1
+SYStem.CONFIG COREBASE 0x80810000
+SYStem.CONFIG CTIBASE 0x80820000
+;SYSTEM.CONFIG CORENUMBER 2
+;SYSTEM.CONFIG COREBASE 0x80810000 0x80910000
+;SYSTEM.CONFIG CTIBASE 0x80820000 0x80920000
+
+SYStem.Up
+wait 200.us
+
+SETUP.IMASKHLL ON
+SETUP.IMASKASM ON
+
+;enable L2C 256KB
+D.S SD:0x10200000 %LE %LONG 0x00000100 ;Enable L2C share SRAM, cluster 0
+D.S SD:0x10200000 %LE %LONG 0x00001100 ;Enable L2C share SRAM, cluster 0
+
+; Turn off MMU ??
+D.S C15:0x1 0
+
+; disable WDT
+d.s c:0x10007000 %le %long 0x22000000
+
+R.S T 0
+d.l
+

@@ -1,0 +1,29 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// DebugGo.men
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ADD
+TOOLBAR
+(
+	SEPARATOR
+	TOOLITEM "Debug GO" "DO pcmon_run.cmm"
+	[
+          XXX
+          XRXXX
+          XXRRXX
+ @XXXXXXggXRXXRR
+@XYYYYYYXgXXRRXX
+XYYYYYYYXgXRXXX
+XYYXXXYYXgXXXgg
+XYYXgXXXgXXXXXgg
+XYYXXXXXXXGGGGXg
+XYYXYYYYXGGGGGG@
+XYYXYYYYXGGXXGG@
+XYYXXXYYXGGXXGG@
+XYYYYYYYXGGGGGG@
+@XYYYYYX@@GGGG@g
+ @XXXXX@gg@@@@g
+  gggggggg@ggg
+	]
+
+	SEPARATOR
+)

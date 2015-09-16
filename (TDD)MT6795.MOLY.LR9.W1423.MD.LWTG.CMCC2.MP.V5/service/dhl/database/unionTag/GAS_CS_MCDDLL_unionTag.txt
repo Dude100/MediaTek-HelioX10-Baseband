@@ -1,0 +1,146 @@
+/*****************************************************************************
+*  Copyright Statement:
+*  --------------------
+*  This software is protected by Copyright and the information contained
+*  herein is confidential. The software may not be copied and the information
+*  contained herein may not be used or disclosed except with the written
+*  permission of MediaTek Inc. (C) 2005
+*
+*  BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+*  THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+*  RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
+*  AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+*  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+*  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+*  NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+*  SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+*  SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
+*  THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
+*  NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
+*  SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
+*
+*  BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
+*  LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+*  AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+*  OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
+*  MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+*
+*  THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
+*  WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
+*  LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
+*  RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
+*  THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
+*
+*****************************************************************************/
+/*
+This file is used by cgen for union Tag information.
+Usage:
+
+structure_name   tag_field_name   union_name:
+{ 
+        tag_fileld_value   field_of_union_name;
+	    tag_fileld_value   field_of_union_name;
+};
+
+For Example:
+
+InvokeChoice ChoiceId a:
+{
+    1 localValue;
+    2 globalValue;        
+};
+
+*/
+
+/****************************** GAS CS MCDDLL UnionTag ********************************/
+
+unpack_msg msg_type rr_peer_msg:
+{
+
+   STRUCT_ID_RR_PEER_ADDITIONAL_ASSIGNMENT_STRUCT 	additional_assignment;
+   STRUCT_ID_IMMEDIATE_ASSIGN_MESSAGE 			immediate_assign_msg;
+   STRUCT_ID_IMMEDIATE_ASSIGN_EXT_MESSAGE 		immediate_assign_ext_msg;
+   STRUCT_ID_IMM_ASGN_REJ_MSG_STRUCT			imm_asgn_rej_msg;
+   STRUCT_ID_CIPHER_MODE_COMMAND_STRUCT			cipher_mode_command;
+   STRUCT_ID_CIPHER_MODE_COMPLETE_STRUCT		cipher_mode_complete;
+   STRUCT_ID_ASSIGNMENT_COMMAND_STRUCT			assignment_command;
+   STRUCT_ID_ASSIGNMENT_COMPLETE_STRUCT                 assignment_complete;   
+   STRUCT_ID_ASSIGNMENT_FAILURE_STRUCT                  assignment_failure;   
+   STRUCT_ID_HANDOVER_COMMAND_STRUCT			handover_command;
+   STRUCT_ID_HANDOVER_COMPLETE_STRUCT			handover_complete;
+   STRUCT_ID_HANDOVER_FAILURE_STRUCT			handover_failure;   
+   STRUCT_ID_RR_CELL_CHANGE_ORDER_STRUCT		rr_cell_change_order;
+   STRUCT_ID_PHYSICAL_INFORMATION_STRUCT		physical_information;
+   STRUCT_ID_CHANNEL_RELEASE_STRUCT			channel_release;
+   STRUCT_ID_RR_PEER_PARTIAL_RELEASE_STRUCT		partial_release;
+   STRUCT_ID_RR_PEER_PARTIAL_RELEASE_COMPLETE_STRUCT	rr_peer_partial_release_complete;
+   STRUCT_ID_PAGING_REQUEST_TYPE1_STRUCT			paging_request_1;
+   STRUCT_ID_PAGING_REQUEST_TYPE2_STRUCT			paging_request_2;
+   STRUCT_ID_PAGING_REQUEST_TYPE3_STRUCT			paging_request_3;
+   STRUCT_ID_PAGING_RESPONSE			        paging_response;   
+   STRUCT_ID_SI_1_STRUCT				si_1;
+   STRUCT_ID_SI_2_STRUCT				si_2;
+   STRUCT_ID_SI_2BIS_STRUCT				si_2bis;
+   STRUCT_ID_SI_2TER_STRUCT				si_2ter;
+   STRUCT_ID_SI_2QUATER_STRUCT				si_2quater;
+   STRUCT_ID_SI_3_STRUCT				si_3;
+   STRUCT_ID_SI_4_STRUCT				si_4;
+   STRUCT_ID_SI_5_STRUCT				si_5;
+   STRUCT_ID_SI_5BIS_STRUCT				si_5bis;
+   STRUCT_ID_SI_5TER_STRUCT				si_5ter;
+   STRUCT_ID_SI_6_STRUCT				si_6;
+   STRUCT_ID_SI_7_STRUCT				si_7;
+   STRUCT_ID_SI_8_STRUCT				si_8;
+   STRUCT_ID_SI_16_STRUCT				si_16;
+   STRUCT_ID_SI_17_STRUCT				si_17;
+   STRUCT_ID_SI_18_STRUCT				si_18;
+   STRUCT_ID_SI_19_STRUCT				si_19;
+   STRUCT_ID_SI_20_STRUCT				si_20;
+   STRUCT_ID_EXTENDED_MEASUREMENT_ORDER_STRUCT		extended_measurement_order;
+   STRUCT_ID_EXTENDED_MEASUREMENT_REPORT_STRUCT		extended_measurement_report;   
+   STRUCT_ID_MEASUREMENT_REPORT_STRUCT		        measurement_report;      
+   STRUCT_ID_MEASUREMENT_INFORMATION_STRUCT		measurement_information_struct;         
+   STRUCT_ID_ENHANCED_MEASUREMENT_REPORT_STRUCT		enhanced_measurement_report_struct; 
+   STRUCT_ID_CHANNEL_MODE_MODIFY_STRUCT			channel_mode_modify;
+   STRUCT_ID_CHANNEL_MODE_MODIFY_ACK_STRUCT		channel_mode_modify_ack_struct;
+   STRUCT_ID_RR_PEER_CLASSMARK_CHANGE_STRUCT		classmark_change;
+   STRUCT_ID_RR_PEER_CLASSMARK_ENQUIRY_STRUCT		classmark_enquiry;
+   STRUCT_ID_FREQUENCY_REDEFINITION_STRUCT		frequency_redefinition;
+   STRUCT_ID_RR_STATUS_STRUCT				rr_status;
+   STRUCT_ID_GPRS_SUSPENSION_REQUEST_STRUCT             gprs_suspension_request;
+   STRUCT_ID_CONFIGURATION_CHANGE_COMMAND_STRUCT	configuration_change_command;
+};
+
+ext_measurement_parameters_struct ext_measurement_parameters_struct_s_0_tag ext_measurement_parameters_struct_s_0_value:
+{
+    M_EM1_STRUCT m_em1_struct;
+};
+
+enh_measurement_parameters_struct enh_measurement_parameters_struct_s_1_tag enh_measurement_parameters_struct_s_1_value:
+{
+    ENH_MEASUREMENT_PARAMETERS_STRUCT_S_2 m_enh_measurement_parameters_struct_s_2;
+    PSI3_CHANGE_MARK psi3_change_mark;
+};
+
+measurement_information_struct s_9_tag s_9_value:
+{
+    S_10 m_s_10;
+};
+
+
+enhanced_measurement_report_struct enhanced_measurement_report_struct_s_5_tag 
+enhanced_measurement_report_struct_s_5_value:
+{
+    ENHANCED_MEASUREMENT_REPORT_STRUCT_S_5_BIT m_enhanced_measurement_report_struct_s_5_bit;
+    ENHANCED_MEASUREMENT_REPORT_STRUCT_S_6 m_enhanced_measurement_report_struct_s_6;
+};
+
+cdma_2000_description_struct_mi_s_3 cdma_2000_description_struct_mi_s_3_tag cdma_2000_description_struct_mi_s_3_value:
+{
+    CDMA_2000_DESCRIPTION_STRUCT_MI_S_4 m_cdma_2000_description_struct_mi_s_4;
+    CDMA_2000_DESCRIPTION_STRUCT_MI_S_5 m_cdma_2000_description_struct_mi_s_5;
+    CDMA_2000_DESCRIPTION_STRUCT_MI_S_6 m_cdma_2000_description_struct_mi_s_6;
+    CDMA_2000_DESCRIPTION_STRUCT_MI_S_7 m_cdma_2000_description_struct_mi_s_7;
+    CDMA_2000_DESCRIPTION_STRUCT_MI_S_8 m_cdma_2000_description_struct_mi_s_8;
+};
+

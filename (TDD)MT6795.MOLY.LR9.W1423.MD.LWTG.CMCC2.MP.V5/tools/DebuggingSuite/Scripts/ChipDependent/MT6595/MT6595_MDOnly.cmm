@@ -1,0 +1,134 @@
+; MT6595_MDOnly.cmm
+ENTRY  &Run_Mode
+
+GLOBAL &MDONLY_PPD_PATH
+IF "&Run_Mode"==""
+(
+    &MDONLY_PPD_PATH=OS.PPD()
+	PRINT "MDONLY_PPD_PATH = &MDONLY_PPD_PATH"
+)
+ELSE
+(
+    PRINT "Run_Mode = &Run_Mode"
+	PRINT "MDONLY_PPD_PATH = &MDONLY_PPD_PATH"
+	cd &MDONLY_PPD_PATH
+)
+
+GLOBAL &AP_SETTING
+GLOBAL &OPT_CHECK_CPU_ID
+GLOBAL &OPT_RAMFS_MODE
+GLOBAL &OPT_RAMFS_FILENAME
+
+GLOBAL &OPT_RAMFS_START_ADDRESS   ;; RamFS Address (Need linker symbol)
+GLOBAL &OPT_RAMFS_LEN
+GLOBAL &OPT_LOAD_ELF
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  Settings
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; ## AP tiny BL mode
+;; 0: AP setting is done by CMM
+;; 1: Tiny bootloader downloaded by CVD
+;; 2: [SysReset] Tiny bootloader already downloaded by SP FlashTool
+;; 3: [SysReset] DummyAP download by Flashtool
+;; 4: Assume init had completed (EMI & AP PLL, etc...), no [SysReset]
+;;    (Download MD or not decided by &OPT_LOAD_ELF, still set PC)
+&AP_SETTING=1
+
+;; ## Modem Boot Mode
+;; 0: Normal
+;; 1: Meta
+&OPT_MD_BOOT_MODE=0
+
+;; ## RamFS
+;; Auto load RamFS on reset
+;; 0: Don't load RamFS on Reset
+;; 1: Load RamFS on Reset
+&OPT_LOAD_RAMFS=0
+
+;; RamFS Backup/Restore Mode
+;; 0: Fast Mode, always backup/restore to the same file name
+;; 1: User Specify backup/restore file name
+&OPT_RAMFS_MODE=0
+
+;; ## RamFS file name for fast mode
+&OPT_RAMFS_FILENAME="RamFS_Backup.bin"
+
+;; ## The name of this entry script
+;; It sould be the same the name of this script
+;; It's use for the reset button in the toolbar
+LOCAL  &OPT_THIS_SCRIPT
+&OPT_THIS_SCRIPT="MT6595_MDOnly.cmm"
+
+;; ## The hardware we use
+;; Currently support:
+;;   "MT6572_EVB_LPDDR1": for pre-porting
+LOCAL  &OPT_HW_PROFILE
+&OPT_HW_PROFILE="MT6595_EVB_LPDDR2"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Run Mode:
+;; 0 => Normal Start-up
+;; 1 => Full Reset
+;; 2 => Bus hang recovery
+IF "&Run_Mode"==""
+    &Run_Mode=0
+
+;; Load ELF
+;; 0: Do not load ELF
+;; 1: Load ELF Symbol Only
+;; 2: Load ELF (Download)
+&OPT_LOAD_ELF=2
+
+;; Load DSPBIN
+;; 0: Do not load DSPBIN
+;; 1: Load DSP bin
+&OPT_LOAD_DSPBIN=1
+
+;; Configure TCM
+;; 0: Do not configure TCM in CMM
+;; 1: Configure TCM in CMM
+&OPT_CFG_TCM=0
+
+;; Configure Cache
+;; 0: Do not configure Cache in CMM
+;; 1: Configure Cache in CMM
+&OPT_CFG_CACHE=0
+
+;; Configure MPU
+;; 0: Do not configure MPU in CMM
+;; 1: Configure MPU in CMM
+&OPT_CFG_MPU=0
+
+;; Configure MD PLL
+;; 0: Do not configure MD PLL in CMM
+;; 1: Configure MD PLL in CMM
+&OPT_CFG_PLL=0
+
+;; Configure GPIO (SIM/UART)
+;; 0: Do not configure GPIO in CMM
+;; 1: Configure GPIO in CMM
+&OPT_CFG_GPIO=1
+
+;; Check CPU ID after connect
+&OPT_CHECK_CPU_ID=0
+
+;; Set L1 Assert Bypass
+;; 0: Keep L1 Assert Check
+;; 1: Set to Bypass L1 Assert Check
+&OPT_L1_ASSERT_BYPASS=0
+
+;; Wait Before Connection
+;; 0: Automatically Connect AP and then try to connect Modem
+;; 1: Wait user input before connection, for checking cmm options
+&OPT_WAIT_BEFORE_CONN=0
+
+;;-> # Option: Serial Wire or Parallel JTAG
+;; 0: Parallel
+;; 1: Serial Wire
+&OPT_JTAG=0
+
+DO MT6595_MDOnly_main.cmm

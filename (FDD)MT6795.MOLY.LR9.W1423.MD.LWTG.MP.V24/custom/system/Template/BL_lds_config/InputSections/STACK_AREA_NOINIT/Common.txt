@@ -1,0 +1,3 @@
+         *br_time_stamp.obj            (UN_INIT_RW)
+         *bl_BOOTARM_GCC.obj (STACK_POOL_INTSRAM)
+         *br_time_stamp.obj            (UN_INIT_ZI)

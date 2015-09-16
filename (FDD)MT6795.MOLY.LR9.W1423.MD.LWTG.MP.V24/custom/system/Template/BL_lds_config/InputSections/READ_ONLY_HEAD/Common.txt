@@ -1,0 +1,3 @@
+         *bl_BOOTARM_GCC.obj (C$$code)
+         * (HEAD_BL)
+         * (INIT_CODE)

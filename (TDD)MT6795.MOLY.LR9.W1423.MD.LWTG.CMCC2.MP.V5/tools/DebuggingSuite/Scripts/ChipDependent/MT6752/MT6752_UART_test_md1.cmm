@@ -1,0 +1,11 @@
+; attach to md first!!
+
+D.S SD:0xA000542C %LE %LONG  0xEE  ;//set GPIO 144/145 to MDUART mode
+D.S SD:0x80070024 %LE %LONG  0x03  ; //High Speed X
+D.S SD:0x80070028 %LE %LONG  0xE1  ; //Sample count
+D.S SD:0x8007002C %LE %LONG  0x71  ; //sample point
+D.S SD:0x8007000C %LE %LONG  0x83  ; //Enable Divisor latch acess bit, and set 8bit length.
+D.S SD:0x80070000 %LE %LONG  0x01  ; //DLL
+D.S SD:0x80070004 %LE %LONG  0x00  ; //DLM
+D.S SD:0x8007000C %LE %LONG  0x03  ; //Clear Divisor latch acess bit, and set 8bit length.
+D.S SD:0x80070000 %LE %LONG  0x55  ; //Write 0x55 to UART, please check console.

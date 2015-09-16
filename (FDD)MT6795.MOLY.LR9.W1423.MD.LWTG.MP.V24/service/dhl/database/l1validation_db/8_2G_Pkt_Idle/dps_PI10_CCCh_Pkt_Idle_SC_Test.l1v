@@ -1,0 +1,113 @@
+{ Validation }
+Title 		= "[8_2G_Pkt_Idle]PI10: CCCh Packet Idle Surrounding Cell BSIC+BCCH Decode"
+ModuleID 	= MOD_DUMMYMPAL
+MsgID 		= MSG_ID_DPS_CCCH_PKT_IDLE_SC_TEST_REQ    // will be defined in appropriate header file
+
+/* DPS uses 2nd and 3rd strongest ARFCNs as the neighbor cell ARFCNs.
+   We can specify the neighbor cell ARFCNs from validation file by 
+   making appropriate additions to the data structure below */
+
+/* Data Structure accomnying the above primitive
+typedef struct
+{
+       kal_uint8   ref_count;
+       kal_uint16  msg_len;
+	kal_uint8  bands;
+	ARFCN  arfcnSpec;
+	ARFCN  arfcn2nd;
+	ARFCN  arfcn3rd;
+	rf_power_capability_struct  gsm900PowerClass;
+	rf_power_capability_struct  gsm850PowerClass;
+	rf_power_capability_struct  gsm480PowerClass;
+	rf_power_capability_struct  gsm450PowerClass;
+	rf_power_capability_struct  dcsPowerClass;
+	rf_power_capability_struct  pcsPowerClass;
+	kal_bool 	imsi1_valid;
+	kal_uint16  imsi1_mod_1000;
+	kal_uint8  cbch_mode;
+} dps_ccch_pkt_idle_sc_test_req_struct;
+*/
+
+{Parameters}
+
+// The variable and the corresponding label showen on GUI
+[bands] "Bands used for power scan"
+// The following is the constrained range for the input of this value.
+// Some combination of the following bit-fields may be suported
+// The parameter range can be changed to support combinations of different bands
+@PGSM900            1
+EGSM900            2
+DCS1800            8
+PCS1900            16
+GSM850             128
+PGSM900_DCS1800    9
+EGSM900_DCS1800    10
+PGSM900_PCS1900    17  
+EGSM900_PCS1900    18
+GSM850_DCS1800     136
+GSM850_DCS1900     144
+
+[arfcnSpec] "Bcch (C0) ARFCN"
+0~124
+975~1023
+512~885
+128~251
+@20
+[arfcn2nd] "First Neighbor ARFCN"
+0~124
+975~1023
+512~885
+128~251
+@40
+[arfcn3rd] "Second Neighbor ARFCN"
+0~124
+975~1023
+512~885
+128~251
+@60
+[imsi1_valid] "Is there valid IMSI"
+@TRUE 1
+FALSE 0
+
+[imsi1_mod_1000] "IMSI modulo 1000"
+0~999
+@789
+[gsm900PowerClass] "MS Power Class for GSM 900 band"
+POWER_CLASS_2 1
+POWER_CLASS_3 2
+@POWER_CLASS_4 3
+POWER_CLASS_5 4
+POWER_CLASS_INVALID -1
+
+[gsm850PowerClass] "MS Power Class for GSM 850 band"
+POWER_CLASS_2 1
+POWER_CLASS_3 2
+@POWER_CLASS_4 3
+POWER_CLASS_5 4
+POWER_CLASS_INVALID -1
+
+[gsm480PowerClass] "MS Power Class for GSM 480 band"
+POWER_CLASS_2 1
+POWER_CLASS_3 2
+@POWER_CLASS_4 3
+POWER_CLASS_5 4
+POWER_CLASS_INVALID -1
+
+[gsm450PowerClass] "MS Power Class for GSM 450 band"
+POWER_CLASS_2 1
+POWER_CLASS_3 2
+@POWER_CLASS_4 3
+POWER_CLASS_5 4
+POWER_CLASS_INVALID -1
+
+[dcsPowerClass] "MS Power Class for DCS band"
+@POWER_CLASS_1 0
+POWER_CLASS_2 1
+POWER_CLASS_3 2
+POWER_CLASS_INVALID -1
+
+[pcsPowerClass] "MS Power Class for PCS band"
+@POWER_CLASS_1 0
+POWER_CLASS_2 1
+POWER_CLASS_3 2
+POWER_CLASS_INVALID -1

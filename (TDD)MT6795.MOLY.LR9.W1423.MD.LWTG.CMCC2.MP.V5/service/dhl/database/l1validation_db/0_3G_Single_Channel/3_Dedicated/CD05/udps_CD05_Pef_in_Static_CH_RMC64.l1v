@@ -1,0 +1,102 @@
+{ Validation }
+Title 		= "[0_3G_Single_Channel][3_Dedicated][CD05]CD05: Demodulation of DCH in Static Propagation Conditions(RMC64)"
+ModuleID 	= MOD_DUMMYURR
+MsgID 		= MSG_ID_UDPS_PEF_IN_STATIC_CH		
+
+/******************************************************************************
+* Data Structure accomnying the above primitive
+typedef struct
+{
+    kal_uint8       ref_count;
+    kal_uint16      msg_len;
+    
+    kal_uint16          uarfcn_bts1;
+    kal_uint16         psc_bts1;
+    kal_int8        max_tx_power;
+    kal_int8	    cpich_tx_power; //RACH use	
+    kal_bool        sttd_ind;       //RACH use
+    udps_RMC_type_struct udps_RMC_type;
+    kal_uint32          ul_sc;           
+    kal_uint16      DOFF_bts1;            
+    kal_uint8       Tdpch_rl1;        
+    kal_uint16       OVSFdpch_rl1;
+    kal_bool        vaild_slot_format;   //indicate whether "dl_dch_sf, dl_dch_tfci, dl_dch_pilot" is valid.
+    kal_uint16     dl_dch_sf;          // SF. 4,8,16,32,64,128,256,512
+    kal_bool        dl_dch_tfci;       //If TFCI is used or NOT
+    kal_uint8       dl_dch_pilot;     //Set the number of pilot bits	
+} udps_pef_in_static_ch_struct;           
+*
+*******************************************************************************/
+
+
+{Parameters}
+/******************************************************************************
+* 1. The following is the constrained range for the input of this value.
+* 2. Some combination of the following bit-fields may be suported
+* 3. The parameter range can be changed to support combinations of different bands
+*******************************************************************************/
+
+/* [Variable Name] "corresponding label showen on GUI" */
+[uarfcn_bts1] "UARFCN of Serving Cell"
+10562~10838
+9662~9938
+4357~4458
+@10600
+
+[psc_bts1] "PSC of Serving Cell"
+0~511
+@10
+
+/******************************************
+* For RACH 
+******************************************/
+[max_tx_power] "Maximum allowed UL TX power [dBm]"
+-50~33
+@24
+
+[cpich_tx_power] "CPICH TX power [dBm]"
+-10~50
+@0
+
+[sttd_ind] "Use STTD or not"
+@KAL_FALSE
+
+/******************************************
+* For DCH 
+******************************************/
+[udps_RMC_type] "Choose One of the FOUR standard RMC"
+RMC_144
+RMC_12_2
+@RMC_64
+RMC_384
+RMC_BTFD
+
+[ul_sc] "(DCH) UL Scrambling code Num."
+0~16777215
+@13
+
+[DOFF_bts1] "(DCH) Default DPCH Offset [x512 chips]"
+0~599
+@0
+
+[Tdpch_rl1] "(DCH) Timing offset between 1st DPCH and CPICH [x256 chips]"
+0~149
+@0
+
+[OVSFdpch_rl1] "(DCH) OVSF code of DL DCH: 0~SF-1"
+0~511
+@30
+
+[vaild_slot_format] "(DCH) Valid slot format setting?"
+@KAL_FALSE
+
+[dl_dch_sf] "(DCH) Slot Format - SF"
+4~512
+@32
+
+[dl_dch_tfci] "(DCH) Slot Format - TFCI exist?"
+@KAL_TRUE
+
+[dl_dch_pilot] "(DCH) Slot Format - Pilot bits?"
+2~16
+@8

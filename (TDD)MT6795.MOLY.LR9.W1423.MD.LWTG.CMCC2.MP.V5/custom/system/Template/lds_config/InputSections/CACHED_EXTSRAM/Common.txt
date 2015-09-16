@@ -1,0 +1,41 @@
+         * (.data*)
+         KEEP(* (Keep_DATA))
+         * (CACHED_EXTSRAM_RW)
+         
+         __preinit_array_start = .;
+         KEEP (*(.preinit_array))
+         __preinit_array_end = .;
+
+         . = ALIGN(4);
+         __init_array_start = .;
+         KEEP (*(SORT(.init_array.*)))
+         KEEP (*(.init_array))
+         __init_array_end = .;
+
+         . = ALIGN(4);
+         KEEP(*(.fini))
+
+         . = ALIGN(4);
+         __fini_array_start = .;
+         KEEP (*(.fini_array))
+         KEEP (*(SORT(.fini_array.*)))
+         __fini_array_end = .;
+
+         . = ALIGN(4);
+         __CTOR_LIST__ = .;
+         KEEP (*(SORT(.ctors.*)))
+         KEEP (*(.ctors))
+         __CTOR_END__ = .;
+        
+         RELEASE_VERNO_RW$$Base = .;
+         * (RELEASE_VERNO_RW)
+         RELEASE_VERNO_RW$$Limit = .;
+         RELEASE_VERNO_RW$$Length = ABSOLUTE(RELEASE_VERNO_RW$$Limit - RELEASE_VERNO_RW$$Base);
+         RELEASE_BRANCH_RW$$Base = .;
+         * (RELEASE_BRANCH_RW)
+         RELEASE_BRANCH_RW$$Limit = .;
+         RELEASE_BRANCH_RW$$Length = ABSOLUTE(RELEASE_BRANCH_RW$$Limit - RELEASE_BRANCH_RW$$Base);
+         BUILD_TIME_RW$$Base = .;
+         * (BUILD_TIME_RW)
+         BUILD_TIME_RW$$Limit = .;
+         BUILD_TIME_RW$$Length = ABSOLUTE(BUILD_TIME_RW$$Limit - BUILD_TIME_RW$$Base);

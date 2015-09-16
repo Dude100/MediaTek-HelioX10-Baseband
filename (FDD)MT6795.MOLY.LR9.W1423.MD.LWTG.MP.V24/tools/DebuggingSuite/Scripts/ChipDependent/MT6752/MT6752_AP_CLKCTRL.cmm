@@ -1,0 +1,149 @@
+ENTRY &MD &VIEW
+
+LOCAL &mclass
+
+LOCAL &INFRA_MISC
+LOCAL &INFRA_MISC_MSK
+LOCAL &INFRA_MISC_VAL
+
+LOCAL &MISC_CONFIG
+LOCAL &MISC_CONFIG_MSK
+LOCAL &MISC_CONFIG_VAL
+
+LOCAL &AP_PLL_CON1
+LOCAL &POWERON_CONFIG_SET
+LOCAL &PCM_INI_PWRON1_REG
+
+LOCAL &tmp1
+LOCAL &tmp2
+
+&mclass="pm"
+
+IF "&VIEW"=="AP"
+(
+    PRINT "AP VIEW"
+    &INFRA_MISC=0x10001F00
+    &MISC_CONFIG=0x10001F08
+    &AP_PLL_CON1=0x1000C004
+    &PCM_INI_PWRON1_REG=0x10006014
+    &POWERON_CONFIG_SET=0x10006000
+)
+ELSE
+(
+    PRINT "MD VIEW"
+    &INFRA_MISC=0xA0001F00
+    &MISC_CONFIG=0xA0001F08
+    &AP_PLL_CON1=0xA000C004
+    &PCM_INI_PWRON1_REG=0xA0006014
+    &POWERON_CONFIG_SET=0xA0006000
+)
+
+&INFRA_MISC_MSK=0x1E000000
+&MISC_CONFIG_MSK=0x001F0078
+
+
+&tmp1=0
+&tmp2=0
+
+IF "&MD"=="MD1"
+(
+    PRINT "All Controlled by MD1(TYPE1/SGLTE/CSFB)"
+    &INFRA_MISC_VAL=0x0A000000
+    &MISC_CONFIG_VAL=0x00000000
+)
+ELSE IF "&MD"=="MD2"
+(
+    PRINT "Shared to MD2 (TYPE2/DSDA)"
+    &INFRA_MISC_VAL=0x12000000
+    &MISC_CONFIG_VAL=0x001B0048
+)
+ELSE
+(
+    PRINT "No MD specified, exit"
+    END
+)
+PRINT " "
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+PRINT "------------------------------------------------------------------------"
+PRINT "Set SRCLKEN Sharing"
+PRINT "-------------------"
+; INFRA_MISC
+&tmp1=DATA.LONG(&mclass:&INFRA_MISC)
+&tmp2=(((&tmp1)&(~&INFRA_MISC_MSK))|(&INFRA_MISC_VAL))
+PRINT "INFRA_MISC(0x" &INFRA_MISC ") = 0x" FORMAT.HEX(8,&tmp1)
+PRINT "INFRA_MISC_MSK = 0x" FORMAT.HEX(8,&INFRA_MISC_MSK)
+PRINT "INFRA_MISC_VAL = 0x" FORMAT.HEX(8,&INFRA_MISC_VAL)
+PRINT "        TARGET = 0x" FORMAT.HEX(8,&tmp2)
+Data.Set &mclass:&INFRA_MISC %LE %LONG &tmp2
+WAIT 1ms
+&tmp1=DATA.LONG(&mclass:&INFRA_MISC)
+PRINT "INFRA_MISC(0x" &INFRA_MISC ") = 0x" FORMAT.HEX(8,&tmp1)
+PRINT "------------------------------------------------------------------------"
+PRINT " "
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+PRINT "------------------------------------------------------------------------"
+PRINT "SRCLKEN O0 & O1 FORCE ON"
+PRINT "------------------------"
+Data.Set &mclass:&POWERON_CONFIG_SET %LE %LONG 0x0B160001 ; write magic key
+&tmp1=DATA.LONG(&mclass:&PCM_INI_PWRON1_REG)
+&tmp2=&tmp1|(1<<21.)
+PRINT "PCM_INI_PWRON1_REG(0x" &PCM_INI_PWRON1_REG ") == 0x" FORMAT.HEX(8,&tmp1)
+PRINT "PCM_INI_PWRON1_REG(0x" &PCM_INI_PWRON1_REG ") <- 0x" FORMAT.HEX(8,&tmp2)
+Data.Set &mclass:&PCM_INI_PWRON1_REG %LE %LONG &tmp2
+WAIT 1ms
+&tmp1=DATA.LONG(&mclass:&PCM_INI_PWRON1_REG)
+PRINT "PCM_INI_PWRON1_REG(0x" &PCM_INI_PWRON1_REG ") == 0x" FORMAT.HEX(8,&tmp1)
+PRINT "------------------------------------------------------------------------"
+PRINT " "
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+PRINT "------------------------------------------------------------------------"
+PRINT "Switch 2nd RF 26M from SW Mode to HW Mode"
+PRINT "-----------------------------------------"
+; Write 0x101 first, wait 1ms, and then write 0x103
+&tmp1=DATA.LONG(&mclass:&AP_PLL_CON1)
+&tmp2=0x0101
+PRINT "AP_PLL_CON1(0x" &AP_PLL_CON1 ") == 0x" FORMAT.HEX(8,&tmp1)
+PRINT "AP_PLL_CON1(0x" &AP_PLL_CON1 ") <- 0x" FORMAT.HEX(8,&tmp2)
+Data.Set &mclass:&AP_PLL_CON1 %LE %LONG &tmp2;
+&tmp1=DATA.LONG(&mclass:&AP_PLL_CON1)
+PRINT "AP_PLL_CON1(0x" &AP_PLL_CON1 ") == 0x" FORMAT.HEX(8,&tmp1)
+PRINT "WAIT 1s"
+WAIT 1s
+&tmp1=DATA.LONG(&mclass:&AP_PLL_CON1)
+&tmp2=0x0103
+PRINT "AP_PLL_CON1(0x" &AP_PLL_CON1 ") == 0x" FORMAT.HEX(8,&tmp1)
+PRINT "AP_PLL_CON1(0x" &AP_PLL_CON1 ") <- 0x" FORMAT.HEX(8,&tmp2)
+Data.Set &mclass:&AP_PLL_CON1 %LE %LONG &tmp2
+WAIT 1ms
+&tmp1=DATA.LONG(&mclass:&AP_PLL_CON1)
+PRINT "AP_PLL_CON1(0x" &AP_PLL_CON1 ") == 0x" FORMAT.HEX(8,&tmp1)
+PRINT "------------------------------------------------------------------------"
+PRINT " "
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+PRINT "------------------------------------------------------------------------"
+PRINT "Set PLL Sharing (Must wait RF2 26M Ready)"
+PRINT "-----------------------------------------"
+; MISC_CONFIG
+&tmp1=DATA.LONG(&mclass:&MISC_CONFIG)
+&tmp2=(((&tmp1)&(~&MISC_CONFIG_MSK))|(&MISC_CONFIG_VAL))
+PRINT "MISC_CONFIG(0x" &MISC_CONFIG ") = 0x" FORMAT.HEX(8,&tmp1)
+PRINT "MISC_CONFIG_MSK = 0x" FORMAT.HEX(8,&MISC_CONFIG_MSK)
+PRINT "MISC_CONFIG_VAL = 0x" FORMAT.HEX(8,&MISC_CONFIG_VAL)
+PRINT "         TARGET = 0x" FORMAT.HEX(8,&tmp2)
+Data.Set &mclass:&MISC_CONFIG %LE %LONG &tmp2
+WAIT 1ms
+&tmp1=DATA.LONG(&mclass:&MISC_CONFIG)
+PRINT "MISC_CONFIG(0x" &MISC_CONFIG ") = 0x" FORMAT.HEX(8,&tmp1)
+PRINT "------------------------------------------------------------------------"
+PRINT " "
+
+
+ENDDO

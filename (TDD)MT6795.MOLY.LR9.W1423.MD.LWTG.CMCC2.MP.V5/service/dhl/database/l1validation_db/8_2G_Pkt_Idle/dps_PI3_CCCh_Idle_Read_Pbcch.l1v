@@ -1,0 +1,53 @@
+{ Validation }
+Title 		= "[8_2G_Pkt_Idle]PI3: Idle on CCCh then Read PBCCh"
+ModuleID 	= MOD_DUMMYMPAL
+MsgID 		= MSG_ID_DPS_CCCH_PACKET_IDLE_PBCCH_READ_REQ		// will be defined in appropriate header file
+
+/* Data Structure accomnying the above primitive
+typedef struct
+{
+       kal_uint8  ref_count;
+       kal_uint16  msg_len;
+       kal_uint8  bands;
+       ARFCN arfcnSpec;
+       kal_uint8 PBCChMode;
+       kal_uint8 PBCCH_HR_Rate;
+}dps_ccch_packet_idle_pbcch_read_req_struct;
+*/
+
+{Parameters}
+
+// The variable and the corresponding label showen on GUI
+[bands] "Bands used for power scan"
+// The following is the constrained range for the input of this value.
+// Some combination of the following bit-fields may be suported
+// The parameter range can be changed to support combinations of different bands
+@PGSM900            1
+EGSM900            2
+DCS1800            8
+PCS1900            16
+GSM850             128
+PGSM900_DCS1800    9
+EGSM900_DCS1800    10
+PGSM900_PCS1900    17  
+EGSM900_PCS1900    18
+GSM850_DCS1800     136
+GSM850_DCS1900     144
+
+[arfcnSpec] "ARFCN to camp on"
+0~124
+975~1023
+512~885
+128~251
+@20
+[PBCChMode] "PBCCh Read Mode"
+@PBCChModeAll 1
+PBCChModePSI1Only 2
+PBCChModeHROnly 3
+PBCChModeLROnly 4
+PBCChModePSI1HR 5
+PBCChModePSI1LR 6
+
+[PBCCH_HR_Rate] "PBCCH HR Rate"
+1~16
+@1

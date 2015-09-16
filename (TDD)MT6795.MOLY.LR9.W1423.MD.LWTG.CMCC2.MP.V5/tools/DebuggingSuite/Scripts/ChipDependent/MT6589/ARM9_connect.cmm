@@ -1,0 +1,42 @@
+ENTRY 
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ARM9_connect.cmm start
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+print "Connection to MD2 (ARM9) ... "
+;; ARM9(MD2) Connection
+SYSTEM.down
+SYSTEM.CPU ARM926EJ
+SYSTEM.JtagClock 5.MHz
+SYSTEM.MULTICORE JTAGACCESSPORT 2
+SYSTEM.MULTICORE COREJTAGPORT 0
+SYStem.Option ResBreak OFF
+SYStem.Option WaitReset OFF
+SYSTEM.Option EnReset Off
+SYSTEM.Option TRST off
+SYSTEM.up
+
+; disable PWRUPREQ for entry sleep mode
+; SYSTEM.Option.SYSPWRUPREQ OFF
+
+;; Check CPU ID
+IF &OPT_CHECK_CPU_ID==1
+(
+    print "Check MD2 CPU ID ... "
+    &CPU_ID=data.long(C15:0x0000)
+    IF ((&CPU_ID&(0x41069260))!=0x41069260)
+    (
+        print "[FAIL]"
+        print "Expected: 0x41069260 (ARM9)"
+        print "Read Val: &CPU_ID"
+        ;DIALOG.OK "[MD2 CONN] Wrong CPU ID: &CPU_ID"
+        END
+    )
+)
+
+
+;; Set base addresses
+&OPT_MD_START_ADDRESS=0x0
+&AP_APB_BASE=0xA0000000
+&MD1_WDT_BASE=0x80050000
+&MD2_WDT_BASE=0x80050000

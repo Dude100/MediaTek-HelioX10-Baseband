@@ -1,0 +1,7 @@
+{ Validation }
+Title = "Dummy Test"
+ModuleID = MOD_TST
+MsgID = MSG_ID_TST_INJECT_STRING
+
+{ Parameters }
+

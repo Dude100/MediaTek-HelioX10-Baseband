@@ -1,0 +1,30 @@
+; Additional GPRS Menues
+
+add
+menu
+(
+  popup "&GPRS"
+  (
+    menuitem "Buff history" "var.watch ((kal_internal_pool_statistics) ((kal_internal_poolid)0x0)->pool_stat)->buff_stat[0]"
+    separator
+    default
+    menuitem "RLC Context"      "var.watch rlc_cntx_info"
+    menuitem "MAC Context"      "var.watch mac_cntx_info"
+    menuitem "Reasm Context"      "var.watch reasm_cntx_info"
+    menuitem "MPAL Context"     "var.watch mpal_data_ptr"
+    menuitem "SNDCP Context"    "var.watch snd_ptr"
+    menuitem "LLC Context"      "var.watch llc_ptr"
+    menuitem "GMM Context"      "var.watch mm_ps_context"
+    menuitem "SI Context"      "var.watch si_cntx_info"
+    menuitem "rr_ptr_g"      "var.watch rr_ptr_g"
+    menuitem "MEAS Context"      "var.watch meas_cntx_info"
+    menuitem "RMC Context"      "var.watch rmc_cntx_info"
+    menuitem "RMP Context"      "var.watch rmp_cntx_info"
+    menuitem "PSI Context"      "var.watch psi_cntx_info"
+    separator
+  )
+)
+
+
+
+

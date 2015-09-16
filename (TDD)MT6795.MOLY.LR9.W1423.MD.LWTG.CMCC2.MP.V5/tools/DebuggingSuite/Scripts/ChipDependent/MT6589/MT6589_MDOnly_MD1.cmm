@@ -1,0 +1,109 @@
+;; MT6589_MD1.cmm
+
+;; should at CR4 or CA7 side
+
+;; Set MD1 related GPIO for tinyBL case
+IF &AP_SETTING!=2
+(
+    ; MD1 GPIO INIT
+    print "MD1 GPIO Setting for SIM ... "
+    D.S SD:(&AP_APB_BASE+0x5990) %LE %LONG 0x0470
+    D.S SD:(&AP_APB_BASE+0x59B0) %LE %LONG 0x0470
+    D.S SD:(&AP_APB_BASE+0x5980) %LE %LONG 0x0111
+    D.S SD:(&AP_APB_BASE+0x59A0) %LE %LONG 0x0111
+    print "MD1 GPIO Setting for UART ..."
+    ;#D.S SD:0x10005CD0 %LE %LONG 0x4249
+    ;#D.S SD:0x10005CE0 %LE %LONG 0x004C
+    ;to uart3 on EVB : gpio mux
+    D.S SD:(&AP_APB_BASE+0x5cf0) %LE %LONG data.long(SD:(&AP_APB_BASE+0x5cf0))&~(0x7<<0x0c)|(4<<0x0c)
+    D.S SD:(&AP_APB_BASE+0x5d00) %LE %LONG data.long(SD:(&AP_APB_BASE+0x5d00))&~(0x7<<0)|(4<<0)
+    
+    ; unlock NML2 bias setting
+    D.S SD:(&AP_APB_BASE+0x20C920) %LE %BYTE 0x58
+    D.S SD:(&AP_APB_BASE+0x20C920) %LE %BYTE 0xfa
+    D.S	SD:(&AP_APB_BASE+0x20C920) %LE %BYTE 0x65
+    D.S SD:(&AP_APB_BASE+0x20C920) %LE %BYTE 0x83
+    
+    ;	// set NML2 part voltage as 1.8V
+    D.S SD:(&AP_APB_BASE+0x5900) %LE %LONG data.long(SD:(&AP_APB_BASE+0x5900))|2
+    
+    ;	// lock NML2 bias setting
+    D.S SD:(&AP_APB_BASE+0x20C920) %LE %BYTE 0
+    D.S SD:(&AP_APB_BASE+0x20C920) %LE %BYTE 0
+    D.S	SD:(&AP_APB_BASE+0x20C920) %LE %BYTE 0
+    D.S SD:(&AP_APB_BASE+0x20C920) %LE %BYTE 0
+    
+    ; ## Disable WDT
+    print "Disable MD1 WDT"
+    print "[0x&MD1_WDT_BASE] <- 0x2200"
+    D.S SD:(&MD1_WDT_BASE+0x0000) %LE %WORD 0x2200
+    
+    ; Init MD1 PLL(must by CA7)
+    do mt6589_md1_pll_init.cmm
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;     START Cortex-R4 VIEW                                   ;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+do CR4_connect.cmm
+
+; Disable WDT
+print "Disable MD1 WDT"
+print "[0x80050000] <- 0x2200"
+D.S SD:0x80050000 %LE %WORD 0x2200
+; bypass_CTIRQ1_precision_check
+; Avoiding assert at CTIRQ1/2
+print "L1 Assert Bypass" 
+print "[0x83070008] <- 0xABCD"
+D.S SD:0x83070008 %LE %WORD 0xABCD
+print "[0x83070010] <- 0x0003"
+D.S SD:0x83070010 %LE %WORD 0x0003     ; bit0: disable CTIRQ1/2 timing check
+
+; Remap CR4 bank F to bank 0 (Clear MD_MCU_CON0 bit31~30)
+D.S SD:0x80000100 %LE %LONG DATA.LONG(SD:0x80000100)&0x3FFFFFFF
+
+print "MD1 Boot Mode"
+print "[0x80000010] <- &OPT_MD_BOOT_MODE"
+; Boot Mode
+D.S SD:(0x80000010) %LE %LONG &OPT_MD_BOOT_MODE
+
+;; Set CR4/ARM9 AXI bus to EMI as 120MHz
+;; *A000122C &= 0xFFFFF33F;
+D.S SD:0xA000122C %LE %LONG DATA.LONG(SD:0xA000122C)&0xFFFFF33F
+
+;; disable AXI2AHB merge
+D.S SD:0xA0001208 %LE %LONG 0x00000420
+
+IF &OPT_CFG_TCM==1
+(
+	print "Configure TCM ..."
+	print "ITCM &OPT_ITCM_ADDR"
+	; Set BTCM Address
+	d.s C15:0x0019 %LE %LONG (&OPT_ITCM_ADDR|1)
+	print "DTCM &OPT_DTCM_ADDR"
+	; Set ATCM Address
+	d.s C15:0x0119 %LE %LONG (&OPT_DTCM_ADDR|1)
+)
+
+
+;; RamDisk Handling
+IF y.exist(Image$$EXTSRAM_FS_ZI$$Base)
+(
+    &OPT_RAMFS_START_ADDRESS=Image$$EXTSRAM_FS_ZI$$Base+&OPT_MD_START_ADDRESS   ; shift 0x80000000 when connected through CA7
+    &OPT_RAMFS_LEN=(Image$$EXTSRAM_DSP_TX$$Base-Image$$EXTSRAM_FS_ZI$$Base)
+    
+    ;; if not restore ramdisk
+    IF &OPT_LOAD_RAMFS==0
+    (
+        ;; clear RamDisk header block (1KB)
+        print "Cleaning RamDisk header ... "
+        d.set &OPT_RAMFS_START_ADDRESS--(&OPT_RAMFS_START_ADDRESS+0x3FF) 0x0
+    )
+
+    ; Load RamFS
+    IF &OPT_LOAD_RAMFS==1
+    (
+    	print "Restore RamFS ... "
+    	do Ramfs_backup_restore.cmm 1 0
+    )
+)

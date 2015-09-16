@@ -1,0 +1,52 @@
+{ Validation }
+Title 		= "[0_3G_Single_Channel][2_Access]A4: Correct Behavior at Time-out"
+ModuleID 	= MOD_DUMMYURR
+MsgID 		= MSG_ID_UDPS_RX_NO_ACK_ON_AICH		
+
+/******************************************************************************
+* Data Structure accomnying the above primitive
+typedef struct
+{
+    kal_uint8       ref_count;
+    kal_uint16      msg_len;
+    
+    kal_uint16          uarfcn_bts1;
+    kal_uint16         psc_bts1;
+    kal_int8        max_tx_power;       // Didn't decode from SIB3
+    kal_int8        UL_interference;    //range: -110~-70 dBm, Didn't decode from SIB7
+    
+    kal_uint8       DRX_cycle_length;  // Didn't decode from SIB1         
+} udps_rx_no_ack_on_aich_struct;    
+*
+*******************************************************************************/
+
+
+{Parameters}
+/******************************************************************************
+* 1. The following is the constrained range for the input of this value.
+* 2. Some combination of the following bit-fields may be suported
+* 3. The parameter range can be changed to support combinations of different bands
+*******************************************************************************/
+
+/* [Variable Name] "corresponding label showen on GUI" */
+[uarfcn_bts1] "UARFCN of Serving Cell"
+10562~10640
+@10600
+
+[psc_bts1] "PSC of Serving Cell"
+0~511
+@10
+
+[max_tx_power] "Maximum allowed UL TX power [dBm] (from 8960)"
+-50~33
+@24
+
+[UL_interference] "UL_interference [dBm] (from 8960)"
+-110~-70
+@-80
+
+[DRX_cycle_length] "DRX cycle length for PICH, (6~9)"
+@DRX6  6
+DRX7  7
+DRX8  8
+DRX9  9

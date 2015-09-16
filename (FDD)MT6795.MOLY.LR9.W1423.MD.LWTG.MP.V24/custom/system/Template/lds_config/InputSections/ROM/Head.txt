@@ -1,0 +1,1 @@
+        *bootarm_gcc.obj (INT_VECTOR_CODE)

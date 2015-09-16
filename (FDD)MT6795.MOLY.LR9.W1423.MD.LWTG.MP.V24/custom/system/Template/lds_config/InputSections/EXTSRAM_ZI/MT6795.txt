@@ -1,0 +1,7 @@
+        . = ALIGN(4);
+        PHY_EXTSRAM_ZI$$Base = .;
+        * (PHY_EXTSRAM_ZI)
+        . = ALIGN(4);
+        PHY_EXTSRAM_ZI$$Limit = .;
+        PHY_EXTSRAM_ZI$$Length = ABSOLUTE(PHY_EXTSRAM_ZI$$Limit - PHY_EXTSRAM_ZI$$Base);
+        * (NONCACHEDZI)

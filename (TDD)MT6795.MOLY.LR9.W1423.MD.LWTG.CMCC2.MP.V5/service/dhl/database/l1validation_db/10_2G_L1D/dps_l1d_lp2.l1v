@@ -1,0 +1,147 @@
+{ Validation }
+Title 		= "[10_2G_L1D]L1D Loopback 2"
+ModuleID 	= MOD_DUMMYMPAL
+MsgID 		= MSG_ID_L1D_LOOPBACK_REQ		// will be defined in appropriate header file
+
+/* Data Structure accomnying the above primitive
+typedef struct
+{
+   kal_uint8    ref_count;
+   kal_uint16   msg_len;
+   kal_uint16   test_id;
+   kal_uint16   test_count;
+} l1d_loopback_req_struct;
+*/
+
+{Parameters}
+
+[test_id] "L1D Loopback Test Items"
+SCh                                                  1
+SDCCh                                                2
+SDCCh_A51                                            3
+SDCCh_A52                                            4 
+TChFS_dtx_8_77_facch_8_13_52_56_60                   5
+TChEFS_dtx_8_77_facch_8_13_52_56_60                  6
+TChHS0_dtx_8_77_facch_8_52_60                        7
+TChCSD_144F_dtx_8_77_facch_8_13_52_56_60             8
+TChCSD_24HS0_dtx_8_77_facch_8_52_60                  9
+TChCSD_48F_dtx_8_77_facch_8_13_56_60                 10
+TChCSD_48HS1_dtx_8_77_facch_52_60                    11
+TChCSD_96F_dtx_8_77_facch_8_13_52_56_60              12
+TChCSD_24F_dtx_8_77_facch_8_13_52_56_60              13
+TChFS_Speech                                         14
+TChEFS_Speech                                        15
+TChHS0_Speech                                        16
+TChHS1_Speech                                        17   
+DynamicPatch                                         18
+FCCh                                                 19
+TChAFS1220_regular                                   20
+TChAFS1020_regular                                   21
+TChAFS795_regular                                    22
+TChAFS740_regular                                    23
+TChAFS670_regular                                    24
+TChAFS590_regular                                    25
+TChAFS515_regular                                    26
+TChAFS475_regular                                    27
+TChAHS795_regular                                    28
+TChAHS740_regular                                    29
+TChAHS670_regular                                    30
+TChAHS590_regular                                    31
+TChAHS515_regular                                    32
+TChAHS475_regular                                    33
+PDTCh_RXTX                                           34
+PBCCh                                                35
+TChAFS1220_dtx_8_26_facch_8_ratscch_13               36
+TChAHS795_dtx_4_26_ratscch_8                         37
+TChAFS1220_dtx_8_16_21_24_sidupdate_17               38
+TChAHS795_dtx_4_sidupdate_26_34                      39
+TChAFS1220_Speech                                    40
+TChAFS1020_Speech                                    41
+TChAFS795_Speech                                     42   
+TChAFS740_Speech                                     43
+TChAFS670_Speech                                     44
+TChAFS590_Speech                                     45
+TChAFS515_Speech                                     46
+TChAFS475_Speech                                     47
+TChAFS1220_Speech_dtx                                48
+TChAFS1020_Speech_dtx                                49
+TChAFS795_Speech_dtx                                 50
+TChAFS740_Speech_dtx                                 51
+TChAFS670_Speech_dtx                                 52
+TChAFS590_Speech_dtx                                 53
+TChAFS515_Speech_dtx                                 54
+TChAFS475_Speech_dtx                                 55
+WaveTable_OneNote                                    56
+DynamicDownload                                      57
+WaveTable_SixteenNote                                58
+DynamicDownload2                                     59   
+PDTCh_RXTX_WaveTable16                               60
+PDTCh_RXTX_WaveTable32                               61
+FCCh_SineWave                                        62
+WaveTable_EightNote                                  63
+PDTCh_RXTX_WaveTable8                                64
+Huffman_Decoder                                      65
+DAF_Decoder                                          66
+SDCCh_New                                            67
+AAC_Huffman_Decoder                                  68
+AAC_Decoder                                          69
+WB_AMR_660                                           70
+WB_AMR_885                                           71
+WB_AMR_1265                                          72
+WB_AMR_1425                                          73
+WB_AMR_1585                                          74
+WB_AMR_1825                                          75
+WB_AMR_1985                                          76
+WB_AMR_2305                                          77
+WB_AMR_2385                                          78
+SDCCh_New2                                           79
+PDTCh_RXTX_AAC_Decoder                               80
+PDTCh_RXTX_RXTX_WBAMR2385                            81
+TChFS_dtx_8_77_facch_8_13_52_56_60_New               82
+TChFS_Speech_New                                     83
+TChAFS_INB                                           84
+TChAHS_INB                                           85
+AMR_EQ_CI                                            86
+TChAFS1220_dtx_8_26_facch_4_8_ratscch_13             87
+TChAHS795_dtx_4_12_17_26_ratscch_8                   88
+TChAFS1220_dtx_4_21_facch_13_sidupdate_21            89
+TChAHS795_dtx_4_ratscch_21_sidupdate_26_34           90
+FCCh_ScanMode                                        91
+FCCh_IdleFrame                                       92
+SCh_New                                              93
+SDCCh_New3                                           94
+Post_Process_TS                                      95
+Post_Process_3D                                      96
+Via_ROM_Power_Down                                   97
+AAC_PLUS_Huffman_Decoder                             98
+INTX_EQ_BYPASS                                       99
+INTX2_EQ                                             100
+INTX4_EQ                                             101
+EQ_test                                              102
+AAC_PLUS_Decoder                                     103
+PDTCh_RXTX_VDO_CAPTURE                               104
+PDTCh_RXTX_5tap_148                                  105 
+PDTCh_RXTX_6tap_156                                  106
+PDTCh_RXTX_6tap_148                                  107
+DSP_Memory_Test                                      108
+ADC_Linearity                                        109
+AFC_Linearity                                        110
+GPRS_APC                                             111
+GPRS_RepeatRACh                                      112
+CTM                                                  113
+SDCCh_NBFilter                                       114
+SDCCh_WBFilter                                       115
+PCh                                                  116
+SBC_Enc                                              117
+TChHS0_dtx_8_26_52_77_facch_0_to_86                  118
+TChFS_Speech_CNTR                                    119
+PDTCh_RXTX_WBAMR2385_AudioDAC                        120
+TChFS_Speech_CNTR_BT_COMP                            121
+TChFS_Speech_CNTR_BT                                 122
+TChFS_dtx_8_77_facch_8_13_52_56_60_BFI               123
+TChEFS_dtx_8_77_facch_8_13_52_56_60_BFI              124
+TChHS0_dtx_8_77_facch_8_52_60_BFI                    125
+TChAHS590_dtx_4_15_sidupdateINH                      126
+[test_count] "Test Count"
+1~99999
+

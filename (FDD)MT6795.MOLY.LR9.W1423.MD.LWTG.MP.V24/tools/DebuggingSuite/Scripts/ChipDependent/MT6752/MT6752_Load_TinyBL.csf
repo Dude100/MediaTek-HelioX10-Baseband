@@ -1,0 +1,28 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; MT6752_MultiCore_AP.csf
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+DO CA53_attach.cmm
+d.load.elf .\MT6752_TinyBL.elf /long
+PRINT "Running TinyBL, please wait 5 seconds."
+;Register.Set T 0 ; must
+go
+
+wait 5.s
+break
+
+IF OS.FILE(MT6752_MD1_Info.cmm)
+(
+    DO MT6752_AP_CLKCTRL.cmm "MD1"
+)
+ELSE IF OS.FILE(MT6752_MD2_Info.cmm)
+(
+    DO MT6752_AP_CLKCTRL.cmm "MD2"
+)
+ELSE
+(
+    PRINT "Error: MD type is not supported!!"
+    END
+)
+
+PRINT "TinyBL init done."

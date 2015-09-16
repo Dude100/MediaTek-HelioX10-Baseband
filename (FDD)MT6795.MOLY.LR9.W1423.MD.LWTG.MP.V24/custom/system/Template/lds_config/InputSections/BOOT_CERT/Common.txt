@@ -1,0 +1,6 @@
+        BOOT_CERT_DATA$$Base = .;
+        * (BOOT_CERT_DATA)
+        BOOT_CERT_DATA$$Limit = .;
+        BOOT_CERT_DATA$$Length = ABSOLUTE(BOOT_CERT_DATA$$Limit - BOOT_CERT_DATA$$Base);
+        
+        KEEP(* (BOOT_CERT_SIG))

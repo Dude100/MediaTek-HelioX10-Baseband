@@ -1,0 +1,74 @@
+{ Validation }
+Title 		= "[10_2G_L1D]L1D Loopback 1"
+ModuleID 	= MOD_DUMMYMPAL
+MsgID 		= MSG_ID_L1D_LOOPBACK_REQ		// will be defined in appropriate header file
+
+/* Data Structure accomnying the above primitive
+typedef struct
+{
+   kal_uint8    ref_count;
+   kal_uint16   msg_len;
+   kal_uint16   test_id;
+   kal_uint16   test_count;
+} l1d_loopback_req_struct;
+*/
+
+{Parameters}
+
+[test_id] "L1D Loopback Test Items"
+FCCh                                    1
+SCh                                     2
+BCCh                                    3
+SDCCh                                   4
+RACh                                    5
+BfeCalibration                          6
+TChFS_Speech                            7
+TChFS_TimeDrift                         8
+TChFS_Data                              9
+TChFS_regular                           10
+TChFS_facch_13                          11
+TChFS_facch_13_17                       12
+TChFS_dtx_facch_13_17                   13
+TChFS_dtx_facch_4_52                    14
+TChFS_dtx_facch_4_8_52_56               15
+TChEFS_Speech                           16
+TChEFS_TimeDrift                        17
+TChEFS_Data                             18
+TChEFS_regular                          19
+TChEFS_facch_13                         20
+TChEFS_dtx_facch_13_17_56_60_65         21
+TChHS0_Speech                           22
+TChHS0_TimeDrift                        23
+TChHS0_Data                             24
+TChHS0_regular                          25
+TChHS0_dtx                              26
+TChHS0_dtx_facch_8_17_52_60             27
+TChHS1_Speech                           28
+TChHS1_TimeDrift                        29
+TChHS1_Data                             30
+TChHS1_regular                          31
+TChHS1_dtx_facch_9_53_61                32
+TChCSD_144F                             33
+TChCSD_96F                              34
+TChCSD_48F                              35
+TChCSD_24F                              36
+TChCSD_48H0                             37
+TChCSD_48H1                             38
+TChCSD_24H0                             39
+TChCSD_24H1                             40
+TChCSD_144F_dtx_facch_8_13_17_52_56_60  41
+TCh_SpeechHandover                      42
+TCh_SpeechCodecChange                   43
+CipherA52_TChFS_Normal                  44
+CipherA52_TChFS_Loopback                45
+CipherA52_SDCCh_Normal                  46
+CipherA52_SDCCh_Loopback                47
+GPRS_PDTCh_TX                           48
+GPRS_PDTCh_RX                           49
+GPRS_PBCCh                              50
+GPRS_FCChT                              51
+GPRS_APC                                52
+
+[test_count] "Test Count"
+1~99999
+

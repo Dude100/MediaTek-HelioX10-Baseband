@@ -1,0 +1,49 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// l1assertbypass.men
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ADD
+TOOLBAR
+(
+	SEPARATOR	
+	TOOLITEM "L1 Assert bypass after RESET" "DO auto_reset.cmm"
+	[
+RRRR       gggg
+ R RR     gg   g
+ R  R  Y  g
+ RRRR YYY g
+ R  RR Y  g  ggg
+ R   R    gg  gg
+RRRRRR     ggg g
+
+
+ MMM   MM  MMMM
+ M MM M  M  M
+ M  M MM    M
+ MMM    M   M
+ M M    MM  M
+ M  M M  M  M
+ M  M  MM   M
+	]
+
+	TOOLITEM "L1 Assert bypass after BREAK" "DO l1timing_check_disabled.cmm"
+	[
+RRRR       gggg
+ R RR     gg   g
+ R  R  Y  g
+ RRRR YYY g
+ R  RR Y  g  ggg
+ R   R    gg  gg
+RRRRRR     ggg g
+
+
+ ccc  ccc  c  c
+ c c  c cc c c
+ c c  c  c cc
+ cccc ccc  ccc
+ c  c c c  c c
+ c  c c  c c  c
+ cccc c  c c  c
+	]
+	
+	SEPARATOR
+)

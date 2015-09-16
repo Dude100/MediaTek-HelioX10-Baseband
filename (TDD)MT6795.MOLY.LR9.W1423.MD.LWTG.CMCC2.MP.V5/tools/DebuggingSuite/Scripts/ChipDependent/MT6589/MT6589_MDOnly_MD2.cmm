@@ -1,0 +1,169 @@
+;; MT6589_MD2.cmm
+
+IF &AP_SETTING!=2
+(
+    ; GPIO INIT
+    print "GPIO Setting for SIM ... "
+    print "MD2 GPIO Setting for SIM ... "
+    D.S SD:(&AP_APB_BASE+0x5990) %LE %LONG 0x0470
+    D.S SD:(&AP_APB_BASE+0x59B0) %LE %LONG 0x0470
+    D.S SD:(&AP_APB_BASE+0x5980) %LE %LONG 0x0444
+    D.S SD:(&AP_APB_BASE+0x59A0) %LE %LONG 0x0444
+    print "MD2 GPIO Setting for BSI ... "
+    D.S SD:(&AP_APB_BASE+0x5CD0) %LE %LONG 0x3249
+    D.S SD:(&AP_APB_BASE+0x5CE0) %LE %LONG 0x00DB
+    print "MD2 GPIO Setting for UART ... "
+    D.S SD:(&AP_APB_BASE+0x5CF0) %LE %LONG 0x1B40
+    ; Set GPIO 219/220 for UART3 MD2 Tx/Rx mode
+    ;print "MD2 GPIO Setting for UART3 ... "
+    ;&REG_DATA=data.long(SD:0x10005EB0)
+    ;&REG_DATA=&REG_DATA&0x0FFF
+    ;&REG_DATA=&REG_DATA|0x4000
+    ;d.s SD:(0x10005EB0) %LE %LONG &REG_DATA
+    
+    ;&REG_DATA=data.long(SD:0x10005EC0)
+    ;&REG_DATA=&REG_DATA&0xFFF8
+    ;&REG_DATA=&REG_DATA|0x0004
+    ;d.s SD:(0x10005EC0) %LE %LONG &REG_DATA
+    
+    ; Disable GPIO 77/78 for UART1 MD2 Tx/Rx mode
+    ;D.S SD:0x10005CF0 %LE %LONG 0x1900
+    
+    print "MD2 GPIO Setting for BPI ..."
+    D.S SD:(&AP_APB_BASE+0x5D30) %LE %LONG 0xC2C9
+    D.S SD:(&AP_APB_BASE+0x5E20) %LE %LONG 0x30C0
+    D.S SD:(&AP_APB_BASE+0x5E30) %LE %LONG 0x36DB
+    print "MD2 GPIO Setting for AST Reset ..."
+    D.S SD:(&AP_APB_BASE+0x5D70) %LE %LONG 0x1282
+    print "MD2 GPIO Setting for EINT4 and GPS ..."
+    D.S SD:(&AP_APB_BASE+0x5D90) %LE %LONG 0x0140
+    print "MD2 GPIO Setting for Legacy JTAG ..."
+    D.S SD:(&AP_APB_BASE+0x5E00) %LE %LONG 0x5B68
+    D.S SD:(&AP_APB_BASE+0x5E10) %LE %LONG 0x002D
+
+    print "MD2 NML2 bias setting ..."
+    ; unlock NML2 bias setting
+    D.S SD:(&AP_APB_BASE+0x20C920) %LE %BYTE 0x58
+    D.S SD:(&AP_APB_BASE+0x20C920) %LE %BYTE 0xfa
+    D.S	SD:(&AP_APB_BASE+0x20C920) %LE %BYTE 0x65
+    D.S SD:(&AP_APB_BASE+0x20C920) %LE %BYTE 0x83
+    
+    ;	// set NML2 part voltage as 1.8V
+    D.S SD:(&AP_APB_BASE+0x5900) %LE %LONG data.long(SD:(&AP_APB_BASE+0x5900))|2
+    
+    ;	// lock NML2 bias setting
+    D.S SD:(&AP_APB_BASE+0x20C920) %LE %BYTE 0
+    D.S SD:(&AP_APB_BASE+0x20C920) %LE %BYTE 0
+    D.S	SD:(&AP_APB_BASE+0x20C920) %LE %BYTE 0
+    D.S SD:(&AP_APB_BASE+0x20C920) %LE %BYTE 0
+    
+    
+    ;;A) Make sure AP RGU assert reset to MD2
+    &REG_DATA=data.long(SD:(&AP_APB_BASE+0x0018))
+    &REG_DATA=&REG_DATA|0x00000020
+    d.s SD:(&AP_APB_BASE+0x0018) %LE %LONG &REG_DATA
+    
+    ;;B) Enable CLKSQ2
+    ;#define AP_PLL_CON0_BASE     (0x10209000)
+    ;DRV_WriteReg32(AP_PLL_CON0, 0x00001137);                 // enable CLKSQ2
+    d.s SD:(&AP_APB_BASE+0x209000) %LE %LONG 0x00001137
+    ;gpt_busy_wait_us(200);               // wait for CLKSQ2 ready (min delay is 100us)
+    wait 10.ms
+    ;DRV_WriteReg32(AP_PLL_CON0, 0x0000113F);                 // enable CLKSQ2 low pass filter
+    d.s SD:(&AP_APB_BASE+0x209000) %LE %LONG 0x0000113F
+    
+    ;;C) Make sure AP RGU not assert reset to MD2
+    ;;   0x1000_0018 &= ~(1<<5) „² 
+    &REG_DATA=data.long(SD:(&AP_APB_BASE+0x0018))
+    &REG_DATA=&REG_DATA&0xFFFFFFDF
+    d.s SD:(&AP_APB_BASE+0x0018) %LE %LONG &REG_DATA
+    
+    ; Disable WDT
+    print "Disable MD2 WDT"
+    print "[0x&MD2_WDT_BASE] <- 0x2200"
+    D.S SD:&MD2_WDT_BASE %LE %WORD 0x2200
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;     START ARM9 VIEW                                        ;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+do ARM9_connect.cmm
+
+;print "MD2 GPIO Setting for UART ... "
+;D.S SD:0xA0005CF0 %LE %LONG 0x1B40
+
+; Disable WDT
+print "Disable MD2 WDT"
+print "[0x80050000] <- 0x2200"
+D.S SD:0x80050000 %LE %WORD 0x2200
+
+
+; bypass_CTIRQ1_precision_check
+; Avoiding assert at CTIRQ1/2
+print "L1 Assert Bypass" 
+print "[0x83070008] <- 0xABCD"
+D.S SD:0x83070008 %LE %WORD 0xABCD
+print "[0x83070010] <- 0x0003"
+D.S SD:0x83070010 %LE %WORD 0x0003     ; bit0: disable CTIRQ1/2 timing check
+
+print "MD2 Boot Mode"
+print "[0x80000010] <- &OPT_MD_BOOT_MODE"
+; Boot Mode
+D.S SD:(0x80000010) %LE %LONG &OPT_MD_BOOT_MODE
+
+;; Set CR4/ARM9 AXI bus to EMI as 120MHz
+;; *A000122C &= 0xFFFFF33F;
+D.S SD:0xA000122C %LE %LONG DATA.LONG(SD:0xA000122C)&0xFFFFF33F
+
+;; disable AXI2AHB merge
+D.S SD:0xA0001208 %LE %LONG 0x00000420
+
+IF &OPT_CFG_TCM==1
+(
+    print "Configure MD2 TCM ..."
+    print "ITCM &OPT_ITCM_ADDR"
+    ; Set DTCM Address
+    d.s C15:0x0019 %LE %LONG (&OPT_DTCM_ADDR|1)
+    print "DTCM &OPT_DTCM_ADDR"
+    ; Set ITCM Address
+    d.s C15:0x0119 %LE %LONG (&OPT_ITCM_ADDR|1)
+)
+
+IF &OPT_CFG_MMU==1
+(
+    print "Configure MD2 MMU ... "
+    R.S R0 page_tbl
+    &TTBA=R(R0)&0x0FFFC000
+    print "TTBA => " &TTBA
+    d.s C15:0x0002 %LE %LONG &TTBA
+    ; Enable MMU
+    &CTRL=data.long(C15:0x0001)
+    &CTRL=&CTRL|0x1
+    d.s C15:0x0001 &CTRL
+)
+
+;; workaournd for MD2 bus issue, 
+;;MemMap.MemRange 0xA0000000--0xAFFFFFFF ReadWrite W32
+
+
+;; RamDisk Handling
+IF y.exist(Image$$EXTSRAM_FS_ZI$$Base)
+(
+    &OPT_RAMFS_START_ADDRESS=Image$$EXTSRAM_FS_ZI$$Base+&OPT_MD_START_ADDRESS
+    &OPT_RAMFS_LEN=(Image$$EXTSRAM_TMP_PAGE_TABLE$$Base-Image$$EXTSRAM_FS_ZI$$Base)
+    
+    ;; if not restore ramdisk
+    IF &OPT_LOAD_RAMFS==0
+    (
+        ;; clear RamDisk header block (1KB)
+        print "Cleaning RamDisk header ... "
+        d.set &OPT_RAMFS_START_ADDRESS--(&OPT_RAMFS_START_ADDRESS+0x3FF) 0x0
+    )
+
+    ; Load RamFS
+    IF &OPT_LOAD_RAMFS==1
+    (
+    	print "Restore RamFS ... "
+    	do Ramfs_backup_restore.cmm 1 0
+    )
+)

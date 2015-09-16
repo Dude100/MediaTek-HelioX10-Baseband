@@ -1,0 +1,66 @@
+{ Validation }
+Title 		= "[8_2G_Pkt_Idle]PI12: Extended and NC Measurements in CCCh Idle(No Sleep)"
+ModuleID 	= MOD_DUMMYMPAL
+MsgID 		= MSG_ID_DPS_CCCH_EXT_MEAS_REQ		// will be defined in appropriate header file
+
+/* Data Structure accomnying the above primitive
+typedef struct
+{
+       kal_uint8  ref_count;
+       kal_uint16  msg_len;
+       kal_uint8  bands;
+       ARFCN arfcnSpec;
+       ARFCN ExtArfcn1;
+       ARFCN ExtArfcn2;       
+       kal_uint16 ext_reporting_period;       
+       kal_uint8 nc_reporting_period;
+       kal_uint8 nc_order;
+}dps_ccch_ext_meas_req_struct
+*/
+
+{Parameters}
+
+// The variable and the corresponding label showen on GUI
+[bands] "Bands used for power scan"
+// The following is the constrained range for the input of this value.
+// Some combination of the following bit-fields may be suported
+// The parameter range can be changed to support combinations of different bands
+@PGSM900            1
+EGSM900            2
+DCS1800            8
+PCS1900            16
+GSM850             128
+PGSM900_DCS1800    9
+EGSM900_DCS1800    10
+PGSM900_PCS1900    17  
+EGSM900_PCS1900    18
+GSM850_DCS1800     136
+GSM850_DCS1900     144
+
+[arfcnSpec] "ARFCN to camp on"
+0~124
+975~1023
+512~885
+128~251
+@20
+[ExtArfcn1] "First ARFCN for Ext measurements"
+0~124
+975~1023
+512~885
+128~251
+[ExtArfcn2] "Second ARFCN for Ext measurements"
+0~124
+975~1023
+512~885
+128~251
+@40
+[ext_reporting_period] "EXT Reporting period (seconds)"
+1~7680
+@1
+[nc_reporting_period] "NC Reporting period (coded)"
+0~7
+@0
+[nc_order] "Network Control Order"
+@NC0 0
+NC1 1
+NC2 2

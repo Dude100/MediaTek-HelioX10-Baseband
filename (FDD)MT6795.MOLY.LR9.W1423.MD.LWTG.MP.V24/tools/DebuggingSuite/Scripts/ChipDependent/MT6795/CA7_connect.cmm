@@ -1,0 +1,61 @@
+ENTRY &OPT_RESET
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; CA7_connect.cmm
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+PRINT "Connection to AP (CA7MPCore) &OPT_RESET ..."
+SYStem.RESET
+
+IF "&OPT_RESET"=="RESET"
+(
+    SYStem.Option ENRESET ON
+)
+ELSE
+(
+    SYStem.Option ENRESET OFF
+)
+
+SYStem.Option ResBreak OFF
+
+;CVD version from 2.51 to 3.2, must change to "OFF"
+SYStem.Option WaitReset OFF      ;SYSTEM.OPTION WaitReset ON
+
+SYStem.JTAGCLOCK 10.MHz
+SYStem.CPU CortexA7MPCore
+
+SYStem.CONFIG CORENUMBER &OPT_AP_NR_CPUS;
+SYStem.CONFIG COREBASE   &OPT_AP_COREBASE;
+
+IF &OPT_JTAG==0
+(
+    SYStem.CONFIG SWDP OFF
+)
+ELSE IF &OPT_JTAG==1
+(
+    SYStem.CONFIG SWDP ON  
+)
+
+SYStem.Up
+WAIT 200.us
+
+;because preloader elf runs in sram, it also needs enable L2 cache to sram usage.
+;;; for 6592: D.S SD:0x10200000 %LE %LONG 0x00000020  ;L2C share SRAM
+D.S SD:0x10200100 %LE %LONG 0x00000100  ;L2C share SRAM 
+
+; Turn off MMU
+D.S C15:0x1 0
+
+; disable WDT
+Data.Set SD:0x10007000 %LE %LONG 0x22000000
+
+;; Enable EAHB memory class access
+;;; for EAHB debug only without CPU path
+Data.Set a:0x1011A040 %LE %LONG 0x1
+
+;; Set base addresses
+&OPT_MD_START_ADDRESS=0x40000000
+&AP_APB_BASE=0x10000000
+&MD_WDT_BASE=0x20050000
+
+ENDDO

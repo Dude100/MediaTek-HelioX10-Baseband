@@ -1,0 +1,64 @@
+{ Validation }
+Title 		= "[0_3G_Single_Channel][3_Dedicated]CD39: BER test in DCH mode (SA/CS request)."
+ModuleID 	= MOD_DUMMYURR
+MsgID 		= MSG_ID_UDPS_BER_TEST_IN_DCH_MODE		
+
+/******************************************************************************
+* Data Structure accomnying the above primitive
+typedef struct
+{
+    kal_uint8       ref_count;
+    kal_uint16      msg_len;
+    
+    kal_uint16          uarfcn_bts1;
+    kal_uint16         psc_bts1;
+    kal_uint32          ul_sc;           
+    kal_uint16      DOFF_bts1;            
+    kal_uint8       Tdpch_rl1;        
+    kal_uint16       OVSFdpch_rl1;
+    kal_bool        all_zero;
+    kal_uint32       reset_cnt;// CD39, SA/CS request    
+} udps_ber_test_in_dch_mode_struct;       
+*
+*******************************************************************************/
+
+
+{Parameters}
+/******************************************************************************
+* 1. The following is the constrained range for the input of this value.
+* 2. Some combination of the following bit-fields may be suported
+* 3. The parameter range can be changed to support combinations of different bands
+*******************************************************************************/
+
+/* [Variable Name] "corresponding label showen on GUI" */
+[uarfcn_bts1] "UARFCN of Serving Cell"
+10562~10838
+9662~9938
+4357~4458
+@10600
+
+[psc_bts1] "PSC of Serving Cell"
+0~511
+@10
+
+[ul_sc] "(DCH) UL Scrambling code Num."
+0~16777215
+@13
+
+[DOFF_bts1] "(DCH) Default DPCH Offset [x512 chips]"
+0~599
+@0
+
+[Tdpch_rl1] "(DCH) Timing offset between 1st DPCH and CPICH [x256 chips]"
+0~149
+@0
+
+[OVSFdpch_rl1] "(DCH) OVSF code of DL DCH: 0~SF-1"
+0~511
+@30
+
+[all_zero] "All zero or Not?"
+@KAL_TRUE
+
+[reset_cnt] "Number of total bits for RESET"
+@30000

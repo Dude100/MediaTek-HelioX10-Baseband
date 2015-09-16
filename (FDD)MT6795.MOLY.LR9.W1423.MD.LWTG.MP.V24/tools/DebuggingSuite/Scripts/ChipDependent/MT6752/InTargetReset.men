@@ -1,0 +1,30 @@
+;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+;// InTargetReset.men
+;///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ADD
+TOOLBAR
+(
+	SEPARATOR	
+	TOOLITEM "In target reset " "DO &BUILDCMM_ROOT_PATH\InTargetResetHC.cmm"
+	[
+
+    XXX
+   XCCX
+  XCCCXXXXXXXXX
+ XCCCCCCCCCCCCX
+ XCCCCCCCCCCCCX
+  XCCCXXXXXXCCX
+   XCCX    XCCX
+    XXX    XCCX
+ XXXX      XCCX
+ XCCX      XCCX
+ XCCXXXXXXXXCCX
+ XCCCCCCCCCCCCX
+ XCCCCCCCCCCCCX
+ XXXXXXXXXXXXXX
+
+	]
+
+	
+	SEPARATOR
+)

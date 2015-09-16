@@ -1,0 +1,18 @@
+          * (EXCLUDE_FILE(*sha1_engine.obj        
+                         *md5_engine.obj         
+                         *br_crypto_asm_gcc.obj      
+                         *br_crypto_drv*.obj     
+                         *br_sha256_sw.obj       
+                         *br_sha256_hw.obj       
+                         *br_sha1_sw.obj         
+                         *br_sha1_hw.obj         
+                         *br_M1_RSA.obj          
+                         *br_crypto_platform.obj 
+                         ).bss*)
+         * (INTERNZI)
+         * (EMIINITZI)
+         * (BL_RESV_REGION)
+         * (INTSRAM_ZI)
+         * (CACHED_EXTSRAM_ZI)
+         * (NONCACHEDZI)
+         * (EXT_READ_WRITE_ZI)

@@ -1,0 +1,67 @@
+{ Validation }
+Title 		= "[8_2G_Pkt_Idle]PI7: Packet Idle on PCCCh + Neighbor BSIC/BCCH + Serving PBCCh Update"
+ModuleID 	= MOD_DUMMYMPAL
+MsgID 		= MSG_ID_DPS_PCCCH_PKT_IDLE_SC_TEST_PBCCH_UPDATE_REQ  // will be defined in appropriate header file
+
+/* Data Structure accomnying the above primitive
+typedef struct
+{
+       kal_uint8   ref_count;
+       kal_uint16  msg_len;
+	kal_uint8  bands;
+	ARFCN  arfcnSpec;
+	ARFCN  arfcn2nd;
+	ARFCN  arfcn3rd;
+       kal_uint8 split_page_cycle;
+       kal_uint8 nc_reporting_period;
+       kal_uint8 nc_order;	
+}dps_pccch_pkt_idle_sc_test_pbcch_update_req_struct;
+*/
+
+{Parameters}
+
+// The variable and the corresponding label showen on GUI
+[bands] "Bands used for power scan"
+// The following is the constrained range for the input of this value.
+// Some combination of the following bit-fields may be suported
+// The parameter range can be changed to support combinations of different bands
+@PGSM900            1
+EGSM900            2
+DCS1800            8
+PCS1900            16
+GSM850             128
+PGSM900_DCS1800    9
+EGSM900_DCS1800    10
+PGSM900_PCS1900    17  
+EGSM900_PCS1900    18
+GSM850_DCS1800     136
+GSM850_DCS1900     144
+
+[arfcnSpec] "ARFCN to camp on"
+0~124
+975~1023
+512~885
+128~251
+@20
+[arfcn2nd] "First Neighbor ARFCN"
+0~124
+975~1023
+512~885
+128~251
+@40
+[arfcn3rd] "Second Neighbor ARFCN"
+0~124
+975~1023
+512~885
+128~251
+@60
+[split_page_cycle] "Split Page Cycle value"
+1~255
+@32
+[nc_reporting_period] "NC Meas Reporting Period"
+0~7
+@0
+[nc_order] "NC Order"
+@NC0 0
+NC1 1
+NC2 2

@@ -1,0 +1,5 @@
+         * (.bss*)
+         * (INTSRAM_ZI)
+         * (CACHED_EXTSRAM_ZI)
+         * (NONCACHEDZI)
+         * (READ_WRITE_ZI)

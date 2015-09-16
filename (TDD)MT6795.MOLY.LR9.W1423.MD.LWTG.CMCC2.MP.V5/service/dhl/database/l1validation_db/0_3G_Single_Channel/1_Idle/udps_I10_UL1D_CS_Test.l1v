@@ -1,0 +1,131 @@
+{ Validation }
+Title 		= "[0_3G_Single_Channel][1_Idle]I10: MTK UL1 internal CS testing (UL1D request)"
+ModuleID 	= MOD_DUMMYURR
+MsgID 		= MSG_ID_UDPS_UL1D_CS_TEST		
+
+/******************************************************************************
+* Data Structure accomnying the above primitive
+typedef struct
+{
+    kal_uint8       ref_count;
+    kal_uint16      msg_len;
+    
+
+    CS_TEST_MODE MODE;// choose: ics_cs1, tcs_cs1, cs2, ics_cs3, tcs_cs3, 2stage_cs3
+    kal_uint16          uarfcn_bts1;
+    kal_uint16          psc_bts1;	
+    kal_uint8            cs1_acc_frame;// range 1~7
+    kal_uint8            cs2_acc_frame;// range 1~7
+    kal_uint8            dump_cnt; // range 1~5
+    kal_uint8            fading;
+    kal_int16           freq_err;
+    kal_uint16          cfe_thr;
+    kal_uint16          cs1_thr;
+    kal_uint16          cs2_thr;
+    kal_uint16          cs3_thr;
+    kal_uint8           cs1_local_max;
+    kal_uint8           cs2_coht_detection;
+    kal_uint8           cs3_coht_sym;
+    kal_uint8           cs3_noncoht_sample;
+    kal_uint16          process_count;
+    kal_bool          ics_cfe;    
+} udps_ul1d_cs_test_struct;   
+    
+*
+*******************************************************************************/
+
+
+{Parameters}
+/******************************************************************************
+* 1. The following is the constrained range for the input of this value.
+* 2. Some combination of the following bit-fields may be suported
+* 3. The parameter range can be changed to support combinations of different bands
+*******************************************************************************/
+
+/* [Variable Name] "corresponding label showen on GUI" */
+[MODE] "Choose CS Test Mode"
+@ICS_CS1   0
+TCS_CS1    1
+ICS_CS2    2
+TCS_CS2    3
+CS3_3stage 4
+CS3_2stage 5
+CS4        6
+ICS        7
+TCS_3stage 8
+TCS_2stage 9
+
+[uarfcn_bts1] "UARFCN of Serving Cell"
+10562~10838
+9662~9938
+4357~4458
+@10600
+
+[psc_bts1] "PSC of Serving Cell"
+0~511
+@10
+
+[cs1_acc_frame] "CS1 accumulate frame"
+1~7
+@1
+
+[cs2_acc_frame] "CS2 accumulate frame"
+1~7
+@1
+
+[dump_cnt] "CS3 DUMP count"
+1~5
+@1
+
+[fading] "Fading channel"
+@Static 0
+C1      1
+C2      2
+C3      3
+C4      4
+C5      5 
+C6      6
+
+[freq_err] "Freq off"
+-6000~6000
+@0
+
+[cfe_thr] "CFE threshold"
+0~65535
+@0
+
+[cs1_thr] "CS1 threshold"
+0~65535
+@0
+
+[cs2_thr] "CS2 threshold"
+0~65535
+@0
+
+[cs3_thr] "CS3 threshold"
+0~65535
+@0
+
+[cs1_local_max] "cs1_local_max"
+0~1
+@1
+
+[cs2_coht_detection] "cs2_coht_detection"
+0~1
+@1
+
+[cs3_coht_sym] "cs3_coht_sym"
+0~8
+@8
+
+[cs3_noncoht_sample] "cs3_noncoht_sample"
+0~32
+@4
+
+[process_count] "process_count"
+0~65535
+@1000
+
+[ics_cfe] "ics_cfe"
+@KAL_FALSE
+

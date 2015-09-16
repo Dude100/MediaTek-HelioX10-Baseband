@@ -1,0 +1,2 @@
+         *bl_BOOTARM_GCC.obj (VECTOR_TBL)
+         * (BL_RESV_REGION)

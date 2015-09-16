@@ -1,0 +1,160 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; File:         MT6595_MultiCore_MD.cmm
+;
+; Description:  For MT6595 MD reset and go/attach
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+ENTRY &OPT_RESET &OPT_DOWNLOAD
+
+DO MT6595_MD_Info.cmm
+
+;;-> # Option: Serial Wire or Parallel JTAG
+;; 0: Parallel
+;; 1: Serial Wire
+LOCAL &OPT_JTAG
+IF isfileexist(SerialWireJTAG.txt)
+(
+    &OPT_JTAG=1
+)
+ELSE
+(
+    &OPT_JTAG=0
+)
+
+;; Check CPU ID after connect
+LOCAL &OPT_CHECK_CPU_ID
+&OPT_CHECK_CPU_ID=1
+
+AREA.reset
+WINPOS 0% 0% 70% 50%
+AREA
+
+PRINT "== MT6595_MultiCore_MD.cmm =="
+PRINT "OPT_RESET    = &OPT_RESET"
+PRINT "OPT_MD_ELF_PATH = &OPT_MD_ELF_PATH"
+PRINT "OPT_MD_SRC_PATH = &OPT_MD_SRC_PATH"
+PRINT "============================="
+
+PRINT "Load modem elf file..."
+
+IF &OPT_MD_ELF_AUTO_LOAD==0
+(
+    Dialog.file *.elf
+    ENTRY &OPT_ELF_PATH
+)
+
+IF "&OPT_DOWNLOAD"==""
+(
+    ; load MD symbols
+    PRINT "Loading Modem symbols..."
+    PRINT "&OPT_MD_ELF_PATH"
+    Data.LOAD.ELF &OPT_MD_ELF_PATH /RELPATH /PATH &OPT_MD_SRC_PATH /nocode
+    WAIT 100.ms
+)
+ELSE
+(
+    print "Downloading modem image to target..."
+    print "&OPT_MD_ELF_PATH"
+    D.LOAD.ELF &OPT_MD_ELF_PATH /RELPATH /PATH &OPT_MD_SRC_PATH
+    wait 100.ms
+)
+
+PRINT "Press any key to connect modem..."
+INKEY &nop
+
+DO CR4_connect.cmm
+
+PRINT "Set modem debug mode"
+PRINT "[0xA011A010] <- (0x1)"
+Data.Set A:0xA011A010 %LE %WORD DATA.LONG(A:0xA011A010)|(0x1)
+
+; Setting attribute of breakpoints
+; Setting HW breakpoint by default
+Break.Select Program OnChip
+Break.Select Hll OnChip
+Break.Select Read OnChip
+Break.Select Write OnChip
+
+; Disable WDT
+PRINT "Disable modem WDT"
+PRINT "[0x80050000] <- 0xf00 + ([0x80050000]&(~0x1))"
+Data.Set SD:(0x80050000) %LE %WORD (0xf00|(DATA.LONG(SD:(&MD_WDT_BASE+0x0000))&(~0x1)))
+
+; bypass_CTIRQ1_precision_check
+; Avoiding assert at CTIRQ1/2
+;PRINT "L1 Assert Bypass" 
+;PRINT "[0x83070008] <- 0xABCD"
+;Data.Set SD:0x83070008 %LE %WORD 0xABCD
+;PRINT "[0x83070010] <- 0x0003"
+;Data.Set SD:0x83070010 %LE %WORD 0x0003     ; bit0: disable CTIRQ1/2 timing check
+;Data.Set SD:L1_ASSERT_BYPASS %LE %WORD 0x0003 ; for attach case, set L1_ASSERT_BYPASS=3 instead of register write
+
+WINCLEAR
+WINPOS 0% 0% 50% 40%
+d.l
+
+WINPOS 0% 40% 50% 30%
+sYmbol.Browse
+
+WINPOS 0% 70% 50% 30%
+Break.List
+
+WINPOS 50% 0% 50% 40%
+Register
+
+WINPOS 50% 40% 50% 30%
+Var.Frame /l /c
+
+WINPOS 50% 70% 50% 30%
+MENU.RESET
+MENU.REPROGRAM Bring-up_Magic
+MENU.REPROGRAM Cortex-R_MPU_View
+
+;; workaournd for burst read issue
+MemMap.MemRange 0xA0000000--0xAFFFFFFF ReadWrite W32
+
+; Nucleus Debugging Tool
+GLOBAL &DBGSUITE_PATH
+&DBGSUITE_PATH="&OPT_MD_SRC_PATH\tools\DebuggingSuite"
+
+IF version.build()==0x100000 
+(
+    TASK.CONFIG &DBGSUITE_PATH\Misc\NUCLEUS
+)
+ELSE
+(
+    IF y.exist(TCT_Schedule)
+    (
+        TASK.CONFIG &DBGSUITE_PATH\Misc\NUCLEUS
+        MENU.REPROGRAM &DBGSUITE_PATH\Misc\NUCLEUS
+    )
+    ELSE
+    (
+        TASK.CONFIG &DBGSUITE_PATH\Misc\NUCLEUS_V2
+        MENU.REPROGRAM &DBGSUITE_PATH\Misc\NUCLEUS_V2
+    )
+)
+
+IF "&OPT_DOWNLOAD"!=""
+(
+    DO MT6595_Ramfs_config.cmm
+)
+
+IF "&OPT_RESET"=="ATTACH"
+(
+    PRINT "Modem is attached! you can start debugging now!"
+)
+ELSE
+(
+    ; Ungate MD
+    PRINT "Ungate modem... Please set breakpoint and GO!"
+    ;*0x8019379C = 0x3567C766
+    ;*0x80190000 = 0
+    ;*0x80195488 = 0xA3B66175
+    Data.Set a:0x8019379C %LE %LONG 0x3567C766
+    Data.Set a:0x80190000 %LE %LONG INT_Initialize
+    Data.Set a:0x80195488 %LE %LONG 0xA3B66175
+)
+BREAK

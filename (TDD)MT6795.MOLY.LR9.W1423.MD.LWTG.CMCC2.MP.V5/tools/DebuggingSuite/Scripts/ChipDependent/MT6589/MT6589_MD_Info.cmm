@@ -1,0 +1,36 @@
+;;
+;; MT6589_MD_Info.cmm
+;;
+ENTRY &OPT_DUAL_MD
+GLOBAL &OPT_MD_SEL
+
+
+
+;; MD1 modem paths
+IF OS.FILE(MT6589_MD1_Info.cmm)
+(
+    do MT6589_MD1_Info.cmm
+)
+ELSE IF &OPT_DUAL_MD==1
+(
+    Dialog.file *.elf
+    entry &OPT_MD1_ELF_PATH
+)
+
+;; MD2 modem paths
+IF OS.FILE(MT6589_MD2_Info.cmm)
+(
+    do MT6589_MD2_Info.cmm
+)
+ELSE IF &OPT_DUAL_MD==1
+(
+    Dialog.file *.elf
+    entry &OPT_MD2_ELF_PATH
+)
+
+;; For Multi-Core Debugging
+
+GLOBAL &OPT_MD_ELF_AUTO_LOAD
+&OPT_MD_ELF_AUTO_LOAD=1
+;   1: auto load elf file specified in &OPT_ELF_PATH
+;   0: manually select elf file

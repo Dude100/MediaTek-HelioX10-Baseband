@@ -1,0 +1,23 @@
+
+do CA7_connect.cmm RESET
+
+; ##disable WDT
+d.s c:0x10000000 %le %long 0x22000024
+
+; disable DABORT and PABORT breakpoint
+tronchip.set dabort off
+tronchip.set pabort off
+tronchip.set undef off
+tronchip.set irq off
+
+D.S C15:0x1 0				; Turn off MMU
+
+; board init
+print "loading pre-loader image"
+d.load.elf ../bin/MT6589_PRELOADER_EVB1.elf 
+
+go
+wait 1.s
+break
+
+enddo

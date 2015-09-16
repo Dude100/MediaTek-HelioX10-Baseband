@@ -1,0 +1,280 @@
+{ Validation }
+Title 		= "[10_2G_L1D]L1D Loopback 6"
+ModuleID 	= MOD_DUMMYMPAL
+MsgID 		= MSG_ID_L1D_LOOPBACK_REQ		// will be defined in appropriate header file
+
+/* Data Structure accomnying the above primitive
+typedef struct
+{
+   kal_uint8    ref_count;
+   kal_uint16   msg_len;
+   kal_uint16   test_id;
+   kal_uint16   test_count;
+} l1d_loopback_req_struct;
+*/
+
+{Parameters}
+
+[test_id] "L1D Loopback Test Items"
+
+ID_001_SCh                                                     1 
+ID_002_SDCCh                                                   2 
+ID_003_SDCCh_A51                                               3 
+ID_004_SDCCh_A52                                               4 
+ID_005_SDCCh_A53                                               5 
+ID_006_SDCCh_NBFilter                                          6 
+ID_007_SDCCh_WBFilter                                          7 
+ID_008_TChFS_dtx_8_77_facch_8_13_52_56_60                      8 
+ID_009_TChFS_dtx_8_77_facch_8_13_52_56_60_New                  9 
+ID_010_TChFS_dtx_8_77_facch_8_13_52_56_60_SAIC_off             10
+ID_011_TChEFS_dtx_8_77_facch_8_13_52_56_60                     11
+ID_012_TChHS0_dtx_8_77_facch_8_52_60                           12
+ID_013_TChHS0_dtx_8_26_52_77_facch_0_to_86                     13
+ID_014_TChCSD_144F_dtx_8_77_facch_8_13_52_56_60                14
+ID_015_TChCSD_24HS0_dtx_8_77_facch_8_52_60                     15
+ID_016_TChCSD_48F_dtx_8_77_facch_8_13_56_60                    16
+ID_017_TChCSD_48HS1_dtx_8_77_facch_52_60                       17
+ID_018_TChCSD_96F_dtx_8_77_facch_8_13_52_56_60                 18
+ID_019_TChCSD_24F_dtx_8_77_facch_8_13_52_56_60                 19
+ID_020_PDTCh_RXTX                                              20
+ID_021_PBCCh                                                   21
+ID_022_E5_FCCh_SDCCh                                           22
+ID_023_E6_FCCh_SCh                                             23
+ID_024_E1_FCCh                                                 24
+ID_025_E2_FCCh                                                 25
+ID_026_E3_FCCh                                                 26
+ID_027_E7_IGAIN                                                27
+ID_028_E7_FCCh                                                 28
+ID_029_E8_FCCh_SDCCh                                           29
+ID_030_E9_FCCh_SineWave                                        30
+ID_031_FastPCh                                                 31
+ID_032_PDTCh_RX_SAIC_dynamic                                   32
+ID_033_TChFS_dtx_8_77_facch_8_13_52_56_60_SAIC_dynamic         33
+ID_034_E10_FCCh_SCh_stage3                                     34
+ID_035_PDTCh_1R_PM                                             35
+ID_036_E11_FCCh_SCh_stage3_DCM                                 36
+ID_037_PBCCh_FireCode_Correction_ON                            37
+ID_039_A15_OneBurstPCh                                         39
+ID_040_A16_OneBurstPCh_7PM                                     40
+ID_041_K11_PDTCh_PM_DSP2MCU_INT                                41
+ID_042_TChFS_dtx_8_77_facch_8_13_52_56_60_HybridSAIC           42
+ID_043_TChHS0_dtx_8_77_facch_8_52_60_BFIPATCH                  43
+ID_044_TChFS_RepeatedFACCH                                     44
+ID_045_TChHS0_RepeatedFACCH                                    45
+//ID_046_E11_FB_Sniffer_FCCh_Recursive_SCh                       46
+ID_047_FWBW_DCOC                                               47
+ID_048_A17_OneBurstPCh_Empty                                   48
+ID_049_A19_8PM                                                 49
+ID_050_A20_RACH                                                50
+ID_051_SDCCh_A53_NoTxCipher                                    51
+ID_052_K11_PDTCh_PM_DSP2MCU_INT_use_win6_win7                  52
+
+ID_053_B11_TChFS_Speech                                        53
+ID_054_D8_TChHS0_Speech                                        54
+ID_055_C8_TChEFS_Speech                                        55
+ID_056_R48_TCHAFS1220_speech                                   56
+ID_057_R47_TCHWFS1265_speech                                   57
+ID_058_B11_TChFS_Speech_30s                                    58
+ID_059_R47_TCHWFS1265_speech_30s                               59
+
+ID_060_TChAFS1220_regular                                      60
+ID_061_TChAFS1020_regular                                      61
+ID_062_TChAFS795_regular                                       62
+ID_063_TChAFS740_regular                                       63
+ID_064_TChAFS670_regular                                       64
+ID_065_TChAFS590_regular                                       65
+ID_066_TChAFS515_regular                                       66
+ID_067_TChAFS475_regular                                       67
+ID_068_TChAHS795_regular                                       68
+ID_069_TChAHS740_regular                                       69
+ID_070_TChAHS670_regular                                       70
+ID_071_TChAHS590_regular                                       71
+ID_072_TChAHS515_regular                                       72
+ID_073_TChAHS475_regular                                       73
+ID_074_TChAFS1220_dtx_8_26_facch_8_ratscch_13                  74
+ID_075_TChAHS795_dtx_4_26_ratscch_8                            75
+ID_076_TChAFS1220_dtx_8_16_21_24_sidupdate_17                  76
+ID_077_TChAHS795_dtx_4_sidupdate_26_34                         77
+ID_078_TChAFS_INB                                              78
+ID_079_TChAHS_INB                                              79
+ID_080_TChAFS1220_dtx_8_26_facch_4_8_ratscch_13                80
+ID_081_TChAHS795_dtx_4_12_17_26_ratscch_8                      81
+ID_082_TChAFS1220_dtx_4_21_facch_13_sidupdate_21               82
+ID_083_TChAHS795_dtx_4_ratscch_21_sidupdate_26_34              83
+ID_084_TChAHS590_dtx_4_15_sidupdateINH                         84
+ID_085_TCHAHS475_dtx_4_7_13_77                                 85
+ID_086_TCHAHS670_dtx_13_16_30_52_FACCH_0_17_43                 86
+ID_087_TCHAHS795_dtx_13_16_30_52_RATSCCH_0_17_43               87
+ID_088_TCHAHS515_dtx_4_24_RATSCCH_13_FACCH_17                  88
+ID_089_TCHAFS670_dtx_4_29_FACCH_8_43                           89
+ID_090_TCHAFS740_dtx_4_29_RATSCCH_8_39_FACCH_39                90
+ID_091_TChWFS1265_regular                                      91
+ID_092_TChWFS885_regular                                       92
+ID_093_TChWFS660_regular                                       93
+ID_094_TChWFS1265_DTX_4_29_FACCH_8_43                          94
+ID_095_TChWFS885_DTX_4_29_RATSCCH_8_43                         95
+ID_096_TChWFS_660_DTX_4_7_21_52_RATSCCH_13_FACCH_43            96
+
+ID_102_PDTCh_MCS1_P1_TX                                        102
+ID_103_PDTCh_MCS1_P2_TX                                        103
+ID_104_PDTCh_MCS2_P1_TX                                        104
+ID_105_PDTCh_MCS2_P2_TX                                        105
+ID_106_PDTCh_MCS3_P1_TX                                        106
+ID_107_PDTCh_MCS3_P2_TX                                        107
+ID_108_PDTCh_MCS3_P3_TX                                        108
+ID_109_PDTCh_MCS4_P1_TX                                        109
+ID_110_PDTCh_MCS4_P2_TX                                        110
+ID_111_PDTCh_MCS4_P3_TX                                        111
+ID_112_PDTCh_MCS5_P1_TX                                        112
+ID_113_PDTCh_MCS5_P2_TX                                        113
+ID_114_PDTCh_MCS6_P1_TX                                        114
+ID_115_PDTCh_MCS6_P2_TX                                        115
+ID_116_PDTCh_MCS7_P1_TX                                        116
+ID_117_PDTCh_MCS7_P2_TX                                        117
+ID_118_PDTCh_MCS7_P3_TX                                        118
+ID_119_PDTCh_MCS8_P1_TX                                        119
+ID_120_PDTCh_MCS8_P2_TX                                        120
+ID_121_PDTCh_MCS8_P3_TX                                        121
+ID_122_PDTCh_MCS9_P1_TX                                        122
+ID_123_PDTCh_MCS9_P2_TX                                        123
+ID_124_PDTCh_MCS9_P3_TX                                        124
+ID_125_PDTCh_MCS1_9_P1_3_TX                                    125
+ID_126_PDTCh_MCS3_6_Padding_TX                                 126
+
+ID_131_PDTCh_MCS1_P1_RX                                        131
+ID_132_PDTCh_MCS1_P2_RX                                        132
+ID_133_PDTCh_MCS2_P1_RX                                        133
+ID_134_PDTCh_MCS2_P2_RX                                        134
+ID_135_PDTCh_MCS3_P1_RX                                        135
+ID_136_PDTCh_MCS3_P2_RX                                        136
+ID_137_PDTCh_MCS3_P3_RX                                        137
+ID_138_PDTCh_MCS4_P1_RX                                        138
+ID_139_PDTCh_MCS4_P2_RX                                        139
+ID_140_PDTCh_MCS4_P3_RX                                        140
+ID_141_PDTCh_MCS5_P1_RX                                        141
+ID_142_PDTCh_MCS5_P2_RX                                        142
+ID_143_PDTCh_MCS6_P1_RX                                        143
+ID_144_PDTCh_MCS6_P2_RX                                        144
+ID_145_PDTCh_MCS7_P1_RX                                        145
+ID_146_PDTCh_MCS7_P2_RX                                        146
+ID_147_PDTCh_MCS7_P3_RX                                        147
+ID_148_PDTCh_MCS8_P1_RX                                        148
+ID_149_PDTCh_MCS8_P2_RX                                        149
+ID_150_PDTCh_MCS8_P3_RX                                        150
+ID_151_PDTCh_MCS9_P1_RX                                        151
+ID_152_PDTCh_MCS9_P2_RX                                        152
+ID_153_PDTCh_MCS9_P3_RX                                        153
+ID_154_PDTCh_MCS1_9_P1_3_RX                                    154
+ID_155_PDTCh_MCS1_9_P1_3_RX_SAIC_off                           155
+ID_156_PDTCh_MCS1_9_P1_3_RX_SAIC_dynamic                       156
+ID_157_PDTCh_MCS1_9_P1_3_RX_MTBF                               157
+
+ID_163_PDTCh_MCS1_IR                                           163
+ID_164_PDTCh_MCS2_IR                                           164
+ID_165_PDTCh_MCS3_IR                                           165
+ID_166_PDTCh_MCS4_IR                                           166
+ID_167_PDTCh_MCS5_IR                                           167
+ID_168_PDTCh_MCS6_IR                                           168
+ID_169_PDTCh_MCS7_IR                                           169
+ID_170_PDTCh_MCS8_IR                                           170
+ID_171_PDTCh_MCS9_IR                                           171
+ID_172_PDTCh_MCS1_4_IR                                         172
+ID_173_PDTCh_MCS1_4_IR2                                        173
+ID_174_PDTCh_MCS3_3_9_IR                                       174
+ID_175_PDTCh_MCS3_3_9_IR2                                      175
+ID_176_PDTCh_MCS9_9_3_IR                                       176
+ID_177_PDTCh_MCS9_9_3_IR2                                      177
+ID_178_PDTCh_MCS3_6_9_IR                                       178
+ID_179_PDTCh_MCS3_6_9_IR2                                      179
+ID_180_PDTCh_MCS3_6_9_IR3                                      180
+ID_181_PDTCh_MCS3_6_9_IR4                                      181
+ID_182_PDTCh_MCS3_6_8_IR                                       182
+ID_183_PDTCh_MCS3_6_8_IR2                                      183
+ID_184_PDTCh_MCS3_6_8_IR3                                      184
+ID_185_PDTCh_MCS3_6_8_IR4                                      185
+ID_186_PDTCh_MCS2_5_7_IR                                       186
+ID_187_PDTCh_MCS2_5_7_IR2                                      187
+ID_188_PDTCh_MCS2_5_7_IR3                                      188
+ID_189_PDTCh_MCS2_5_7_IR4                                      189
+ID_190_PDTCh_MCS3_7_9_IR                                       190
+ID_191_PDTCh_MCS3_7_3_8_IR                                     191
+ID_192_PDTCh_same_BSN_IR                                       192
+ID_193_PDTCh_diff_BSN_IR                                       193
+ID_194_PDTCh_MCS7_5_2_2_IR                                     194
+ID_195_PDTCh_MCS8_6_3_3_IR                                     195
+ID_196_PDTCh_MCS9_6_3_3_IR                                     196
+ID_197_PDTCh_MCS6_BSN0_IR                                      197
+ID_198_PDTCh_MCS6_BSN1_IR                                      198
+ID_199_PDTCh_MCS9_IR_NoTFI_CD                                  199
+ID_200_PDTCh_MCS9_IR_NoTFI_NoCD                                200
+ID_201_PDTCh_MCS4_IR_long                                      201
+ID_202_PDTCh_MCS4_IR_PSHO_NoReset                              202
+ID_203_PDTCh_MCS4_IR_PSHO_resetIR                              203
+ID_204_PDTCh_MCS4_IR_PSHO_resume1                              204 
+ID_205_PDTCh_MCS4_IR_PSHO_resume2                              205 
+ID_206_PDTCh_MCS4_IR_PSHO_resume3                              206 
+ID_207_PDTCh_MCS4_IR_PSHO_resetVQ                              207
+ID_208_PDTCh_MTBF_IR                                           208
+ID_209_PDTCh_MTBF_IR_RX                                        209
+
+ID_213_PDTCh_SRB_4R1T                                          213
+ID_214_PDTCh_SRB_3R2T                                          214
+ID_215_PDTCh_SRB_2R3T                                          215
+ID_216_PDTCh_SRB_1R4T                                          216
+
+//ID_220_PDTCh_BFE_FIR_NB                                        220
+//ID_221_PDTCh_BFE_FIR_WB                                        221
+ID_222_PDTCh_CS4_CRC_Correction                                222
+ID_223_PDTCh_CS4_CRC_Correction_Fail                           223
+
+ID_224_AudioSys_IRQ                                            224
+ID_225_AudioSys_MEMIF                                          225
+ID_226_AudioSys_SRCLoopback                                    226
+
+ID_227_SCh_Logger                                              227
+ID_228_FCCh_SCh_Logger                                         228
+ID_229_PDTCh_PM_Logger                                         229
+ID_230_8PM_Logger                                              230
+ID_231_PDTCh_MCS1_9_P1_3_RX_SAIC_Logger                        231
+
+ID_233_AUXADC_TX_PM                                            233
+ID_234_Divider_Test                                            234
+//ID_235_PDTCh_RXTX_6R                                           235
+ID_236_PDTCh_TX_6T                                             236
+ID_237_FCChStop_SDCCh                                          237
+
+ID_241_PDTCh_CS1_TX_RTTI                                       241
+ID_242_PDTCh_CS1_RX_RTTI_RttiUsfMode                           242
+ID_243_PDTCh_MCS1_9_P1_3_TX_RTTI                               243
+ID_244_PDTCh_MCS1_9_P1_3_TX_RTTI_EO                            244
+ID_245_PDTCh_MCS1_9_P1_3_RX_RTTI_RttiUsfMode                   245
+ID_246_PDTCh_MCS1_9_P1_3_RX_RTTI_BttiUsfMode                   246
+ID_247_PDTCh_MCS1_9_P1_3_RX_RTTI_BttiUsfMode_SWO               247
+ID_248_PDTCh_MCS1_9_P1_3_RX_RTTI_BttiUsfMode_MixedModulation   248
+ID_249_PDTCh_IR_RX_RTTI_BttiUsfMode                            249
+
+ID_251_PDTCh_MCS1_9_P1_3_TX_FANR                               251
+ID_252_PDTCh_MCS1_9_P1_3_RX_FANR                               252
+ID_253_PDTCh_MCS1_9_P1_3_RX_FANR_UL_TBF                        253
+ID_254_PDTCh_MCS1_9_P1_3_RX_FANR_TB                            254
+
+ID_256_PDTCh_IR_RX_FANR_Family_A                               256
+ID_257_PDTCh_IR_RX_FANR_Family_A_Padding                       257
+ID_258_PDTCh_IR_RX_FANR_Family_B                               258
+ID_259_PDTCh_IR_RX_FANR_Family_C                               259
+
+ID_261_PDTCh_MCS1_9_P1_3_TX_RTTI_FANR                          261
+ID_262_PDTCh_MCS1_9_P1_3_RX_RTTI_BttiUsfMode_FANR              262
+ID_263_PDTCh_MCS1_9_P1_3_RX_RTTI_RttiUsfMode_FANR              263
+
+ID_266_PDTCh_MCS1_9_P1_3_RX_FANR_PARTIAL                       266
+ID_267_PDTCh_MCS1_9_P1_3_RX_MTBF_BttiUsfMode                   267
+ID_268_PDTCh_MCS1_9_P1_3_RX_MTBF_RttiUsfMode                   268
+ID_269_PDTCh_MCS1_9_P1_3_RX_MTBF_FANR_BttiUsfMode              269
+ID_270_PDTCh_MCS1_9_P1_3_RX_MTBF_FANR_RttiUsfMode              270
+ID_271_PDTCh_MCS1_9_P1_3_RX_MTBF_FANR_BttiUsfMode_FANR         271
+ID_272_PDTCh_MCS1_9_P1_3_RX_MTBF_FANR_RttiUsfMode_FANR         272
+
+[test_count] "Test Count"
+1~99999
+

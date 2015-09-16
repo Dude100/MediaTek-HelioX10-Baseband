@@ -1,0 +1,133 @@
+{ Validation }
+Title 		= "[3_3G_CSD_Request]CD28: TPC_Combining_Reliable_Test"
+ModuleID 	= MOD_DUMMYURR
+MsgID 		= MSG_ID_UDPS_TPC_COMBINING_RELIABLE_TEST		
+
+/******************************************************************************
+* Data Structure accomnying the above primitive
+typedef struct
+{
+    kal_uint8       ref_count;
+    kal_uint16      msg_len;
+    
+    kal_uint16          uarfcn_bts1;
+    kal_uint16         psc_bts1;
+    kal_uint16          uarfcn_bts2;
+    kal_uint16         psc_bts2;
+    kal_bool            bts3_valid;	
+    kal_uint16         psc_bts3;	
+    kal_int8        max_tx_power;
+    kal_int8	    cpich_tx_power;     	
+    kal_bool        sttd_ind;
+    udps_RMC_type_struct udps_RMC_type;
+    kal_uint32          ul_sc;              
+    kal_uint16      DOFF_bts1; 
+    kal_uint8       Tdpch_rl1;          
+    kal_uint16       OVSFdpch_rl1;  
+    kal_uint8       Tdpch_rl2;  // for SHO pef
+    kal_uint16       OVSFdpch_rl2;   // for SHO pef 
+    kal_uint8       Tdpch_rl3;  // only when bts3_valid = TRUE
+    kal_uint16       OVSFdpch_rl3;   // only when bts3_valid = TRUE
+    kal_uint8       pc_algo; //CD28 needed
+    kal_uint8       tpc_step; //CD28 needed        
+} udps_tpc_combining_reliable_test_struct;        
+*
+*******************************************************************************/
+
+
+{Parameters}
+/******************************************************************************
+* 1. The following is the constrained range for the input of this value.
+* 2. Some combination of the following bit-fields may be suported
+* 3. The parameter range can be changed to support combinations of different bands
+*******************************************************************************/
+
+/* [Variable Name] "corresponding label showen on GUI" */
+[uarfcn_bts1] "UARFCN of Serving Cell 1 (MUST LINK first)"
+10562~10838
+9662~9938
+4357~4458
+@10600
+
+[psc_bts1] "PSC of Serving Cell 1 (MUST LINK first)"
+0~511
+@10
+
+[uarfcn_bts2] "UARFCN of Serving Cell 2"
+10562~10838
+@10600
+
+[psc_bts2] "PSC of Serving Cell 2"
+0~511
+@511
+
+[bts3_valid] "Is BTS3 available?"
+@KAL_FALSE
+
+[psc_bts3] "PSC of Serving Cell 3"
+0~511
+@0
+
+/******************************************
+* For RACH 
+******************************************/
+[max_tx_power] "Maximum allowed UL TX power [dBm]"
+-50~33
+@24
+
+[cpich_tx_power] "CPICH TX power [dBm]"
+-10~50
+@0
+
+[sttd_ind] "Use STTD or not"
+@KAL_FALSE
+
+/******************************************
+* For DCH 
+******************************************/
+[udps_RMC_type] "Choose One of the FOUR standard RMC"
+RMC_144
+@RMC_12_2
+RMC_64
+RMC_384
+RMC_BTFD
+
+[ul_sc] "(DCH) UL Scrambling code Num."
+0~16777215
+@13
+
+[DOFF_bts1] "(DCH) Default DPCH Offset [x512 chips]"
+0~599
+@0
+
+[Tdpch_rl1] "(DCH) Timing offset between 1st DPCH and CPICH [x256 chips]"
+0~149
+@0
+
+[OVSFdpch_rl1] "(DCH) OVSF code of DL DCH: 0~SF-1"
+0~511
+@30
+
+[Tdpch_rl2] "(DCH) Timing offset between 1st DPCH and CPICH for BTS2 [x256 chips]"
+0~149
+@4
+
+[OVSFdpch_rl2] "(DCH) OVSF code of DL DCH for BTS2: 0~SF-1 "
+0~511
+@30
+
+[Tdpch_rl3] "(DCH) Timing offset between 1st DPCH and CPICH for BTS3 [x256 chips]"
+0~149
+@0
+
+[OVSFdpch_rl3] "(DCH) OVSF code of DL DCH for BTS3: 0~SF-1 "
+0~511
+@30
+
+[pc_algo] "UL Power control algorithm"
+1~2
+@1
+
+[tpc_step] "UL Power control step size"
+1~2
+@1

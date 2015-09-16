@@ -1,0 +1,64 @@
+{ Validation }
+Title 		= "[8_2G_Pkt_Idle]PI15, PT4~7: GPRS Attach on PCCCh + One Phase Access for UL User Data(No Sleep)"
+ModuleID 	= MOD_DUMMYMPAL
+MsgID 		= MSG_ID_DPS_PCCCH_GPRS_ATTACH_ONE_PHASE_REQ    // will be defined in appropriate header file
+
+
+/* Data Structure accomnying the above primitive
+typedef struct
+{
+       kal_uint8  ref_count;
+       kal_uint16  msg_len;
+       kal_uint8  bands;
+       ARFCN arfcnSpec;
+       kal_bool RlcChanReq;
+       kal_bool AutoRepeat;
+       kal_bool InfiniteTBF;
+       kal_uint16 NumTestPdu;       
+	    kal_uint16  imsi1_mod_1000;
+       kal_uint8 split_page_cycle;       
+}dps_pccch_gprs_attach_one_phase_req_struct;
+*/
+
+{Parameters}
+
+// The variable and the corresponding label showen on GUI
+[bands] "Bands used for power scan"
+// The following is the constrained range for the input of this value.
+// Some combination of the following bit-fields may be suported
+// The parameter range can be changed to support combinations of different bands
+@PGSM900            1
+EGSM900            2
+DCS1800            8
+PCS1900            16
+GSM850             128
+PGSM900_DCS1800    9
+EGSM900_DCS1800    10
+PGSM900_PCS1900    17  
+EGSM900_PCS1900    18
+GSM850_DCS1800     136
+GSM850_DCS1900     144
+
+[arfcnSpec] "Bcch (C0) ARFCN"
+0~124
+975~1023
+512~885
+128~251
+@20
+[AutoRepeat] "Repeat the Test"
+@FALSE 0
+TRUE  1
+
+[InfiniteTBF] "End TBF from MS side"
+@FALSE 1
+TRUE  0
+
+[NumTestPdu] "End after how many blocks"
+500~32000 
+@500
+[imsi1_mod_1000] "IMSI mod 1000"
+0~999
+@789
+[split_page_cycle] "Split Page Cycle"
+1~255
+@32

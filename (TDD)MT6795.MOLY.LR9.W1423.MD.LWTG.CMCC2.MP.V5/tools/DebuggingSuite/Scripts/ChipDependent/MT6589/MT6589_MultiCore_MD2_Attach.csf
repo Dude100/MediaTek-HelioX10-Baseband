@@ -1,0 +1,13 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; MT6589_MultiCore_MD2_Attach.csf
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+do MT6589_MD_Info.cmm
+
+MULtiCore.COUNT 3
+MULtiCore.INDEX 3
+MULtiCore.PORT 10002
+
+print "Slave: MD ARM9"
+
+do MT6589_MultiCore_MD.cmm ATTACH 2 &OPT_MD2_ELF_PATH &OPT_MD2_SRC_PATH

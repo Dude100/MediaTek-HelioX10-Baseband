@@ -1,0 +1,1152 @@
+/*****************************************************************************
+*  Copyright Statement:
+*  --------------------
+*  This software is protected by Copyright and the information contained
+*  herein is confidential. The software may not be copied and the information
+*  contained herein may not be used or disclosed except with the written
+*  permission of MediaTek Inc. (C) 2005
+*
+*  BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+*  THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+*  RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
+*  AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+*  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+*  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+*  NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+*  SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+*  SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
+*  THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
+*  NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
+*  SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
+*
+*  BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
+*  LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+*  AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+*  OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
+*  MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+*
+*  THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
+*  WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
+*  LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
+*  RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
+*  THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
+*
+*****************************************************************************/
+/*
+This file is used by cgen for union Tag information.
+Usage:
+
+structure_name   tag_field_name   union_name:
+{ 
+        tag_fileld_value   field_of_union_name;
+	    tag_fileld_value   field_of_union_name;
+};
+
+For Example:
+
+InvokeChoice ChoiceId a:
+{
+    1 localValue;
+    2 globalValue;        
+};
+
+*/
+
+/****************************** GAS CS PS MCDDLL UnionTag ********************************/
+
+unpack_msg msg_type rr_peer_msg:
+{
+
+   STRUCT_ID_RR_PEER_ADDITIONAL_ASSIGNMENT_STRUCT 	additional_assignment;
+   STRUCT_ID_IMMEDIATE_ASSIGN_MESSAGE 			immediate_assign_msg;
+   STRUCT_ID_IMMEDIATE_ASSIGN_EXT_MESSAGE 		immediate_assign_ext_msg;
+   STRUCT_ID_IMM_ASGN_REJ_MSG_STRUCT			imm_asgn_rej_msg;
+   STRUCT_ID_CIPHER_MODE_COMMAND_STRUCT			cipher_mode_command;
+   STRUCT_ID_CIPHER_MODE_COMPLETE_STRUCT		cipher_mode_complete;
+   STRUCT_ID_ASSIGNMENT_COMMAND_STRUCT			assignment_command;
+   STRUCT_ID_ASSIGNMENT_COMPLETE_STRUCT                 assignment_complete;   
+   STRUCT_ID_ASSIGNMENT_FAILURE_STRUCT                  assignment_failure;   
+   STRUCT_ID_PDCH_ASSIGNMENT_COMMAND_STRUCT		pdch_assignment_command;
+   STRUCT_ID_HANDOVER_COMMAND_STRUCT			handover_command;
+   STRUCT_ID_HANDOVER_COMPLETE_STRUCT			handover_complete;
+   STRUCT_ID_HANDOVER_FAILURE_STRUCT			handover_failure;   
+   STRUCT_ID_RR_CELL_CHANGE_ORDER_STRUCT		rr_cell_change_order;
+   STRUCT_ID_PHYSICAL_INFORMATION_STRUCT		physical_information;
+   STRUCT_ID_CHANNEL_RELEASE_STRUCT			channel_release;
+   STRUCT_ID_RR_PEER_PARTIAL_RELEASE_STRUCT		partial_release;
+   STRUCT_ID_RR_PEER_PARTIAL_RELEASE_COMPLETE_STRUCT	rr_peer_partial_release_complete;
+   STRUCT_ID_PAGING_REQUEST_TYPE1_STRUCT			paging_request_1;
+   STRUCT_ID_PAGING_REQUEST_TYPE2_STRUCT			paging_request_2;
+   STRUCT_ID_PAGING_REQUEST_TYPE3_STRUCT			paging_request_3;
+   STRUCT_ID_PAGING_RESPONSE			        paging_response;   
+   STRUCT_ID_SI_1_STRUCT				si_1;
+   STRUCT_ID_SI_2_STRUCT				si_2;
+   STRUCT_ID_SI_2BIS_STRUCT				si_2bis;
+   STRUCT_ID_SI_2TER_STRUCT				si_2ter;
+   STRUCT_ID_SI_2QUATER_STRUCT				si_2quater;
+   STRUCT_ID_SI_3_STRUCT				si_3;
+   STRUCT_ID_SI_4_STRUCT				si_4;
+   STRUCT_ID_SI_5_STRUCT				si_5;
+   STRUCT_ID_SI_5BIS_STRUCT				si_5bis;
+   STRUCT_ID_SI_5TER_STRUCT				si_5ter;
+   STRUCT_ID_SI_6_STRUCT				si_6;
+   STRUCT_ID_SI_7_STRUCT				si_7;
+   STRUCT_ID_SI_8_STRUCT				si_8;
+   STRUCT_ID_SI_9_STRUCT				si_9;
+   STRUCT_ID_SI_13_STRUCT				si_13;
+   STRUCT_ID_SI_16_STRUCT				si_16;
+   STRUCT_ID_SI_17_STRUCT				si_17;
+   STRUCT_ID_SI_18_STRUCT				si_18;
+   STRUCT_ID_SI_19_STRUCT				si_19;
+   STRUCT_ID_SI_20_STRUCT				si_20;
+   STRUCT_ID_EXTENDED_MEASUREMENT_ORDER_STRUCT		extended_measurement_order;
+   STRUCT_ID_EXTENDED_MEASUREMENT_REPORT_STRUCT		extended_measurement_report;   
+   STRUCT_ID_MEASUREMENT_REPORT_STRUCT		        measurement_report;      
+   STRUCT_ID_MEASUREMENT_INFORMATION_STRUCT		measurement_information_struct;         
+   STRUCT_ID_ENHANCED_MEASUREMENT_REPORT_STRUCT		enhanced_measurement_report_struct; 
+   STRUCT_ID_CHANNEL_MODE_MODIFY_STRUCT			channel_mode_modify;
+   STRUCT_ID_CHANNEL_MODE_MODIFY_ACK_STRUCT		channel_mode_modify_ack_struct;
+   STRUCT_ID_RR_PEER_CLASSMARK_CHANGE_STRUCT		classmark_change;
+   STRUCT_ID_RR_PEER_CLASSMARK_ENQUIRY_STRUCT		classmark_enquiry;
+   STRUCT_ID_FREQUENCY_REDEFINITION_STRUCT		frequency_redefinition;
+   STRUCT_ID_RR_STATUS_STRUCT				rr_status;
+   STRUCT_ID_GPRS_SUSPENSION_REQUEST_STRUCT             gprs_suspension_request;
+   STRUCT_ID_CONFIGURATION_CHANGE_COMMAND_STRUCT	configuration_change_command;
+   STRUCT_ID_PACKET_ACCESS_REJECT_MESSAGE_CONTENT			paj;
+   STRUCT_ID_PACKET_QUEUEING_NOTIFICATION_MESSAGE_CONTENT			pqn;
+   STRUCT_ID_PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT			puas;
+   STRUCT_ID_PACKET_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT			pdas;
+   STRUCT_ID_PACKET_TBF_RELEASE_MESSAGE_CONTENT			pkt_tbf_release;
+   STRUCT_ID_PACKET_PAGING_REQUEST_MESSAGE_CONTENT			pkt_paging;
+   STRUCT_ID_PACKET_UPLINK_ACK_NACK_MESSAGE_CONTENT			puan;
+   STRUCT_ID_PSI1_MESSAGE_CONTENT					psi1;
+   STRUCT_ID_PSI2_MESSAGE_CONTENT					psi2;
+   STRUCT_ID_PSI3_MESSAGE_CONTENT					psi3;
+   STRUCT_ID_PSI3_BIS_MESSAGE_CONTENT					psi3bis;
+   STRUCT_ID_PSI4_MESSAGE_CONTENT					psi4;
+   STRUCT_ID_PSI5_MESSAGE_CONTENT					psi5;
+   STRUCT_ID_PSI13_MESSAGE_CONTENT					psi13;
+   STRUCT_ID_PACKET_CELL_CHANGE_ORDER_MESSAGE_CONTENT			pcco;
+   STRUCT_ID_PACKET_DOWNLINK_DUMMY_CONTROL_BLOCK_MESSAGE_CONTENT		pkt_dl_dummy;
+   STRUCT_ID_PACKET_MEASUREMENT_ORDER_MESSAGE_CONTENT		pmo;
+   STRUCT_ID_PACKET_PDCH_RELEASE_MESSAGE_CONTENT				pdch_release;
+   STRUCT_ID_PACKET_POLLING_REQUEST_MESSAGE_CONTENT			packet_polling;
+   STRUCT_ID_PACKET_POWER_CONTROL_TIMING_ADVANCE_MESSAGE_CONTENT		pkt_pc_n_ta;
+   STRUCT_ID_PACKET_PRACH_PARAMETERS_MESSAGE_CONTENT			pkt_prach_params;
+   STRUCT_ID_PACKET_TIMESLOT_RECONFIGURE_MESSAGE_CONTENT			pkt_timeslot_reconfig;
+   STRUCT_ID_PACKET_CELL_CHANGE_CONTINUE_MESSAGE_CONTENT			pccc;
+   STRUCT_ID_PACKET_NEIGHBOUR_CELL_DATA_MESSAGE_CONTENT			pncd;
+   STRUCT_ID_PACKET_SERVING_CELL_DATA_MESSAGE_CONTENT				pscd;
+   STRUCT_ID_PSI3_TER_MESSAGE_CONTENT					psi3ter;
+   STRUCT_ID_PSI3_QUATER_MESSAGE_CONTENT				psi3quater;
+   STRUCT_ID_PSI6_MESSAGE_CONTENT					psi6;
+   STRUCT_ID_PSI7_MESSAGE_CONTENT					psi7;
+   STRUCT_ID_PSI8_MESSAGE_CONTENT					psi8;
+   STRUCT_ID_PSI14_MESSAGE_CONTENT					psi14;
+   STRUCT_ID_PSI15_MESSAGE_CONTENT					psi15;
+   STRUCT_ID_PSI16_MESSAGE_CONTENT					psi16;   
+   STRUCT_ID_MULTIPLE_TBF_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT    mtdas;
+   STRUCT_ID_MULTIPLE_TBF_UPLINK_ASSIGNMENT_MESSAGE_CONTENT      mtuas;
+   STRUCT_ID_MULTIPLE_TBF_TIMESLOT_RECONFIGURE_MESSAGE_CONTENT   mttr;
+   STRUCT_ID_PS_HANDOVER_COMMAND_MESSAGE_CONTENT                 ps_ho_command;  
+   STRUCT_ID_PACKET_CONTROL_ACKNOWLEDGEMENT_MESSAGE_CONTENT	            pca;
+   STRUCT_ID_PACKET_CELL_CHANGE_FAILURE_MESSAGE_CONTENT	                pkt_cell_change_failure;
+   STRUCT_ID_PACKET_CELL_CHANGE_NOTIFICATION_MESSAGE_CONTENT	        pccn;
+   STRUCT_ID_PACKET_DOWNLINK_ACK_NACK_MESSAGE_CONTENT	                pdan;
+   STRUCT_ID_EGPRS_PACKET_DOWNLINK_ACK_NACK_MESSAGE_CONTENT	            egprs_pdan;
+   STRUCT_ID_PACKET_UPLINK_DUMMY_CONTROL_BLOCK_MESSAGE_CONTENT	        pkt_ul_dummy;
+   STRUCT_ID_PACKET_MEASUREMENT_REPORT_MESSAGE_CONTENT	                pkt_meas_report;
+   STRUCT_ID_PACKET_MOBILE_TBF_STATUS_MESSAGE_CONTENT	                ptk_tbfstatus;
+   STRUCT_ID_PACKET_ENHANCED_MEASUREMENT_REPORT_MESSAGE_CONTENT	        pkt_enh_meas_report;
+   STRUCT_ID_PACKET_RESOURCE_REQUEST_MESSAGE_CONTENT	                prr;
+   STRUCT_ID_PACKET_PSI_STATUS_MESSAGE_CONTENT	                        psistatus;
+   STRUCT_ID_PACKET_SI_STATUS_MESSAGE_CONTENT	                        pkt_si_status;
+   STRUCT_ID_PACKET_PAUSE_MESSAGE_CONTENT	                            pkt_pause;
+   STRUCT_ID_ADDITIONAL_MS_RADIO_ACCESS_CAPABILITIES_MESSAGE_CONTENT	arac;
+};
+
+cdma_2000_description_struct_mi_s_3 cdma_2000_description_struct_mi_s_3_tag cdma_2000_description_struct_mi_s_3_value:
+{
+    CDMA_2000_DESCRIPTION_STRUCT_MI_S_4 m_cdma_2000_description_struct_mi_s_4;
+    CDMA_2000_DESCRIPTION_STRUCT_MI_S_5 m_cdma_2000_description_struct_mi_s_5;
+    CDMA_2000_DESCRIPTION_STRUCT_MI_S_6 m_cdma_2000_description_struct_mi_s_6;
+    CDMA_2000_DESCRIPTION_STRUCT_MI_S_7 m_cdma_2000_description_struct_mi_s_7;
+    CDMA_2000_DESCRIPTION_STRUCT_MI_S_8 m_cdma_2000_description_struct_mi_s_8;
+};
+global_tfi_ie global_tfi_ie_s_0_tag global_tfi_ie_s_0_value:
+{
+    UPLINK_TFI uplink_tfi;
+    DOWNLINK_TFI downlink_tfi;
+};
+gprs_mobile_allocation_ie gprs_mobile_allocation_ie_s_2_tag gprs_mobile_allocation_ie_s_2_value:
+{
+    GPRS_MOBILE_ALLOCATION_IE_S_3 m_gprs_mobile_allocation_ie_s_3;
+    GPRS_MOBILE_ALLOCATION_IE_S_4 m_gprs_mobile_allocation_ie_s_4;
+};
+lsa_id_information_struct_s_1 lsa_id_information_struct_s_2_tag lsa_id_information_struct_s_2_value:
+{
+    LSA_ID lsa_id;
+    SHORTLSA_ID shortlsa_id;
+};
+cdma2000_description_struct_s_3 cdma2000_description_struct_s_3_tag cdma2000_description_struct_s_3_value:
+{
+    CDMA2000_DESCRIPTION_STRUCT_S_4 m_cdma2000_description_struct_s_4;
+    CDMA2000_DESCRIPTION_STRUCT_S_5 m_cdma2000_description_struct_s_5;
+    CDMA2000_DESCRIPTION_STRUCT_S_6 m_cdma2000_description_struct_s_6;
+    CDMA2000_DESCRIPTION_STRUCT_S_7 m_cdma2000_description_struct_s_7;
+    CDMA2000_DESCRIPTION_STRUCT_S_8 m_cdma2000_description_struct_s_8;
+};
+container_repetition_struct exclusion_choice_tag exclusion_choice_value:
+{
+    CONTAINER_DATA m_container_data;
+    CONTAINER_DATA_1 m_container_data_1;
+};
+si13_pbcch_location_struct_1 si13_pbcch_location_struct_1_s_0_tag si13_pbcch_location_struct_1_s_0_value:
+{
+    SI13_LOCATION si13_location;
+    SI13_PBCCH_LOCATION_STRUCT_1_S_1 m_si13_pbcch_location_struct_1_s_1;
+};
+pbcch_description_struct pbcch_description_struct_s_1_tag pbcch_description_struct_s_1_value:
+{
+    ARFCN2 arfcn2;
+    MAIO maio;
+};
+channel_group_struct channel_group_struct_s_1_tag channel_group_struct_s_1_value:
+{
+    CHANNEL_GROUP_STRUCT_ARFCN channel_group_struct_arfcn;
+    CHANNEL_GROUP_STRUCT_S_2 m_channel_group_struct_s_2;
+};
+repeated_page_info_struct_1_s_1 repeated_page_info_struct_1_s_1_tag repeated_page_info_struct_1_s_1_value:
+{
+    PTMSI ptmsi;
+    REPEATED_PAGE_INFO_STRUCT_1_S_2 m_repeated_page_info_struct_1_s_2;
+};
+repeated_page_info_struct_1_s_3 repeated_page_info_struct_1_s_4_tag repeated_page_info_struct_1_s_4_value:
+{
+    TMSI tmsi;
+    REPEATED_PAGE_INFO_STRUCT_1_S_5 m_repeated_page_info_struct_1_s_5;
+};
+repeated_page_info_struct_1 repeated_page_info_struct_1_s_0_tag repeated_page_info_struct_1_s_0_value:
+{
+    REPEATED_PAGE_INFO_STRUCT_1_S_1 m_repeated_page_info_struct_1_s_1;
+    REPEATED_PAGE_INFO_STRUCT_1_S_3 m_repeated_page_info_struct_1_s_3;
+};
+reject_struct_1_s_2 reject_struct_1_s_2_tag reject_struct_1_s_2_value:
+{
+    PACKET_REQUEST_REFERENCE packet_request_reference;
+    GLOBAL_TFI global_tfi;
+};
+reject_struct_1 reject_struct_1_s_1_tag reject_struct_1_s_1_value:
+{
+    TLLI___G_RNTI tlli___g_rnti;
+    REJECT_STRUCT_1_S_2 m_reject_struct_1_s_2;
+};
+downlink_tbf_assignment_struct_for_mttr downlink_tbf_assignment_struct_for_mttr_s_1_tag downlink_tbf_assignment_struct_for_mttr_s_1_value:
+{
+    RB_ID rb_id;
+    DOWNLINK_TBF_ASSIGNMENT_STRUCT_FOR_MTTR_S_2 m_downlink_tbf_assignment_struct_for_mttr_s_2;
+};
+uplink_tbf_assignment_struct uplink_tbf_assignment_struct_s_6_tag uplink_tbf_assignment_struct_s_6_value:
+{
+    USF_ALLOCATION usf_allocation;
+    UPLINK_TBF_ASSIGNMENT_STRUCT_S_7 m_uplink_tbf_assignment_struct_s_7;
+};
+timeslot_description_struct timeslot_description_struct_s_0_tag timeslot_description_struct_s_0_value:
+{
+    MS_TIMESLOT_ALLOCATION ms_timeslot_allocation;
+    TIMESLOT_DESCRIPTION_STRUCT_S_1 m_timeslot_description_struct_s_1;
+};
+downlink_tbf_assignment_struct downlink_tbf_assignment_struct_s_1_tag downlink_tbf_assignment_struct_s_1_value:
+{
+    DOWNLINK_TBF_ASSIGNMENT_STRUCT_RB_ID rb_id;
+    DOWNLINK_TBF_ASSIGNMENT_STRUCT_S_2 m_downlink_tbf_assignment_struct_s_2;
+};
+dynamic_allocation_2_struct_s_9 dynamic_allocation_2_struct_s_11_tag dynamic_allocation_2_struct_s_11_value:
+{
+    DYNAMIC_ALLOCATION_2_STRUCT_S_12 m_dynamic_allocation_2_struct_s_12;
+    DYNAMIC_ALLOCATION_2_STRUCT_S_15 m_dynamic_allocation_2_struct_s_15;
+};
+dynamic_allocation_2_struct dynamic_allocation_2_struct_s_6_tag dynamic_allocation_2_struct_s_6_value:
+{
+    DYNAMIC_ALLOCATION_2_STRUCT_S_7 m_dynamic_allocation_2_struct_s_7;
+    DYNAMIC_ALLOCATION_2_STRUCT_S_9 m_dynamic_allocation_2_struct_s_9;
+};
+timeslot_description_2_struct timeslot_description_2_struct_s_0_tag timeslot_description_2_struct_s_0_value:
+{
+    TIMESLOT_DESCRIPTION_2_STRUCT_S_1 m_timeslot_description_2_struct_s_1;
+    TIMESLOT_DESCRIPTION_2_STRUCT_S_3 m_timeslot_description_2_struct_s_3;
+};
+dual_carrier_timeslot_description_struct dual_carrier_timeslot_description_struct_s_0_tag dual_carrier_timeslot_description_struct_s_0_value:
+{
+    DUAL_CARRIER_TIMESLOT_DESCRIPTION_STRUCT_S_1 m_dual_carrier_timeslot_description_struct_s_1;
+    DUAL_CARRIER_TIMESLOT_DESCRIPTION_STRUCT_S_3 m_dual_carrier_timeslot_description_struct_s_3;
+};
+uplink_tbf_assignment_2_struct uplink_tbf_assignment_2_struct_s_8_tag uplink_tbf_assignment_2_struct_s_8_value:
+{
+    UPLINK_TBF_ASSIGNMENT_2_STRUCT_S_9 m_uplink_tbf_assignment_2_struct_s_9;
+    UPLINK_TBF_ASSIGNMENT_2_STRUCT_S_11 m_uplink_tbf_assignment_2_struct_s_11;
+};
+pdch_pairs_description_ie_s_1 pdch_pairs_description_ie_s_1_tag pdch_pairs_description_ie_s_1_value:
+{
+    PDCH_PAIRS_DESCRIPTION_IE_S_2 m_pdch_pairs_description_ie_s_2;
+};
+pdch_pairs_description_ie_s_3 pdch_pairs_description_ie_s_3_tag pdch_pairs_description_ie_s_3_value:
+{
+    PDCH_PAIRS_DESCRIPTION_IE_S_4 m_pdch_pairs_description_ie_s_4;
+};
+pdch_pairs_description_ie pdch_pairs_description_ie_s_0_tag pdch_pairs_description_ie_s_0_value:
+{
+    PDCH_PAIRS_DESCRIPTION_IE_S_1 m_pdch_pairs_description_ie_s_1;
+    PDCH_PAIRS_DESCRIPTION_IE_S_3 m_pdch_pairs_description_ie_s_3;
+};
+pulse_format_ie pulse_format_ie_s_0_tag pulse_format_ie_s_0_value:
+{
+    PULSE_FORMAT_CODING_1 pulse_format_coding_1;
+    PULSE_FORMAT_CODING_2 pulse_format_coding_2;
+};
+uplink_tbf_assignment_2_struct_for_mttr uplink_tbf_assignment_2_struct_for_mttr_s_8_tag uplink_tbf_assignment_2_struct_for_mttr_s_8_value:
+{
+    UPLINK_TBF_ASSIGNMENT_2_STRUCT_FOR_MTTR_S_9 m_uplink_tbf_assignment_2_struct_for_mttr_s_9;
+    UPLINK_TBF_ASSIGNMENT_2_STRUCT_FOR_MTTR_S_11 m_uplink_tbf_assignment_2_struct_for_mttr_s_11;
+};
+uplink_tbf_assignment_2_struct_in_ps_ho_rr_2 uplink_tbf_assignment_2_struct_in_ps_ho_rr_2_s_9_tag uplink_tbf_assignment_2_struct_in_ps_ho_rr_2_s_9_value:
+{
+    UPLINK_TBF_ASSIGNMENT_2_STRUCT_IN_PS_HO_RR_2_S_10 m_uplink_tbf_assignment_2_struct_in_ps_ho_rr_2_s_10;
+    UPLINK_TBF_ASSIGNMENT_2_STRUCT_IN_PS_HO_RR_2_S_12 m_uplink_tbf_assignment_2_struct_in_ps_ho_rr_2_s_12;
+};
+bep_measurement_report_struct_s_2 bep_measurement_report_struct_s_2_tag bep_measurement_report_struct_s_2_value:
+{
+    GMSK_MEAN_BEP__TN0 gmsk_mean_bep__tn0;
+    P_8_PSK_MEAN_BEP__TN0 p_8_psk_mean_bep__tn0;
+};
+bep_measurement_report_struct_s_4 bep_measurement_report_struct_s_4_tag bep_measurement_report_struct_s_4_value:
+{
+    GMSK_MEAN_BEP__TN1 gmsk_mean_bep__tn1;
+    P_8_PSK_MEAN_BEP__TN1 p_8_psk_mean_bep__tn1;
+};
+bep_measurement_report_struct_s_6 bep_measurement_report_struct_s_6_tag bep_measurement_report_struct_s_6_value:
+{
+    GMSK_MEAN_BEP__TN2 gmsk_mean_bep__tn2;
+    P_8_PSK_MEAN_BEP__TN2 p_8_psk_mean_bep__tn2;
+};
+bep_measurement_report_struct_s_8 bep_measurement_report_struct_s_8_tag bep_measurement_report_struct_s_8_value:
+{
+    GMSK_MEAN_BEP__TN3 gmsk_mean_bep__tn3;
+    P_8_PSK_MEAN_BEP__TN3 p_8_psk_mean_bep__tn3;
+};
+bep_measurement_report_struct_s_10 bep_measurement_report_struct_s_10_tag bep_measurement_report_struct_s_10_value:
+{
+    GMSK_MEAN_BEP__TN4 gmsk_mean_bep__tn4;
+    P_8_PSK_MEAN_BEP__TN4 p_8_psk_mean_bep__tn4;
+};
+bep_measurement_report_struct_s_12 bep_measurement_report_struct_s_12_tag bep_measurement_report_struct_s_12_value:
+{
+    GMSK_MEAN_BEP__TN5 gmsk_mean_bep__tn5;
+    P_8_PSK_MEAN_BEP__TN5 p_8_psk_mean_bep__tn5;
+};
+bep_measurement_report_struct_s_14 bep_measurement_report_struct_s_14_tag bep_measurement_report_struct_s_14_value:
+{
+    GMSK_MEAN_BEP__TN6 gmsk_mean_bep__tn6;
+    P_8_PSK_MEAN_BEP__TN6 p_8_psk_mean_bep__tn6;
+};
+bep_measurement_report_struct_s_16 bep_measurement_report_struct_s_16_tag bep_measurement_report_struct_s_16_value:
+{
+    GMSK_MEAN_BEP__TN7 gmsk_mean_bep__tn7;
+    P_8_PSK_MEAN_BEP__TN7 p_8_psk_mean_bep__tn7;
+};
+si_message_list_struct_s_1 si_message_list_struct_s_2_tag si_message_list_struct_s_2_value:
+{
+    SI_MESSAGE_LIST_STRUCT_S_3 m_si_message_list_struct_s_3;
+    SIX_CHANGE_MARK six_change_mark;
+};
+enhanced_measurement_report_struct_s_6 enhanced_measurement_report_struct_s_9_tag enhanced_measurement_report_struct_s_9_value:
+{
+    ENHANCED_MEASUREMENT_REPORT_STRUCT_S_9_BIT m_enhanced_measurement_report_struct_s_9_bit;
+    ENHANCED_MEASUREMENT_REPORT_STRUCT_S_10 m_enhanced_measurement_report_struct_s_10;
+};
+enhanced_measurement_report_struct enhanced_measurement_report_struct_s_5_tag enhanced_measurement_report_struct_s_5_value:
+{
+    ENHANCED_MEASUREMENT_REPORT_STRUCT_S_5_BIT m_enhanced_measurement_report_struct_s_5_bit;
+    ENHANCED_MEASUREMENT_REPORT_STRUCT_S_6 m_enhanced_measurement_report_struct_s_6;
+};
+gas_meas_content_struct_s_2 gas_meas_content_struct_s_4_tag gas_meas_content_struct_s_4_value:
+{
+    UTRAN_CSG_MEASUREMENT_REPORT utran_csg_measurement_report;
+};
+gas_meas_content_struct gas_meas_content_struct_s_1_tag gas_meas_content_struct_s_1_value:
+{
+    GAS_MEAS_CONTENT_STRUCT_S_2 m_gas_meas_content_struct_s_2;
+};
+fixed_allocation_struct_s_2 fixed_allocation_struct_s_6_tag fixed_allocation_struct_s_6_value:
+{
+    FIXED_ALLOCATION_STRUCT_S_7 m_fixed_allocation_struct_s_7;
+    ALLOCATION_BITMAP m_allocation_bitmap;
+};
+fixed_allocation_struct fixed_allocation_struct_s_1_tag fixed_allocation_struct_s_1_value:
+{
+    TS_OVERRIDE ts_override;
+    FIXED_ALLOCATION_STRUCT_S_2 m_fixed_allocation_struct_s_2;
+};
+egprs_ack_nack_description_ie egprs_ack_nack_description_ie_s_0_tag egprs_ack_nack_description_ie_s_0_value:
+{
+    M_EGPRS_ACK_NACK_DESCRIPTION_STRUCT m_egprs_ack_nack_description_struct;
+    EGPRS_ACK_NACK_DESCRIPTION_IE_S_1 m_egprs_ack_nack_description_ie_s_1;
+};
+ccch_access_information_struct_s_4 ccch_access_information_struct_s_5_tag ccch_access_information_struct_s_5_value:
+{
+    CCCH_ACCESS_INFORMATION_STRUCT_S_5_BIT m_ccch_access_information_struct_s_5_bit;
+    CCCH_ACCESS_INFORMATION_STRUCT_S_6 m_ccch_access_information_struct_s_6;
+};
+ccch_access_information_struct ccch_access_information_struct_s_3_tag ccch_access_information_struct_s_3_value:
+{
+    CCCH_ACCESS_INFORMATION_STRUCT_S_3_BIT m_ccch_access_information_struct_s_3_bit;
+    CCCH_ACCESS_INFORMATION_STRUCT_S_4 m_ccch_access_information_struct_s_4;
+};
+ncp2_repeat_struct_s_1 ncp2_repeat_struct_s_2_tag ncp2_repeat_struct_s_2_value:
+{
+    NCP2_REPEAT_STRUCT_S_3 m_ncp2_repeat_struct_s_3;
+};
+compact_ncp2_repeat_struct_s_1 compact_ncp2_repeat_struct_s_2_tag compact_ncp2_repeat_struct_s_2_value:
+{
+    COMPACT_NCP2_REPEAT_STRUCT_S_3 m_compact_ncp2_repeat_struct_s_3;
+};
+repeated_iu_page_info_struct_s_1 repeated_iu_page_info_struct_s_2_tag repeated_iu_page_info_struct_s_2_value:
+{
+    REPEATED_IU_PAGE_INFO_STRUCT_TMSI tmsi;
+    REPEATED_IU_PAGE_INFO_STRUCT_PTMSI ptmsi;
+    REPEATED_IU_PAGE_INFO_STRUCT_S_3 m_repeated_iu_page_info_struct_s_3;
+};
+repeated_iu_page_info_struct repeated_iu_page_info_struct_s_0_tag repeated_iu_page_info_struct_s_0_value:
+{
+    G_RNTI g_rnti;
+    REPEATED_IU_PAGE_INFO_STRUCT_S_1 m_repeated_iu_page_info_struct_s_1;
+};
+dynamic_allocation_struct dynamic_allocation_struct_s_6_tag dynamic_allocation_struct_s_6_value:
+{
+    TIMESLOT_ALLOCATION timeslot_allocation;
+    TIMESLOT_ALLOCATION_WITH_POWER_CONTROL timeslot_allocation_with_power_control;
+};
+dynamic_allocation_in_ptr_struct dynamic_allocation_in_ptr_struct_s_5_tag dynamic_allocation_in_ptr_struct_s_5_value:
+{
+    DYNAMIC_ALLOCATION_IN_PTR_STRUCT_TIMESLOT_ALLOCATION timeslot_allocation;
+    DYNAMIC_ALLOCATION_IN_PTR_STRUCT_TIMESLOT_ALLOCATION_WITH_POWER_CONTROL timeslot_allocation_with_power_control;
+};
+dual_carrier_frequency_parameters_ie dual_carrier_frequency_parameters_ie_s_1_tag dual_carrier_frequency_parameters_ie_s_1_value:
+{
+    DUAL_CARRIER_FREQUENCY_PARAMETERS_IE_S_2 m_dual_carrier_frequency_parameters_ie_s_2;
+    INDIRECT_ENCODING indirect_encoding;
+    DIRECT_ENCODING_1 direct_encoding_1;
+    DIRECT_ENCODING_2 direct_encoding_2;
+};
+pdch_pairs_description_ie_for_mttr_s_1 pdch_pairs_description_ie_for_mttr_s_2_tag pdch_pairs_description_ie_for_mttr_s_2_value:
+{
+    PDCH_PAIRS_DESCRIPTION_IE_FOR_MTTR_S_3 m_pdch_pairs_description_ie_for_mttr_s_3;
+};
+pdch_pairs_description_ie_for_mttr_s_5 pdch_pairs_description_ie_for_mttr_s_6_tag pdch_pairs_description_ie_for_mttr_s_6_value:
+{
+    PDCH_PAIRS_DESCRIPTION_IE_FOR_MTTR_S_7 m_pdch_pairs_description_ie_for_mttr_s_7;
+};
+pdch_pairs_description_ie_for_mttr pdch_pairs_description_ie_for_mttr_s_0_tag pdch_pairs_description_ie_for_mttr_s_0_value:
+{
+    PDCH_PAIRS_DESCRIPTION_IE_FOR_MTTR_S_1 m_pdch_pairs_description_ie_for_mttr_s_1;
+    PDCH_PAIRS_DESCRIPTION_IE_FOR_MTTR_S_5 m_pdch_pairs_description_ie_for_mttr_s_5;
+};
+packet_control_acknowledgement_message_content_s_2 packet_control_acknowledgement_message_content_s_5_tag packet_control_acknowledgement_message_content_s_5_value:
+{
+    PACKET_CONTROL_ACKNOWLEDGEMENT_MESSAGE_CONTENT_S_5_BIT m_packet_control_acknowledgement_message_content_s_5_bit;
+    PACKET_CONTROL_ACKNOWLEDGEMENT_MESSAGE_CONTENT_S_6 m_packet_control_acknowledgement_message_content_s_6;
+};
+packet_control_acknowledgement_message_content packet_control_acknowledgement_message_content_s_1_tag packet_control_acknowledgement_message_content_s_1_value:
+{
+    PACKET_CONTROL_ACKNOWLEDGEMENT_MESSAGE_CONTENT_S_1_BIT m_packet_control_acknowledgement_message_content_s_1_bit;
+    PACKET_CONTROL_ACKNOWLEDGEMENT_MESSAGE_CONTENT_S_2 m_packet_control_acknowledgement_message_content_s_2;
+};
+packet_control_acknowledgement_11_bit_message packet_control_acknowledgement_11_bit_message_s_1_tag packet_control_acknowledgement_11_bit_message_s_1_value:
+{
+    PACKET_CONTROL_ACKNOWLEDGEMENT_11_BIT_MESSAGE_S_2 m_packet_control_acknowledgement_11_bit_message_s_2;
+};
+packet_control_acknowledgement_8_bit_message packet_control_acknowledgement_8_bit_message_s_1_tag packet_control_acknowledgement_8_bit_message_s_1_value:
+{
+    TN_RRBP tn_rrbp;
+};
+packet_cell_change_failure_message_content_s_9 packet_cell_change_failure_message_content_s_11_tag packet_cell_change_failure_message_content_s_11_value:
+{
+    PACKET_CELL_CHANGE_FAILURE_MESSAGE_CONTENT_S_11_BIT m_packet_cell_change_failure_message_content_s_11_bit;
+    PACKET_CELL_CHANGE_FAILURE_MESSAGE_CONTENT_S_12 m_packet_cell_change_failure_message_content_s_12;
+};
+packet_cell_change_failure_message_content_s_6 packet_cell_change_failure_message_content_s_8_tag packet_cell_change_failure_message_content_s_8_value:
+{
+    PACKET_CELL_CHANGE_FAILURE_MESSAGE_CONTENT_S_8_BIT m_packet_cell_change_failure_message_content_s_8_bit;
+    PACKET_CELL_CHANGE_FAILURE_MESSAGE_CONTENT_S_9 m_packet_cell_change_failure_message_content_s_9;
+};
+packet_cell_change_failure_message_content_s_2 packet_cell_change_failure_message_content_s_5_tag packet_cell_change_failure_message_content_s_5_value:
+{
+    PACKET_CELL_CHANGE_FAILURE_MESSAGE_CONTENT_S_5_BIT m_packet_cell_change_failure_message_content_s_5_bit;
+    PACKET_CELL_CHANGE_FAILURE_MESSAGE_CONTENT_S_6 m_packet_cell_change_failure_message_content_s_6;
+};
+packet_cell_change_failure_message_content packet_cell_change_failure_message_content_s_1_tag packet_cell_change_failure_message_content_s_1_value:
+{
+    PACKET_CELL_CHANGE_FAILURE_MESSAGE_CONTENT_S_1_BIT m_packet_cell_change_failure_message_content_s_1_bit;
+    PACKET_CELL_CHANGE_FAILURE_MESSAGE_CONTENT_S_2 m_packet_cell_change_failure_message_content_s_2;
+};
+packet_cell_change_notification_message_content_s_9 packet_cell_change_notification_message_content_s_10_tag packet_cell_change_notification_message_content_s_10_value:
+{
+    UTRAN_CSG_TARGET_CELL_MEASUREMENT_REPORT utran_csg_target_cell_measurement_report;
+    E_UTRAN_CSG_TARGET_CELL_MEASUREMENT_REPORT e_utran_csg_target_cell_measurement_report;
+};
+packet_cell_change_notification_message_content_s_14 packet_cell_change_notification_message_content_s_16_tag packet_cell_change_notification_message_content_s_16_value:
+{
+    PACKET_CELL_CHANGE_NOTIFICATION_MESSAGE_CONTENT_S_16_BIT m_packet_cell_change_notification_message_content_s_16_bit;
+    CSG_DISCRIMINATOR csg_discriminator;
+};
+packet_cell_change_notification_message_content packet_cell_change_notification_message_content_s_1_tag packet_cell_change_notification_message_content_s_1_value:
+{
+    PACKET_CELL_CHANGE_NOTIFICATION_MESSAGE_CONTENT_S_2 m_packet_cell_change_notification_message_content_s_2;
+    P_3_G_TARGET_CELL p_3_g_target_cell;
+    PACKET_CELL_CHANGE_NOTIFICATION_MESSAGE_CONTENT_S_3 m_packet_cell_change_notification_message_content_s_3;
+    PACKET_CELL_CHANGE_NOTIFICATION_MESSAGE_CONTENT_S_9 m_packet_cell_change_notification_message_content_s_9;
+};
+packet_cell_change_notification_message_content packet_cell_change_notification_message_content_s_12_tag packet_cell_change_notification_message_content_s_12_value:
+{
+    BA_USED ba_used;
+    PSI3_CHANGE_MARK psi3_change_mark;
+};
+packet_cell_change_notification_message_content packet_cell_change_notification_message_content_s_13_tag packet_cell_change_notification_message_content_s_13_value:
+{
+    PACKET_CELL_CHANGE_NOTIFICATION_MESSAGE_CONTENT_S_13_BIT m_packet_cell_change_notification_message_content_s_13_bit;
+    PACKET_CELL_CHANGE_NOTIFICATION_MESSAGE_CONTENT_S_14 m_packet_cell_change_notification_message_content_s_14;
+};
+packet_downlink_ack_nack_message_content_s_6 packet_downlink_ack_nack_message_content_s_10_tag packet_downlink_ack_nack_message_content_s_10_value:
+{
+    PACKET_DOWNLINK_ACK_NACK_MESSAGE_CONTENT_S_10_BIT m_packet_downlink_ack_nack_message_content_s_10_bit;
+    PACKET_DOWNLINK_ACK_NACK_MESSAGE_CONTENT_S_11 m_packet_downlink_ack_nack_message_content_s_11;
+};
+packet_downlink_ack_nack_message_content_s_3 packet_downlink_ack_nack_message_content_s_5_tag packet_downlink_ack_nack_message_content_s_5_value:
+{
+    PACKET_DOWNLINK_ACK_NACK_MESSAGE_CONTENT_S_5_BIT m_packet_downlink_ack_nack_message_content_s_5_bit;
+    PACKET_DOWNLINK_ACK_NACK_MESSAGE_CONTENT_S_6 m_packet_downlink_ack_nack_message_content_s_6;
+};
+packet_downlink_ack_nack_message_content packet_downlink_ack_nack_message_content_s_2_tag packet_downlink_ack_nack_message_content_s_2_value:
+{
+    PACKET_DOWNLINK_ACK_NACK_MESSAGE_CONTENT_S_2_BIT m_packet_downlink_ack_nack_message_content_s_2_bit;
+    PACKET_DOWNLINK_ACK_NACK_MESSAGE_CONTENT_S_3 m_packet_downlink_ack_nack_message_content_s_3;
+};
+packet_uplink_dummy_control_block_message_content packet_uplink_dummy_control_block_message_content_s_1_tag packet_uplink_dummy_control_block_message_content_s_1_value:
+{
+    PACKET_UPLINK_DUMMY_CONTROL_BLOCK_MESSAGE_CONTENT_S_1_BIT m_packet_uplink_dummy_control_block_message_content_s_1_bit;
+    PACKET_UPLINK_DUMMY_CONTROL_BLOCK_MESSAGE_CONTENT_S_2 m_packet_uplink_dummy_control_block_message_content_s_2;
+};
+packet_measurement_report_message_content_s_6 packet_measurement_report_message_content_s_7_tag packet_measurement_report_message_content_s_7_value:
+{
+    PACKET_MEASUREMENT_REPORT_MESSAGE_CONTENT_S_8 m_packet_measurement_report_message_content_s_8;
+    PACKET_MEASUREMENT_REPORT_MESSAGE_CONTENT_PSI3_CHANGE_MARK psi3_change_mark;
+};
+packet_measurement_report_message_content_s_14 packet_measurement_report_message_content_s_16_tag packet_measurement_report_message_content_s_16_value:
+{
+    PACKET_MEASUREMENT_REPORT_MESSAGE_CONTENT_S_16_BIT m_packet_measurement_report_message_content_s_16_bit;
+    PACKET_MEASUREMENT_REPORT_MESSAGE_CONTENT_S_17 m_packet_measurement_report_message_content_s_17;
+};
+packet_measurement_report_message_content_s_11 packet_measurement_report_message_content_s_13_tag packet_measurement_report_message_content_s_13_value:
+{
+    PACKET_MEASUREMENT_REPORT_MESSAGE_CONTENT_S_13_BIT m_packet_measurement_report_message_content_s_13_bit;
+    PACKET_MEASUREMENT_REPORT_MESSAGE_CONTENT_S_14 m_packet_measurement_report_message_content_s_14;
+};
+packet_measurement_report_message_content_s_4 packet_measurement_report_message_content_s_10_tag packet_measurement_report_message_content_s_10_value:
+{
+    PACKET_MEASUREMENT_REPORT_MESSAGE_CONTENT_S_10_BIT m_packet_measurement_report_message_content_s_10_bit;
+    PACKET_MEASUREMENT_REPORT_MESSAGE_CONTENT_S_11 m_packet_measurement_report_message_content_s_11;
+};
+packet_measurement_report_message_content packet_measurement_report_message_content_s_2_tag packet_measurement_report_message_content_s_2_value:
+{
+    NC_MEASUREMENT_REPORT nc_measurement_report;
+    EXT_MEASUREMENT_REPORT ext_measurement_report;
+};
+packet_measurement_report_message_content packet_measurement_report_message_content_s_3_tag packet_measurement_report_message_content_s_3_value:
+{
+    PACKET_MEASUREMENT_REPORT_MESSAGE_CONTENT_S_3_BIT m_packet_measurement_report_message_content_s_3_bit;
+    PACKET_MEASUREMENT_REPORT_MESSAGE_CONTENT_S_4 m_packet_measurement_report_message_content_s_4;
+};
+packet_psi_status_message_content packet_psi_status_message_content_s_1_tag packet_psi_status_message_content_s_1_value:
+{
+    PACKET_PSI_STATUS_MESSAGE_CONTENT_S_1_BIT m_packet_psi_status_message_content_s_1_bit;
+    PACKET_PSI_STATUS_MESSAGE_CONTENT_S_2 m_packet_psi_status_message_content_s_2;
+};
+packet_si_status_message_content packet_si_status_message_content_s_1_tag packet_si_status_message_content_s_1_value:
+{
+    PACKET_SI_STATUS_MESSAGE_CONTENT_S_1_BIT m_packet_si_status_message_content_s_1_bit;
+    PACKET_SI_STATUS_MESSAGE_CONTENT_S_2 m_packet_si_status_message_content_s_2;
+};
+additional_ms_radio_access_capabilities_message_content additional_ms_radio_access_capabilities_message_content_s_1_tag additional_ms_radio_access_capabilities_message_content_s_1_value:
+{
+    ADDITIONAL_MS_RADIO_ACCESS_CAPABILITIES_MESSAGE_CONTENT_GLOBAL_TFI global_tfi;
+    TLLI tlli;
+};
+nc_measurement_report_struct_en nc_measurement_report_struct_en_s_1_tag nc_measurement_report_struct_en_s_1_value:
+{
+    NC_MEASUREMENT_REPORT_STRUCT_EN_S_2 m_nc_measurement_report_struct_en_s_2;
+    NC_MEASUREMENT_REPORT_STRUCT_EN_PSI3_CHANGE_MARK psi3_change_mark;
+};
+frequency_parameters_ie frequency_parameters_ie_s_1_tag frequency_parameters_ie_s_1_value:
+{
+    ARFCN1 arfcn1;
+    FREQUENCY_PARAMETERS_IE_INDIRECT_ENCODING indirect_encoding;
+    FREQUENCY_PARAMETERS_IE_DIRECT_ENCODING_1 direct_encoding_1;
+    FREQUENCY_PARAMETERS_IE_DIRECT_ENCODING_2 direct_encoding_2;
+};
+fixed_allocation_struct_2 fixed_allocation_struct_2_s_1_tag fixed_allocation_struct_2_s_1_value:
+{
+    UPLINK_TIMESLOT_ALLOCATION uplink_timeslot_allocation;
+    POWER_CONTROL_PARAMETERS power_control_parameters;
+};
+fixed_allocation_struct_2 fixed_allocation_struct_2_s_7_tag fixed_allocation_struct_2_s_7_value:
+{
+    FIXED_ALLOCATION_STRUCT_2_S_8 m_fixed_allocation_struct_2_s_8;
+    ALLOCATION_BITMAP_1 m_allocation_bitmap_1;
+};
+pbcch_description_struct_2 pbcch_description_struct_2_s_1_tag pbcch_description_struct_2_s_1_value:
+{
+    PBCCH_DESCRIPTION_STRUCT_2_S_1_BIT m_pbcch_description_struct_2_s_1_bit;
+    PSI_CHANGED_IND psi_changed_ind;
+};
+pccch_description_struct_1 pccch_description_struct_1_s_1_tag pccch_description_struct_1_s_1_value:
+{
+    NON_HOPPING_PCCCH_CARRIERS non_hopping_pccch_carriers;
+    PCCCH_DESCRIPTION_STRUCT_1_S_2 m_pccch_description_struct_1_s_2;
+};
+em1_struct_s_2 em1_struct_s_2_tag em1_struct_s_2_value:
+{
+    NCC_PERMITTED ncc_permitted;
+    EM1_STRUCT_S_3 m_em1_struct_s_3;
+};
+ps_handover_radio_resources_ie ps_handover_radio_resources_ie_s_11_tag ps_handover_radio_resources_ie_s_11_value:
+{
+    GPRS_MODE gprs_mode;
+    EGPRS_MODE egprs_mode;
+};
+egprs_mode_struct_in_ps_ho_rr_2_s_19 egprs_mode_struct_in_ps_ho_rr_2_s_20_tag egprs_mode_struct_in_ps_ho_rr_2_s_20_value:
+{
+    EGPRS_MODE_STRUCT_IN_PS_HO_RR_2_S_21 m_egprs_mode_struct_in_ps_ho_rr_2_s_21;
+};
+egprs_mode_struct_in_ps_ho_rr_2_s_23 egprs_mode_struct_in_ps_ho_rr_2_s_24_tag egprs_mode_struct_in_ps_ho_rr_2_s_24_value:
+{
+    EGPRS_MODE_STRUCT_IN_PS_HO_RR_2_S_25 m_egprs_mode_struct_in_ps_ho_rr_2_s_25;
+};
+egprs_mode_struct_in_ps_ho_rr_2_s_18 egprs_mode_struct_in_ps_ho_rr_2_s_18_tag egprs_mode_struct_in_ps_ho_rr_2_s_18_value:
+{
+    EGPRS_MODE_STRUCT_IN_PS_HO_RR_2_S_19 m_egprs_mode_struct_in_ps_ho_rr_2_s_19;
+    EGPRS_MODE_STRUCT_IN_PS_HO_RR_2_S_23 m_egprs_mode_struct_in_ps_ho_rr_2_s_23;
+};
+packet_enhanced_measurement_report_message_content_s_6 packet_enhanced_measurement_report_message_content_s_9_tag packet_enhanced_measurement_report_message_content_s_9_value:
+{
+    PACKET_ENHANCED_MEASUREMENT_REPORT_MESSAGE_CONTENT_S_9_BIT m_packet_enhanced_measurement_report_message_content_s_9_bit;
+    PACKET_ENHANCED_MEASUREMENT_REPORT_MESSAGE_CONTENT_S_10 m_packet_enhanced_measurement_report_message_content_s_10;
+};
+packet_enhanced_measurement_report_message_content_s_3 packet_enhanced_measurement_report_message_content_s_5_tag packet_enhanced_measurement_report_message_content_s_5_value:
+{
+    PACKET_ENHANCED_MEASUREMENT_REPORT_MESSAGE_CONTENT_S_5_BIT m_packet_enhanced_measurement_report_message_content_s_5_bit;
+    PACKET_ENHANCED_MEASUREMENT_REPORT_MESSAGE_CONTENT_S_6 m_packet_enhanced_measurement_report_message_content_s_6;
+};
+packet_enhanced_measurement_report_message_content packet_enhanced_measurement_report_message_content_s_2_tag packet_enhanced_measurement_report_message_content_s_2_value:
+{
+    PACKET_ENHANCED_MEASUREMENT_REPORT_MESSAGE_CONTENT_S_2_BIT m_packet_enhanced_measurement_report_message_content_s_2_bit;
+    PACKET_ENHANCED_MEASUREMENT_REPORT_MESSAGE_CONTENT_S_3 m_packet_enhanced_measurement_report_message_content_s_3;
+};
+packet_resource_request_message_content_s_20 packet_resource_request_message_content_s_25_tag packet_resource_request_message_content_s_25_value:
+{
+    PACKET_RESOURCE_REQUEST_MESSAGE_CONTENT_S_25_BIT m_packet_resource_request_message_content_s_25_bit;
+    PACKET_RESOURCE_REQUEST_MESSAGE_CONTENT_S_26 m_packet_resource_request_message_content_s_26;
+};
+packet_resource_request_message_content_s_15 packet_resource_request_message_content_s_19_tag packet_resource_request_message_content_s_19_value:
+{
+    PACKET_RESOURCE_REQUEST_MESSAGE_CONTENT_S_19_BIT m_packet_resource_request_message_content_s_19_bit;
+    PACKET_RESOURCE_REQUEST_MESSAGE_CONTENT_S_20 m_packet_resource_request_message_content_s_20;
+};
+packet_resource_request_message_content packet_resource_request_message_content_s_2_tag packet_resource_request_message_content_s_2_value:
+{
+    PACKET_RESOURCE_REQUEST_MESSAGE_CONTENT_GLOBAL_TFI global_tfi;
+    PACKET_RESOURCE_REQUEST_MESSAGE_CONTENT_TLLI___G_RNTI tlli___g_rnti;
+};
+packet_resource_request_message_content packet_resource_request_message_content_s_14_tag packet_resource_request_message_content_s_14_value:
+{
+    PACKET_RESOURCE_REQUEST_MESSAGE_CONTENT_S_14_BIT m_packet_resource_request_message_content_s_14_bit;
+    PACKET_RESOURCE_REQUEST_MESSAGE_CONTENT_S_15 m_packet_resource_request_message_content_s_15;
+};
+header_struct1 pay_load_tag pay_load_value:
+{
+    DATA_BLK_HDR data_blk_hdr;
+    CTRL_BLK_HDR1 ctrl_blk_hdr1;
+    CTRL_BLK_HDR2 ctrl_blk_hdr2;
+};
+packet_timeslot_reconfigure_message_content_s_14 packet_timeslot_reconfigure_message_content_s_18_tag packet_timeslot_reconfigure_message_content_s_18_value:
+{
+    PACKET_TIMESLOT_RECONFIGURE_MESSAGE_CONTENT_S_18_BIT m_packet_timeslot_reconfigure_message_content_s_18_bit;
+    PACKET_TIMESLOT_RECONFIGURE_MESSAGE_CONTENT_S_19 m_packet_timeslot_reconfigure_message_content_s_19;
+};
+packet_timeslot_reconfigure_message_content_s_11 packet_timeslot_reconfigure_message_content_s_13_tag packet_timeslot_reconfigure_message_content_s_13_value:
+{
+    PACKET_TIMESLOT_RECONFIGURE_MESSAGE_CONTENT_S_13_BIT m_packet_timeslot_reconfigure_message_content_s_13_bit;
+    PACKET_TIMESLOT_RECONFIGURE_MESSAGE_CONTENT_S_14 m_packet_timeslot_reconfigure_message_content_s_14;
+};
+packet_timeslot_reconfigure_message_content_s_5 packet_timeslot_reconfigure_message_content_s_9_tag packet_timeslot_reconfigure_message_content_s_9_value:
+{
+    DYNAMIC_ALLOCATION dynamic_allocation;
+    FIXED_ALLOCATION fixed_allocation;
+};
+packet_timeslot_reconfigure_message_content_s_5 packet_timeslot_reconfigure_message_content_s_10_tag packet_timeslot_reconfigure_message_content_s_10_value:
+{
+    PACKET_TIMESLOT_RECONFIGURE_MESSAGE_CONTENT_S_10_BIT m_packet_timeslot_reconfigure_message_content_s_10_bit;
+    PACKET_TIMESLOT_RECONFIGURE_MESSAGE_CONTENT_S_11 m_packet_timeslot_reconfigure_message_content_s_11;
+};
+s_40 s_44_tag s_44_value:
+{
+    S_44_BIT m_s_44_bit;
+    S_45 m_s_45;
+};
+s_35 s_39_tag s_39_value:
+{
+    S_39_BIT m_s_39_bit;
+    S_40 m_s_40;
+};
+s_25 s_33_tag s_33_value:
+{
+    PACKET_TIMESLOT_RECONFIGURE_MESSAGE_CONTENT_DYNAMIC_ALLOCATION dynamic_allocation;
+    PACKET_TIMESLOT_RECONFIGURE_MESSAGE_CONTENT_FIXED_ALLOCATION fixed_allocation;
+};
+s_25 s_34_tag s_34_value:
+{
+    S_34_BIT m_s_34_bit;
+    S_35 m_s_35;
+};
+s_23 s_23_tag s_23_value:
+{
+    S_24 m_s_25;
+};
+packet_timeslot_reconfigure_message_content packet_timeslot_reconfigure_message_content_s_3_tag packet_timeslot_reconfigure_message_content_s_3_value:
+{
+    PACKET_TIMESLOT_RECONFIGURE_MESSAGE_CONTENT_S_4 m_packet_timeslot_reconfigure_message_content_s_5;
+    S_23 m_s_23;
+};
+packet_uplink_ack_nack_message_content_s_12 packet_uplink_ack_nack_message_content_s_14_tag packet_uplink_ack_nack_message_content_s_14_value:
+{
+    PACKET_UPLINK_ACK_NACK_MESSAGE_CONTENT_S_14_BIT m_packet_uplink_ack_nack_message_content_s_14_bit;
+    PACKET_UPLINK_ACK_NACK_MESSAGE_CONTENT_S_15 m_packet_uplink_ack_nack_message_content_s_15;
+};
+packet_uplink_ack_nack_message_content_s_5 packet_uplink_ack_nack_message_content_s_11_tag packet_uplink_ack_nack_message_content_s_11_value:
+{
+    PACKET_UPLINK_ACK_NACK_MESSAGE_CONTENT_S_11_BIT m_packet_uplink_ack_nack_message_content_s_11_bit;
+    PACKET_UPLINK_ACK_NACK_MESSAGE_CONTENT_S_12 m_packet_uplink_ack_nack_message_content_s_12;
+};
+packet_uplink_ack_nack_message_content_s_21 packet_uplink_ack_nack_message_content_s_29_tag packet_uplink_ack_nack_message_content_s_29_value:
+{
+    PACKET_UPLINK_ACK_NACK_MESSAGE_CONTENT_S_29_BIT m_packet_uplink_ack_nack_message_content_s_29_bit;
+    PACKET_UPLINK_ACK_NACK_MESSAGE_CONTENT_S_30 m_packet_uplink_ack_nack_message_content_s_30;
+};
+packet_uplink_ack_nack_message_content packet_uplink_ack_nack_message_content_s_3_tag packet_uplink_ack_nack_message_content_s_3_value:
+{
+    PACKET_UPLINK_ACK_NACK_MESSAGE_CONTENT_S_4 m_packet_uplink_ack_nack_message_content_s_5;
+    PACKET_UPLINK_ACK_NACK_MESSAGE_CONTENT_S_18 m_packet_uplink_ack_nack_message_content_s_21;
+};
+psi14_message_content psi14_message_content_s_1_tag psi14_message_content_s_1_value:
+{
+    CCCH_ACCESS_INFORMATION ccch_access_information;
+    PSI14_MESSAGE_CONTENT_S_2 m_psi14_message_content_s_2;
+};
+psi13_message_content_s_9 psi13_message_content_s_10_tag psi13_message_content_s_10_value:
+{
+    PSI13_MESSAGE_CONTENT_S_10_BIT m_psi13_message_content_s_10_bit;
+    PSI13_MESSAGE_CONTENT_S_11 m_psi13_message_content_s_11;
+};
+psi13_message_content_s_7 psi13_message_content_s_8_tag psi13_message_content_s_8_value:
+{
+    PSI13_MESSAGE_CONTENT_S_8_BIT m_psi13_message_content_s_8_bit;
+    PSI13_MESSAGE_CONTENT_S_9 m_psi13_message_content_s_9;
+};
+psi13_message_content psi13_message_content_s_3_tag psi13_message_content_s_3_value:
+{
+    PSI13_MESSAGE_CONTENT_S_4 m_psi13_message_content_s_4;
+    PSI13_MESSAGE_CONTENT_S_5 m_psi13_message_content_s_5;
+};
+psi13_message_content psi13_message_content_s_6_tag psi13_message_content_s_6_value:
+{
+    PSI13_MESSAGE_CONTENT_S_6_BIT m_psi13_message_content_s_6_bit;
+    PSI13_MESSAGE_CONTENT_S_7 m_psi13_message_content_s_7;
+};
+psi8_message_content psi8_message_content_s_2_tag psi8_message_content_s_2_value:
+{
+    PSI8_MESSAGE_CONTENT_S_2_BIT m_psi8_message_content_s_2_bit;
+    PSI8_MESSAGE_CONTENT_S_3 m_psi8_message_content_s_3;
+};
+psi3_quater_message_content_s_8 psi3_quater_message_content_s_11_tag psi3_quater_message_content_s_11_value:
+{
+    PSI3_QUATER_MESSAGE_CONTENT_S_11_BIT m_psi3_quater_message_content_s_11_bit;
+    PSI3_QUATER_MESSAGE_CONTENT_S_12 m_psi3_quater_message_content_s_12;
+};
+psi3_quater_message_content_s_1 psi3_quater_message_content_s_6_tag psi3_quater_message_content_s_6_value:
+{
+    PSI3_QUATER_MESSAGE_CONTENT_S_7 m_psi3_quater_message_content_s_7;
+    PSI3_QUATER_MESSAGE_CONTENT_S_8 m_psi3_quater_message_content_s_8;
+};
+psi3_bis_message_content_s_11 psi3_bis_message_content_s_13_tag psi3_bis_message_content_s_13_value:
+{
+    PSI3_BIS_MESSAGE_CONTENT_S_13_BIT m_psi3_bis_message_content_s_13_bit;
+    PSI3_BIS_MESSAGE_CONTENT_S_14 m_psi3_bis_message_content_s_14;
+};
+psi3_bis_message_content_s_8 psi3_bis_message_content_s_10_tag psi3_bis_message_content_s_10_value:
+{
+    PSI3_BIS_MESSAGE_CONTENT_S_10_BIT m_psi3_bis_message_content_s_10_bit;
+    PSI3_BIS_MESSAGE_CONTENT_S_11 m_psi3_bis_message_content_s_11;
+};
+psi3_bis_message_content_s_5 psi3_bis_message_content_s_7_tag psi3_bis_message_content_s_7_value:
+{
+    PSI3_BIS_MESSAGE_CONTENT_S_7_BIT m_psi3_bis_message_content_s_7_bit;
+    PSI3_BIS_MESSAGE_CONTENT_S_8 m_psi3_bis_message_content_s_8;
+};
+psi3_bis_message_content_s_1 psi3_bis_message_content_s_4_tag psi3_bis_message_content_s_4_value:
+{
+    PSI3_BIS_MESSAGE_CONTENT_S_4_BIT m_psi3_bis_message_content_s_4_bit;
+    PSI3_BIS_MESSAGE_CONTENT_S_5 m_psi3_bis_message_content_s_5;
+};
+psi3_message_content_s_9 psi3_message_content_s_11_tag psi3_message_content_s_11_value:
+{
+    PSI3_MESSAGE_CONTENT_S_11_BIT m_psi3_message_content_s_11_bit;
+    PSI3_MESSAGE_CONTENT_S_12 m_psi3_message_content_s_12;
+};
+psi3_message_content_s_6 psi3_message_content_s_8_tag psi3_message_content_s_8_value:
+{
+    PSI3_MESSAGE_CONTENT_S_8_BIT m_psi3_message_content_s_8_bit;
+    PSI3_MESSAGE_CONTENT_S_9 m_psi3_message_content_s_9;
+};
+psi3_message_content_s_3 psi3_message_content_s_5_tag psi3_message_content_s_5_value:
+{
+    PSI3_MESSAGE_CONTENT_S_5_BIT m_psi3_message_content_s_5_bit;
+    PSI3_MESSAGE_CONTENT_S_6 m_psi3_message_content_s_6;
+};
+psi3_message_content psi3_message_content_s_2_tag psi3_message_content_s_2_value:
+{
+    PSI3_MESSAGE_CONTENT_S_2_BIT m_psi3_message_content_s_2_bit;
+    PSI3_MESSAGE_CONTENT_S_3 m_psi3_message_content_s_3;
+};
+psi1_message_content_s_3 psi1_message_content_s_4_tag psi1_message_content_s_4_value:
+{
+    PSI1_MESSAGE_CONTENT_S_5 m_psi1_message_content_s_5;
+};
+psi1_message_content psi1_message_content_s_2_tag psi1_message_content_s_2_value:
+{
+    PSI1_MESSAGE_CONTENT_S_3 m_psi1_message_content_s_3;
+};
+packet_power_control_timing_advance_message_content_s_11 packet_power_control_timing_advance_message_content_s_11_tag packet_power_control_timing_advance_message_content_s_11_value:
+{
+    GLOBAL_PACKET_TIMING_ADVANCE global_packet_timing_advance;
+    PACKET_POWER_CONTROL_TIMING_ADVANCE_MESSAGE_CONTENT_POWER_CONTROL_PARAMETERS power_control_parameters;
+};
+packet_power_control_timing_advance_message_content_s_13 packet_power_control_timing_advance_message_content_s_15_tag packet_power_control_timing_advance_message_content_s_15_value:
+{
+    PACKET_POWER_CONTROL_TIMING_ADVANCE_MESSAGE_CONTENT_S_15_BIT m_packet_power_control_timing_advance_message_content_s_15_bit;
+    PACKET_POWER_CONTROL_TIMING_ADVANCE_MESSAGE_CONTENT_S_16 m_packet_power_control_timing_advance_message_content_s_16;
+};
+packet_power_control_timing_advance_message_content packet_power_control_timing_advance_message_content_s_3_tag packet_power_control_timing_advance_message_content_s_3_value:
+{
+    PACKET_POWER_CONTROL_TIMING_ADVANCE_MESSAGE_CONTENT_GLOBAL_TFI global_tfi;
+    TQI tqi;
+    PACKET_POWER_CONTROL_TIMING_ADVANCE_MESSAGE_CONTENT_PACKET_REQUEST_REFERENCE packet_request_reference;
+};
+packet_power_control_timing_advance_message_content packet_power_control_timing_advance_message_content_s_9_tag packet_power_control_timing_advance_message_content_s_9_value:
+{
+    PACKET_POWER_CONTROL_TIMING_ADVANCE_MESSAGE_CONTENT_S_10 m_packet_power_control_timing_advance_message_content_s_10;
+    PACKET_POWER_CONTROL_TIMING_ADVANCE_MESSAGE_CONTENT_S_11 m_packet_power_control_timing_advance_message_content_s_11;
+};
+packet_power_control_timing_advance_message_content packet_power_control_timing_advance_message_content_s_12_tag packet_power_control_timing_advance_message_content_s_12_value:
+{
+    PACKET_POWER_CONTROL_TIMING_ADVANCE_MESSAGE_CONTENT_S_12_BIT m_packet_power_control_timing_advance_message_content_s_12_bit;
+    PACKET_POWER_CONTROL_TIMING_ADVANCE_MESSAGE_CONTENT_S_13 m_packet_power_control_timing_advance_message_content_s_13;
+};
+packet_polling_request_message_content packet_polling_request_message_content_s_3_tag packet_polling_request_message_content_s_3_value:
+{
+    PACKET_POLLING_REQUEST_MESSAGE_CONTENT_GLOBAL_TFI global_tfi;
+    PACKET_POLLING_REQUEST_MESSAGE_CONTENT_TLLI___G_RNTI tlli___g_rnti;
+    PACKET_POLLING_REQUEST_MESSAGE_CONTENT_TQI tqi;
+};
+packet_polling_request_message_content packet_polling_request_message_content_s_6_tag packet_polling_request_message_content_s_6_value:
+{
+    PACKET_POLLING_REQUEST_MESSAGE_CONTENT_S_6_BIT m_packet_polling_request_message_content_s_6_bit;
+    PACKET_POLLING_REQUEST_MESSAGE_CONTENT_S_7 m_packet_polling_request_message_content_s_7;
+};
+packet_paging_request_message_content_s_3 packet_paging_request_message_content_s_5_tag packet_paging_request_message_content_s_5_value:
+{
+    PACKET_PAGING_REQUEST_MESSAGE_CONTENT_S_5_BIT m_packet_paging_request_message_content_s_5_bit;
+    PACKET_PAGING_REQUEST_MESSAGE_CONTENT_S_6 m_packet_paging_request_message_content_s_6;
+};
+packet_downlink_assignment_message_content_s_31 packet_downlink_assignment_message_content_s_33_tag packet_downlink_assignment_message_content_s_33_value:
+{
+    PACKET_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT_S_33_BIT m_packet_downlink_assignment_message_content_s_33_bit;
+    PACKET_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT_S_34 m_packet_downlink_assignment_message_content_s_34;
+};
+packet_downlink_assignment_message_content_s_24 packet_downlink_assignment_message_content_s_30_tag packet_downlink_assignment_message_content_s_30_value:
+{
+    PACKET_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT_S_30_BIT m_packet_downlink_assignment_message_content_s_30_bit;
+    PACKET_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT_S_31 m_packet_downlink_assignment_message_content_s_31;
+};
+packet_downlink_assignment_message_content_s_17 packet_downlink_assignment_message_content_s_23_tag packet_downlink_assignment_message_content_s_23_value:
+{
+    PACKET_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT_S_23_BIT m_packet_downlink_assignment_message_content_s_23_bit;
+    PACKET_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT_S_24 m_packet_downlink_assignment_message_content_s_24;
+};
+packet_downlink_assignment_message_content_s_10 packet_downlink_assignment_message_content_s_16_tag packet_downlink_assignment_message_content_s_16_value:
+{
+    PACKET_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT_S_16_BIT m_packet_downlink_assignment_message_content_s_16_bit;
+    PACKET_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT_S_17 m_packet_downlink_assignment_message_content_s_17;
+};
+packet_downlink_assignment_message_content packet_downlink_assignment_message_content_s_4_tag packet_downlink_assignment_message_content_s_4_value:
+{
+    PACKET_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT_GLOBAL_TFI global_tfi;
+    TLLI__G_RNTI tlli__g_rnti;
+};
+packet_downlink_assignment_message_content packet_downlink_assignment_message_content_s_5_tag packet_downlink_assignment_message_content_s_5_value:
+{
+    PACKET_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT_S_6 m_packet_downlink_assignment_message_content_s_7;
+    PACKET_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT_S_36 m_packet_downlink_assignment_message_content_s_38;
+};
+packet_access_reject_message_content_s_4 packet_access_reject_message_content_s_6_tag packet_access_reject_message_content_s_6_value:
+{
+    PACKET_ACCESS_REJECT_MESSAGE_CONTENT_S_6_BIT m_packet_access_reject_message_content_s_6_bit;
+    PACKET_ACCESS_REJECT_MESSAGE_CONTENT_S_7 m_packet_access_reject_message_content_s_8;
+};
+packet_access_reject_message_content_s_1 packet_access_reject_message_content_s_3_tag packet_access_reject_message_content_s_3_value:
+{
+    PACKET_ACCESS_REJECT_MESSAGE_CONTENT_S_3_BIT m_packet_access_reject_message_content_s_3_bit;
+    PACKET_ACCESS_REJECT_MESSAGE_CONTENT_S_4 m_packet_access_reject_message_content_s_4;
+};
+packet_uplink_assignment_message_content_s_14 packet_uplink_assignment_message_content_s_17_tag packet_uplink_assignment_message_content_s_17_value:
+{
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_17_BIT m_packet_uplink_assignment_message_content_s_17_bit;
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_18 m_packet_uplink_assignment_message_content_s_18;
+};
+packet_uplink_assignment_message_content_s_11 packet_uplink_assignment_message_content_s_13_tag packet_uplink_assignment_message_content_s_13_value:
+{
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_13_BIT m_packet_uplink_assignment_message_content_s_13_bit;
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_14 m_packet_uplink_assignment_message_content_s_14;
+};
+packet_uplink_assignment_message_content_s_7 packet_uplink_assignment_message_content_s_9_tag packet_uplink_assignment_message_content_s_9_value:
+{
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_DYNAMIC_ALLOCATION dynamic_allocation;
+    SINGLE_BLOCK_ALLOCATION single_block_allocation;
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_FIXED_ALLOCATION fixed_allocation;
+};
+packet_uplink_assignment_message_content_s_7 packet_uplink_assignment_message_content_s_10_tag packet_uplink_assignment_message_content_s_10_value:
+{
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_10_BIT m_packet_uplink_assignment_message_content_s_10_bit;
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_11 m_packet_uplink_assignment_message_content_s_11;
+};
+packet_uplink_assignment_message_content_s_36 packet_uplink_assignment_message_content_s_39_tag packet_uplink_assignment_message_content_s_39_value:
+{
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_39_BIT m_packet_uplink_assignment_message_content_s_39_bit;
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_40 m_packet_uplink_assignment_message_content_s_40;
+};
+packet_uplink_assignment_message_content_s_32 packet_uplink_assignment_message_content_s_35_tag packet_uplink_assignment_message_content_s_35_value:
+{
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_35_BIT m_packet_uplink_assignment_message_content_s_35_bit;
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_36 m_packet_uplink_assignment_message_content_s_36;
+};
+packet_uplink_assignment_message_content_s_23 packet_uplink_assignment_message_content_s_30_tag packet_uplink_assignment_message_content_s_30_value:
+{
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_DYNAMIC_ALLOCATION1 dynamic_allocation;
+    MULTI_BLOCK_ALLOCATION multi_block_allocation;
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_FIXED_ALLOCATION1 fixed_allocation;
+};
+packet_uplink_assignment_message_content_s_23 packet_uplink_assignment_message_content_s_31_tag packet_uplink_assignment_message_content_s_31_value:
+{
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_31_BIT m_packet_uplink_assignment_message_content_s_31_bit;
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_32 m_packet_uplink_assignment_message_content_s_32;
+};
+packet_uplink_assignment_message_content_s_21 packet_uplink_assignment_message_content_s_21_tag packet_uplink_assignment_message_content_s_21_value:
+{
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_22 m_packet_uplink_assignment_message_content_s_23;
+};
+packet_uplink_assignment_message_content packet_uplink_assignment_message_content_s_4_tag packet_uplink_assignment_message_content_s_4_value:
+{
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_GLOBAL_TFI global_tfi;
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_TLLI___G_RNTI tlli___g_rnti;
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_TQI tqi;
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_PACKET_REQUEST_REFERENCE packet_request_reference;
+};
+packet_uplink_assignment_message_content packet_uplink_assignment_message_content_s_5_tag packet_uplink_assignment_message_content_s_5_value:
+{
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_6 m_packet_uplink_assignment_message_content_s_7;
+    PACKET_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_21 m_packet_uplink_assignment_message_content_s_21;
+};
+multiple_tbf_downlink_assignment_message_content_s_8 multiple_tbf_downlink_assignment_message_content_s_22_tag multiple_tbf_downlink_assignment_message_content_s_22_value:
+{
+    MULTIPLE_TBF_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT_S_22_BIT m_multiple_tbf_downlink_assignment_message_content_s_22_bit;
+    MULTIPLE_TBF_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT_S_23 m_multiple_tbf_downlink_assignment_message_content_s_23;
+};
+multiple_tbf_downlink_assignment_message_content multiple_tbf_downlink_assignment_message_content_s_4_tag multiple_tbf_downlink_assignment_message_content_s_4_value:
+{
+    MULTIPLE_TBF_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT_GLOBAL_TFI global_tfi;
+    MULTIPLE_TBF_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT_S_5 m_multiple_tbf_downlink_assignment_message_content_s_5;
+};
+multiple_tbf_downlink_assignment_message_content multiple_tbf_downlink_assignment_message_content_s_6_tag multiple_tbf_downlink_assignment_message_content_s_6_value:
+{
+    MULTIPLE_TBF_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT_S_7 m_multiple_tbf_downlink_assignment_message_content_s_8;
+    MULTIPLE_TBF_DOWNLINK_ASSIGNMENT_MESSAGE_CONTENT_S_25 m_multiple_tbf_downlink_assignment_message_content_s_28;
+};
+multiple_tbf_uplink_assignment_message_content_s_15 multiple_tbf_uplink_assignment_message_content_s_22_tag multiple_tbf_uplink_assignment_message_content_s_22_value:
+{
+    MULTIPLE_TBF_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_22_BIT m_multiple_tbf_uplink_assignment_message_content_s_22_bit;
+    MULTIPLE_TBF_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_23 m_multiple_tbf_uplink_assignment_message_content_s_23;
+};
+multiple_tbf_uplink_assignment_message_content_s_13 multiple_tbf_uplink_assignment_message_content_s_13_tag multiple_tbf_uplink_assignment_message_content_s_13_value:
+{
+    MULTIPLE_TBF_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_14 m_multiple_tbf_uplink_assignment_message_content_s_15;
+};
+multiple_tbf_uplink_assignment_message_content multiple_tbf_uplink_assignment_message_content_s_4_tag multiple_tbf_uplink_assignment_message_content_s_4_value:
+{
+    MULTIPLE_TBF_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_GLOBAL_TFI global_tfi;
+    MULTIPLE_TBF_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_5 m_multiple_tbf_uplink_assignment_message_content_s_5;
+};
+multiple_tbf_uplink_assignment_message_content multiple_tbf_uplink_assignment_message_content_s_6_tag multiple_tbf_uplink_assignment_message_content_s_6_value:
+{
+    MULTIPLE_TBF_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_7 m_multiple_tbf_uplink_assignment_message_content_s_8;
+    MULTIPLE_TBF_UPLINK_ASSIGNMENT_MESSAGE_CONTENT_S_13 m_multiple_tbf_uplink_assignment_message_content_s_13;
+};
+ps_handover_to_a_gb_mode_payload ps_handover_command_message_content_s_4_tag ps_handover_command_message_content_s_4_value:
+{
+    PS_HANDOVER_RR_INFO ps_handover_rr_info;
+};
+ps_handover_command_message_content ps_handover_command_message_content_s_3_tag ps_handover_command_message_content_s_3_value:
+{
+    PS_HANDOVER_TO_A_GB_MODE_PAYLOAD m_ps_handover_to_a_gb_mode_payload;
+    PS_HANDOVER_TO_UTRAN_PAYLOAD ps_handover_to_utran_payload;
+};
+multiple_tbf_timeslot_reconfigure_message_content_s_12 multiple_tbf_timeslot_reconfigure_message_content_s_22_tag multiple_tbf_timeslot_reconfigure_message_content_s_22_value:
+{
+    MULTIPLE_TBF_TIMESLOT_RECONFIGURE_MESSAGE_CONTENT_S_22_BIT m_multiple_tbf_timeslot_reconfigure_message_content_s_22_bit;
+    MULTIPLE_TBF_TIMESLOT_RECONFIGURE_MESSAGE_CONTENT_S_23 m_multiple_tbf_timeslot_reconfigure_message_content_s_23;
+};
+multiple_tbf_timeslot_reconfigure_message_content_s_10 multiple_tbf_timeslot_reconfigure_message_content_s_10_tag multiple_tbf_timeslot_reconfigure_message_content_s_10_value:
+{
+    MULTIPLE_TBF_TIMESLOT_RECONFIGURE_MESSAGE_CONTENT_S_11 m_multiple_tbf_timeslot_reconfigure_message_content_s_12;
+};
+multiple_tbf_timeslot_reconfigure_message_content multiple_tbf_timeslot_reconfigure_message_content_s_3_tag multiple_tbf_timeslot_reconfigure_message_content_s_3_value:
+{
+    MULTIPLE_TBF_TIMESLOT_RECONFIGURE_MESSAGE_CONTENT_S_4 m_multiple_tbf_timeslot_reconfigure_message_content_s_5;
+    MULTIPLE_TBF_TIMESLOT_RECONFIGURE_MESSAGE_CONTENT_S_10 m_multiple_tbf_timeslot_reconfigure_message_content_s_10;
+};
+enh_measurement_parameters_struct enh_measurement_parameters_struct_s_1_tag enh_measurement_parameters_struct_s_1_value:
+{
+    ENH_MEASUREMENT_PARAMETERS_STRUCT_S_2 m_enh_measurement_parameters_struct_s_2;
+    ENH_MEASUREMENT_PARAMETERS_STRUCT_PSI3_CHANGE_MARK psi3_change_mark;
+};
+ext_measurement_parameters_struct ext_measurement_parameters_struct_s_0_tag ext_measurement_parameters_struct_s_0_value:
+{
+    M_EM1_STRUCT m_em1_struct;
+};
+gsm_target_cell_struct_s_18 gsm_target_cell_struct_s_19_tag gsm_target_cell_struct_s_19_value:
+{
+    GSM_TARGET_CELL_STRUCT_S_19_BIT m_gsm_target_cell_struct_s_19_bit;
+    GSM_TARGET_CELL_STRUCT_S_20 m_gsm_target_cell_struct_s_20;
+};
+gsm_target_cell_struct_s_11 gsm_target_cell_struct_s_17_tag gsm_target_cell_struct_s_17_value:
+{
+    GSM_TARGET_CELL_STRUCT_S_17_BIT m_gsm_target_cell_struct_s_17_bit;
+    GSM_TARGET_CELL_STRUCT_S_18 m_gsm_target_cell_struct_s_18;
+};
+gsm_target_cell_struct_s_7 gsm_target_cell_struct_s_10_tag gsm_target_cell_struct_s_10_value:
+{
+    GSM_TARGET_CELL_STRUCT_S_10_BIT m_gsm_target_cell_struct_s_10_bit;
+    GSM_TARGET_CELL_STRUCT_S_11 m_gsm_target_cell_struct_s_11;
+};
+gsm_target_cell_struct_s_5 gsm_target_cell_struct_s_6_tag gsm_target_cell_struct_s_6_value:
+{
+    GSM_TARGET_CELL_STRUCT_S_6_BIT m_gsm_target_cell_struct_s_6_bit;
+    GSM_TARGET_CELL_STRUCT_S_7 m_gsm_target_cell_struct_s_7;
+};
+gsm_target_cell_struct_s_2 gsm_target_cell_struct_s_4_tag gsm_target_cell_struct_s_4_value:
+{
+    GSM_TARGET_CELL_STRUCT_S_4_BIT m_gsm_target_cell_struct_s_4_bit;
+    GSM_TARGET_CELL_STRUCT_S_5 m_gsm_target_cell_struct_s_5;
+};
+gsm_target_cell_struct gsm_target_cell_struct_s_1_tag gsm_target_cell_struct_s_1_value:
+{
+    GSM_TARGET_CELL_STRUCT_S_1_BIT m_gsm_target_cell_struct_s_1_bit;
+    GSM_TARGET_CELL_STRUCT_S_2 m_gsm_target_cell_struct_s_2;
+};
+ps_handover_radio_resources_2_ie ps_handover_radio_resources_2_ie_s_5_tag ps_handover_radio_resources_2_ie_s_5_value:
+{
+    PS_HANDOVER_RADIO_RESOURCES_2_IE_S_6 m_ps_handover_radio_resources_2_ie_s_6;
+    DUAL_CARRIER_FREQUENCY_PARAMETERS dual_carrier_frequency_parameters;
+};
+ms_ra_capability_value_part_struct ms_ra_capability_value_part_struct_s_1_tag ms_ra_capability_value_part_struct_s_1_value:
+{
+    ACCESS_CAPABILITIES access_capabilities;
+    MS_RA_CAPABILITY_VALUE_PART_STRUCT_S_2 m_ms_ra_capability_value_part_struct_s_2;
+};
+psi5_message_content_s_7 psi5_message_content_s_9_tag psi5_message_content_s_9_value:
+{
+    PSI5_MESSAGE_CONTENT_S_9_BIT m_psi5_message_content_s_9_bit;
+    PSI5_MESSAGE_CONTENT_S_10 m_psi5_message_content_s_10;
+};
+psi5_message_content_s_4 psi5_message_content_s_6_tag psi5_message_content_s_6_value:
+{
+    PSI5_MESSAGE_CONTENT_S_6_BIT m_psi5_message_content_s_6_bit;
+    PSI5_MESSAGE_CONTENT_S_7 m_psi5_message_content_s_7;
+};
+psi5_message_content psi5_message_content_s_3_tag psi5_message_content_s_3_value:
+{
+    PSI5_MESSAGE_CONTENT_S_3_BIT m_psi5_message_content_s_3_bit;
+    PSI5_MESSAGE_CONTENT_S_4 m_psi5_message_content_s_4;
+};
+psi2_message_content_s_1 psi2_message_content_s_4_tag psi2_message_content_s_4_value:
+{
+    PSI2_MESSAGE_CONTENT_S_4_BIT m_psi2_message_content_s_4_bit;
+    PSI2_MESSAGE_CONTENT_S_5 m_psi2_message_content_s_5;
+};
+packet_measurement_order_message_content_s_25 packet_measurement_order_message_content_s_26_tag packet_measurement_order_message_content_s_26_value:
+{
+    PACKET_MEASUREMENT_ORDER_MESSAGE_CONTENT_S_26_BIT m_packet_measurement_order_message_content_s_26_bit;
+    PACKET_MEASUREMENT_ORDER_MESSAGE_CONTENT_S_27 m_packet_measurement_order_message_content_s_27;
+};
+packet_measurement_order_message_content_s_18 packet_measurement_order_message_content_s_24_tag packet_measurement_order_message_content_s_24_value:
+{
+    PACKET_MEASUREMENT_ORDER_MESSAGE_CONTENT_S_24_BIT m_packet_measurement_order_message_content_s_24_bit;
+    PACKET_MEASUREMENT_ORDER_MESSAGE_CONTENT_S_25 m_packet_measurement_order_message_content_s_25;
+};
+packet_measurement_order_message_content_s_15 packet_measurement_order_message_content_s_17_tag packet_measurement_order_message_content_s_17_value:
+{
+    PACKET_MEASUREMENT_ORDER_MESSAGE_CONTENT_S_17_BIT m_packet_measurement_order_message_content_s_17_bit;
+    PACKET_MEASUREMENT_ORDER_MESSAGE_CONTENT_S_18 m_packet_measurement_order_message_content_s_18;
+};
+packet_measurement_order_message_content_s_12 packet_measurement_order_message_content_s_14_tag packet_measurement_order_message_content_s_14_value:
+{
+    PACKET_MEASUREMENT_ORDER_MESSAGE_CONTENT_S_14_BIT m_packet_measurement_order_message_content_s_14_bit;
+    PACKET_MEASUREMENT_ORDER_MESSAGE_CONTENT_S_15 m_packet_measurement_order_message_content_s_15;
+};
+packet_measurement_order_message_content_s_9 packet_measurement_order_message_content_s_11_tag packet_measurement_order_message_content_s_11_value:
+{
+    PACKET_MEASUREMENT_ORDER_MESSAGE_CONTENT_S_11_BIT m_packet_measurement_order_message_content_s_11_bit;
+    PACKET_MEASUREMENT_ORDER_MESSAGE_CONTENT_S_12 m_packet_measurement_order_message_content_s_12;
+};
+packet_measurement_order_message_content packet_measurement_order_message_content_s_3_tag packet_measurement_order_message_content_s_3_value:
+{
+    PACKET_MEASUREMENT_ORDER_MESSAGE_CONTENT_GLOBAL_TFI global_tfi;
+    PACKET_MEASUREMENT_ORDER_MESSAGE_CONTENT_TLLI___G_RNTI tlli___g_rnti;
+};
+packet_measurement_order_message_content packet_measurement_order_message_content_s_8_tag packet_measurement_order_message_content_s_8_value:
+{
+    PACKET_MEASUREMENT_ORDER_MESSAGE_CONTENT_S_8_BIT m_packet_measurement_order_message_content_s_8_bit;
+    PACKET_MEASUREMENT_ORDER_MESSAGE_CONTENT_S_9 m_packet_measurement_order_message_content_s_9;
+};
+packet_cell_change_order_message_content_s_10 packet_cell_change_order_message_content_s_13_tag packet_cell_change_order_message_content_s_13_value:
+{
+    PACKET_CELL_CHANGE_ORDER_MESSAGE_CONTENT_S_13_BIT m_packet_cell_change_order_message_content_s_13_bit;
+    PACKET_CELL_CHANGE_ORDER_MESSAGE_CONTENT_S_14 m_packet_cell_change_order_message_content_s_14;
+};
+packet_cell_change_order_message_content packet_cell_change_order_message_content_s_3_tag packet_cell_change_order_message_content_s_3_value:
+{
+    PACKET_CELL_CHANGE_ORDER_MESSAGE_CONTENT_GLOBAL_TFI global_tfi;
+    PACKET_CELL_CHANGE_ORDER_MESSAGE_CONTENT_TLLI___G_RNTI tlli___g_rnti;
+};
+packet_cell_change_order_message_content packet_cell_change_order_message_content_s_4_tag packet_cell_change_order_message_content_s_4_value:
+{
+    PACKET_CELL_CHANGE_ORDER_MESSAGE_CONTENT_S_5 m_packet_cell_change_order_message_content_s_6;
+    PACKET_CELL_CHANGE_ORDER_MESSAGE_CONTENT_S_7 m_packet_cell_change_order_message_content_s_10;
+};

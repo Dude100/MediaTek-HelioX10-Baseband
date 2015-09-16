@@ -1,0 +1,132 @@
+/*****************************************************************************
+*  Copyright Statement:
+*  --------------------
+*  This software is protected by Copyright and the information contained
+*  herein is confidential. The software may not be copied and the information
+*  contained herein may not be used or disclosed except with the written
+*  permission of MediaTek Inc. (C) 2005
+*
+*  BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+*  THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+*  RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
+*  AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+*  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+*  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+*  NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+*  SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+*  SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
+*  THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
+*  NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
+*  SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
+*
+*  BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
+*  LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+*  AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+*  OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
+*  MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE. 
+*
+*  THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
+*  WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
+*  LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
+*  RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
+*  THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
+*
+*****************************************************************************/
+
+/*******************************************************************************
+ * Filename:
+ * ---------
+ *   hif_srv_data_path_trace.tmd
+ *
+ * Project:
+ * --------
+ *   TATAKA
+ *
+ * Description:
+ * ------------
+ *   HIF service common data path trace Log.
+ *
+ * Author:
+ * -------
+ *   YiLun Chen
+ *
+ *==============================================================================
+ *                 HISTORY
+ * Below this line, this part is controlled by PVCS VM. DO NOT MODIFY!! 
+ *------------------------------------------------------------------------------
+ * $Log$
+ *
+ * 07 22 2014 cs.huang
+ * [MOLY00071952] [CCCI] Add new CCCI debug mechanism (1. CCCI seq check 2. AP polling MD status)
+ * [CCCI] CCCI new debug mechanism
+ *
+ * 07 01 2014 ap.wang
+ * [MOLY00071092] [HMU] Add tick count
+ * .
+ *
+ * 04 25 2014 cs.huang
+ * [MOLY00063727] [CCCI FS] Add CCCI FS DL trace log & sequence number between PS & L2
+ * [CCCI FS] Add CCCI FS DL trace log & sequence number between PS & L2
+ *
+ * 10 01 2013 ian.cheng
+ * [MOLY00040051] [CCCI] Enhance CCCI L2 Trace and Debug Message
+ * Submit CCCI L2 trace
+ *
+ * 09 06 2013 ap.wang
+ * [MOLY00036761] [CCCI] Add L2 trace log	[CCCI] Add L2 trace log
+ *
+ * 08 28 2013 ap.wang
+ * [MOLY00035451] [HMU] Add L2 trace log
+ * 	[HMU] Add L2 trace for event trigger
+ *
+ * 08 15 2013 yilun.chen
+ * [MOLY00033889] Change buffer usage for HIF data path trace
+ * * [HIF] Change HIF data path log buffer to L2_Buffer.
+ * * [HIF] Follow codegen variable convention.
+ *
+ *------------------------------------------------------------------------------
+ * Upper this line, this part is controlled by PVCS VM. DO NOT MODIFY!! 
+ *==============================================================================
+ *******************************************************************************/
+
+/*
+Notes:
+	MAX MAX_ARG is 7, But the best MIPS is 4.
+	Set MAX_ARG bigger than 4, only affect MIPS of log use more than 4 ARG.
+*/
+
+[Default]
+	HIF_SRV
+	ON
+	L2_Buffer
+	TCMFORCE
+	MAX_ARG 7	
+
+[Modem_Type]
+	Generic
+
+[Class]
+	UL		on
+	DL		on
+	HMU		on
+	CCCI_DL		on
+	CCCI_UL 	on
+	CCCI_DUMP	on
+	CCCI_IMS_DUMP	on
+	CCCI_FS_DUMP	on   	
+	CCCI_DEBUG_SEQ	on
+[String]
+
+[Message]
+	info	HIF_SRV_DUMMY					UL 		"[Module name] filename(): [%d] This is dummy log message"
+	info	HMU_DATA_EVENT_TRIGGER			HMU		"[HMU] EVENT Trigger from(%d) event(%xl) tick(%l)"
+	info	CCCI_WRITE_DATA_TRACE			CCCI_DL		"[CCCI] ccci_write ch(%d) data(%xl,%xl) resrv(%xl)" 
+	info	CCCI_WRITE_GPD_RET_DATA_TRACE	CCCI_DL		"[CCCI] ccci_write_gpd MOD(%d) ch(%l) ret(%l) num_gpd(%l)"
+	info 	CCCI_ULIOR_CB_DATA_TRACE		CCCI_UL		"[CCCI] ccci_ulior_cb ch(%d) seq(%xl) data(%xl,%xl) resrv(%xl)"
+	info 	CCCI_ULBUFF_CB_DATA_TRACE		CCCI_UL		"[CCCI] ccci_ulbuff_cb ch(%d) seq(%xl) data(%xl,%xl) resrv(%xl)"
+	info	CCCI_DATA_DUMP_TRACE			CCCI_DUMP 	"[CCCI DUMP] ch(%d) seq(%xl) idx(%l): %10xl %10xl %10xl %10xl"
+	info	CCCI_IMS_DATA_DUMP_TRACE		CCCI_IMS_DUMP 	"[CCCI IMS DUMP] ch(%d) idx(%l): %10xl %10xl %10xl %10xl"
+	info	CCCI_FS_DATA_DUMP_TRACE			CCCI_FS_DUMP	"[CCCI FS DUMP] ccci_fs_put_buff seq(%d) op(%xl) idx(%l): %10xl %10xl %10xl %10xl"
+	info	CCCI_DEBUG_ADD_SEQ_TRACE		CCCI_DEBUG_SEQ	"[CCCI ADD SEQ] ch(%d) ccci hdr(%xl %xl %xl %xl)"
+	info	CCCI_DEBUG_CHECK_SEQ_TRACE		CCCI_DEBUG_SEQ	"[CCCI CHECK SEQ] ch(%d) ccci hdr(%xl %xl %xl %xl)"
+

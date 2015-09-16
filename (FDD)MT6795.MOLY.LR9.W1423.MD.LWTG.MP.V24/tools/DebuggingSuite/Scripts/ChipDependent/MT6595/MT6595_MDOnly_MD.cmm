@@ -1,0 +1,102 @@
+;; MT6595_MDOnly_MD.cmm
+ENTRY &MD_OPT_RESET
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;     START Cortex-R4 VIEW                                   ;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DO CR4_connect.cmm &MD_OPT_RESET
+
+DATA.TEST 0x0--0x1000 /random
+
+IF &OPT_CFG_GPIO==1
+(
+    DO MT6595_GPIO_Additional_Init.cmm
+)
+
+; Disable AP WDT
+PRINT "Disable AP MD WDT"
+Data.Set SD:(0xA0007000) %LE %LONG 0x22000000
+
+; Disable WDT
+PRINT "Disable MD WDT"
+;;; for 6592: PRINT "[0x&MD_WDT_BASE] <- 0x2200"
+;;; Data.Set SD:(&MD_WDT_BASE+0x0000) %LE %WORD 0x2200
+PRINT "[0x&MD_WDT_BASE] <- 0xf00 + ([0x&MD_WDT_BASE]&(~0x1))"
+Data.Set SD:(&MD_WDT_BASE+0x0000) %LE %WORD (0xf00|(DATA.LONG(SD:(&MD_WDT_BASE+0x0000))&(~0x1)))
+
+; bypass_CTIRQ1_precision_check
+; Avoiding assert at CTIRQ1/2
+;;; Move to MT6595_MDOnly_main.cmm
+;;;PRINT "L1 Assert Bypass" 
+;;;PRINT "[0x83070008] <- 0xABCD"
+;;;Data.Set SD:0x83070008 %LE %WORD 0xABCD
+;;;PRINT "[0x83070010] <- 0x0003"
+;;;Data.Set SD:0x83070010 %LE %WORD 0x0003     ; bit0: disable CTIRQ1/2 timing check
+
+; Remap CR4 bank F to bank 0 (Clear MD_MCU_CON0 bit31~30)
+Data.Set SD:0x80000100 %LE %LONG DATA.LONG(SD:0x80000100)&0x3FFFFFFF
+
+PRINT "MD Boot Mode"
+PRINT "[0x80000010] <- &OPT_MD_BOOT_MODE"
+; Boot Mode
+Data.Set SD:(0x80000010) %LE %LONG &OPT_MD_BOOT_MODE
+
+IF &AP_SETTING==2
+(
+    PRINT "Wait 1s for TinyBootloader ..."
+    WAIT 1s
+)
+
+IF &OPT_LOAD_DSPBIN==1
+(
+    PRINT "Load DSP BIN(Binary Only)..."
+    D.LOAD.BINARY &OPT_DSP_BIN_PATH 0x8000000 /noclear
+)
+
+IF &OPT_LOAD_ELF==1
+(
+    PRINT "Load MD ELF(Symbol Only)..."
+    D.LOAD.ELF &OPT_MD_ELF_PATH /RELPATH /PATH &OPT_MD_SRC_PATH /nocode
+)
+ELSE IF &OPT_LOAD_ELF==2
+(
+    PRINT "Load MD ELF(Download)..."
+    D.LOAD.ELF &OPT_MD_ELF_PATH /RELPATH /PATH &OPT_MD_SRC_PATH
+)
+
+IF &OPT_CFG_TCM==1
+(
+    LOCAL &OPT_ITCM_ADDR
+    LOCAL &OPT_DTCM_ADDR
+    &OPT_ITCM_ADDR="0x"+FORMAT.HEX(8, Image$$INTSRAM_CODE$$Base)
+    &OPT_DTCM_ADDR="0x"+FORMAT.HEX(8, Image$$INTSRAM_DATA$$Base)
+    PRINT "Configure TCM ..."
+    PRINT "ITCM &OPT_ITCM_ADDR"
+    ; Set ATCM Address
+    Data.Set C15:0x0119 %LE %LONG (&OPT_ITCM_ADDR|1)
+    PRINT "DTCM &OPT_DTCM_ADDR"
+    ; Set BTCM Address
+    Data.Set C15:0x0019 %LE %LONG (&OPT_DTCM_ADDR|1)
+)
+
+IF &OPT_CFG_CACHE==1
+(
+    PRINT "Configure Cache ... (Enable)"
+    Data.Set C15:0x0001 %LE %LONG (data.long(C15:0x0001)|(1<<2)|(1<<0xc))
+)
+
+IF &OPT_CFG_MPU==1
+(
+    PRINT "Configure MPU ... (Enable)"
+    DO Cortex-R_MPU_Bushang_Recover.cmm
+)
+
+IF &OPT_CFG_PLL==1
+(
+    PRINT "Configure MD PLL ..."
+    DO MT6595_MD_PLL_Init.cmm
+)
+
+DO MT6595_Ramfs_config.cmm
+
+ENDDO

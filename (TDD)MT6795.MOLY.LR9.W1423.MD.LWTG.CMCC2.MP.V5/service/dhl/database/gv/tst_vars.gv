@@ -1,0 +1,6 @@
+VARS kal_uint32  "" 
+{
+      {tst_ptr_buffer_start}   TST_BUF_START;
+      {tst_ptr_buffer_end}     TST_BUF_END;
+};
+

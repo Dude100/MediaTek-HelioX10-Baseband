@@ -1,0 +1,38 @@
+
+IF &AP_SETTING==0
+(
+    ;; CMM Only Case
+    PRINT "This way is not implemented..."
+    END
+)
+ELSE IF &AP_SETTING==1
+(
+    IF "&OPT_HW_PROFILE"=="MT6595_EVB_E2"
+    (
+        ;; Tiny bootloader ELF image downloaded by CVD case
+        DO CA7_connect.cmm RESET
+    
+        wait 200.us
+
+        ;; Disable WDT
+        Data.Set c:0x10007000 %le %long 0x22000000
+
+        PRINT "Load Preloader"
+        d.load.elf &OPT_TINY_BOOTLOADER_ELF
+
+        Register.Set T 0 ; must
+    
+        PRINT "Wait preloader Enter while(1);"
+        GO
+        WAIT 5.s
+
+        Break
+
+        PRINT "Done"
+    )
+    IF "&OPT_HW_PROFILE"=="MT6795_EVB"
+    (
+    )
+)
+
+ENDDO

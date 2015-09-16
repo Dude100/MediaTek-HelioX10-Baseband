@@ -1,0 +1,120 @@
+ENTRY &RAMFS_IN &CORE_SWITCH
+
+&OPT_MD_START_ADDRESS=0
+
+;; FS address and length on RAM, need to be ported
+IF "&OPT_RAMFS_START_ADDRESS"==""
+(
+    print "[ERROR] No RamDisk addres specified!!!"
+)
+ELSE
+(
+    ; break and switch to CA7
+    IF &CORE_SWITCH==1
+    (
+        BackupRegister
+        break
+        SYSTEM.RESET
+        SYSTEM.CPU CortexA7MPCore
+        SYSTEM.CONFIG CORENUMBER 1
+        SYSTEM.MULTICORE COREBASE 0x80070000              ;; CA7 Corebase
+        SYStem.Option ResBreak OFF
+        SYStem.Option WaitReset OFF
+        SYSTEM.Option EnReset Off
+        SYSTEM.Option TRST off
+        SYSTEM.Up                                         ;; CA7 Connect and Break(Should be)
+
+        &OPT_MD_START_ADDRESS=0x40000000
+    )
+    &OPT_RAMFS_START_ADDRESS=Image$$EXTSRAM_FS_ZI$$Base+&OPT_MD_START_ADDRESS   ; shift 0x40000000 when connected through CA7
+
+    ;For Cortex-A7 bug
+    ;DEBUG.SpeedUp OFF
+
+    ;; Back-up
+    IF &RAMFS_IN==0
+    (
+        IF &OPT_RAMFS_MODE==0
+        (        
+            print "RamFS back-up (Fast Mode)"
+            print "Filename: &OPT_RAMFS_FILENAME"
+            data.save.binary &OPT_RAMFS_FILENAME &OPT_RAMFS_START_ADDRESS--(&OPT_RAMFS_START_ADDRESS+&OPT_RAMFS_LEN)
+            print "Done."
+        )
+        IF &OPT_RAMFS_MODE==1
+        (
+            print "RamFS back-up"
+            print "Input Filename> "
+            enter &IN_FILENAME
+            data.save.binary &IN_FILENAME &OPT_RAMFS_START_ADDRESS--(&OPT_RAMFS_START_ADDRESS+&OPT_RAMFS_LEN)
+            print "Done."
+        )
+    )
+    
+    ;; Restore
+    IF &RAMFS_IN==1
+    (
+        IF &OPT_RAMFS_MODE==0
+        (
+            print "RamFS restore (Fast Mode)"
+            print "Filename: &OPT_RAMFS_FILENAME address: &OPT_RAMFS_START_ADDRESS"
+            data.load.binary &OPT_RAMFS_FILENAME &OPT_RAMFS_START_ADDRESS /nosymbol
+            print "Done."
+        )
+        IF &OPT_RAMFS_MODE==1
+        (
+            print "RamFS restore"
+            DIR
+            print "Input Filename> "
+            enter &IN_FILENAME
+            data.load.binary &IN_FILENAME &OPT_RAMFS_START_ADDRESS /nosymbol
+            print "Done."
+        )
+        
+    )
+    ;For Cortex-A7 bug
+    ;DEBUG.SpeedUp ON    
+    
+    ; switch back to modem core
+    IF &CORE_SWITCH==1
+    (
+        IF &OPT_MD_SEL==1
+        (
+            ;; CR4(MD1) Connection
+            SYSTEM.RESET
+            SYSTEM.CPU CortexR4
+            SYSTEM.JtagClock 5.MHz
+            ;; NOTE: CR4 Corebase address
+            ;;; for 6592: AHB-AP -> 0x20093000
+            ;;; for 6592: APB-AP -> 0x90123000 (Default)
+            ;;; for 6595: Coresight CR4 base 0x1022_3000 (high 8 bit don't care)
+            ;; In case connection fail or operation abnormal, try the other address
+            SYSTEM.MULTICORE COREBASE EAPB:0x10223000 ; CR4 Corebase
+            SYStem.Option ResBreak OFF
+            SYStem.Option WaitReset OFF
+            SYSTEM.Option EnReset Off
+            SYSTEM.Option TRST off
+            SYSTEM.up
+        )
+        ELSE
+        (
+            ;; ARM9(MD2) Connection
+            SYSTEM.RESET
+            SYSTEM.CPU ARM926EJ
+            SYSTEM.JtagClock 5.MHz
+            SYSTEM.MULTICORE JTAGACCESSPORT 2
+            SYSTEM.MULTICORE COREJTAGPORT 0
+            SYStem.Option ResBreak OFF
+            SYStem.Option WaitReset OFF
+            SYSTEM.Option EnReset Off
+            SYSTEM.Option TRST off
+            SYSTEM.up
+        )   ;OPT_MD_SEL
+        
+        &OPT_MD_START_ADDRESS=0x00000000
+        &OPT_RAMFS_START_ADDRESS=Image$$EXTSRAM_FS_ZI$$Base+&OPT_MD_START_ADDRESS   ; shift 0x40000000 when connected through CA7
+        RECoveryRegister
+    )   ;CORE_SWITCH
+    
+)    ;ELSE
+    

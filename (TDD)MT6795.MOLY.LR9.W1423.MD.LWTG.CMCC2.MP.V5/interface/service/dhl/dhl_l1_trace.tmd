@@ -1,0 +1,25 @@
+[Default]
+DHL_L1
+On
+Buffer
+
+[Modem_Type]
+Generic
+
+[Class]
+L1_Time_Info ON
+L1_Info ON
+
+[String]
+
+[Message]
+info UMTS_3G_GEMINI_TIME L1_Time_Info "sim_idx=%b frame=%d ebit=%l bsfn=%d timestamp=%l"
+info UMTS_3G_TIME L1_Time_Info "frame=%d ebit=%l bsfn=%d timestamp=%l"
+info UMTS_2G_GEMINI_TIME L1_Time_Info "sim_idx=%b frame=%f ebit=%d timestamp=%l"
+info UMTS_2G_TIME L1_Time_Info "frame=%f ebit=%d timestamp=%l"
+info UMTS_2G_HANDOVER_TIME L1_Time_Info "frame=%f time=%l"
+info UMTS_3G_HANDOVER_TIME L1_Time_Info "frame=%f time=%l"
+info LTE_4G_TIME L1_Time_Info "phy_timer=%l sample=%d timestamp=%l sfn=%d"
+info LTE_4G_TIME_2 L1_Time_Info "phy_timer=%l sample=%d timestamp=%l sfn=%d _4g_time=%l"
+info LTE_4G_L2_TIME L1_Time_Info "padding=%d timestamp=%l celltime=%l abstick=%l"
+info L1_TRC_REDUMP L1_Info " !!!!!Redump L1 Trace at System Crash!!!!! "

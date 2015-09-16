@@ -1,0 +1,31 @@
+{ Validation }
+Title 		= "[3_3G_CSD_Request]I11: Recursive IPS in NULL"
+ModuleID 	= MOD_DUMMYURR
+MsgID 		= MSG_ID_UDPS_RECURSIVE_IPS_IN_NULL		
+
+/******************************************************************************
+* Data Structure accomnying the above primitive
+typedef struct
+{
+    kal_uint8       ref_count;
+    kal_uint16      msg_len;
+    
+    kal_uint16          uarfcn_bts1;
+} udps_recursive_ips_in_null_struct;   
+*
+*******************************************************************************/
+
+
+{Parameters}
+/******************************************************************************
+* 1. The following is the constrained range for the input of this value.
+* 2. Some combination of the following bit-fields may be suported
+* 3. The parameter range can be changed to support combinations of different bands
+*******************************************************************************/
+
+/* [Variable Name] "corresponding label showen on GUI" */
+[uarfcn_bts1] "UARFCN of lower frequency BTS"
+10562~10838
+9662~9938
+4357~4458
+@10600

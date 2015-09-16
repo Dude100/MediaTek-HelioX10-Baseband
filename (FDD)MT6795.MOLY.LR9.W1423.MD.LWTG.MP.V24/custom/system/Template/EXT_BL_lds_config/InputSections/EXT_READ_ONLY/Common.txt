@@ -1,0 +1,1 @@
+        *bl_BOOTARM_GCC.obj (VECTOR_TBL)

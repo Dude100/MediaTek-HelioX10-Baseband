@@ -1,0 +1,212 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// uas.men
+//
+// [SYNOPSIS]
+// UAS utilities
+//
+// Thanks everyone contributing this UAS menu.
+//
+// @COPYLEFT 2006 WCP/SE1/PS2 and WCP/SE2/CS2 members
+// ALL WRONGS RESERVED
+//
+// [Contributors]
+// WCP/SE1/PS2 and WCP/SE2/CS2 members
+//
+// [License]
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+add
+menu
+(
+	popup "&UAS"
+	(
+		default 
+		popup "Cse"
+		(
+			default
+			menuitem "CSE Context"  	"Var.AddWatch cse"
+			menuitem "CSE state"		"Var.AddWatch (States_CSE)(UrrContext->ptCC->ptCompInfo->pInstanceArray[0]->pFsmContext->state)"
+			menuitem "CSE FSM"  		"Var.AddWatch ((*(((*((*(UrrContext.ptCC)).ptCompInfo)).pInstanceArray)+0)))"
+		)
+		popup "Csce"
+		(
+			default
+			menuitem "CSCE Context"	"Var.AddWatch csceContext"
+			menuitem "CSCE state" 	"Var.AddWatch (States_CSCE)(UrrContext->ptCC->ptCompInfo->pInstanceArray[1]->pFsmContext->state)"
+			menuitem "CSCE FSM"  	"Var.AddWatch ((*(((*((*(UrrContext.ptCC)).ptCompInfo)).pInstanceArray)+1)))"
+		)
+		popup "Sibe"
+		(
+			default
+			menuitem "SIBE Context"		"Var.AddWatch sibe_cnxt_info"
+			menuitem "SIBE state"		"Var.AddWatch (States_SIBE)(UrrContext->ptCC->ptCompInfo->pInstanceArray[2]->pFsmContext->state)"
+			menuitem "SIBE FSM"			"Var.AddWatch ((*(((*((*(UrrContext.ptCC)).ptCompInfo)).pInstanceArray)+2)))"
+		)
+		popup "Usime"
+		(
+			default
+			menuitem "USIME state"	"Var.AddWatch (States_SIBE)(UrrContext->ptCC->ptCompInfo->pInstanceArray[3]->pFsmContext->state)"
+			menuitem "USIME Context"	"Var.AddWatch sibe_cnxt_info"
+			menuitem "USIME FSM"	"Var.AddWatch ((*(((*((*(UrrContext.ptCC)).ptCompInfo)).pInstanceArray)+3)))"
+		)
+		popup "Meme"
+		(
+			default
+			menuitem "MEME state"				"Var.AddWatch (States_MEME)(UrrContext->ptCC->ptCompInfo->pInstanceArray[4]->pFsmContext->state)"
+			menuitem "MEME Context"				"Var.AddWatch meme_context"
+			menuitem "MEME Serving Cell"		"Var.AddWatch meme_context.servingCell"
+			menuitem "UARFCN Map"	         	"Var.AddWatch meme_context.UARFCN"
+			menuitem "Pending UARFCN Map"	 	"Var.AddWatch meme_context.UARFCNPendCNF"
+			menuitem "MEME FSM"		         	"Var.AddWatch ((*(((*((*(UrrContext.ptCC)).ptCompInfo)).pInstanceArray)+4)))"
+			separator
+			menuitem "RRC_DB_CELL_INFO_LIST" 	"Var.View %open (RRC_DB_CELL_INFO_LIST)((*(pDb)).db_root).pDb_meme_cell_info_list[curMemeCellInfoListIdx].pBlob.data"
+			menuitem "DB_INTRA_FREQ_CELL[0]" 	"Var.View %open (RRC_DB_NeighbourCellInfo*)&((*(((*(pDb)).db_root).pDb_meme_cell_info_list[curMemeCellInfoListIdx])).pDb_intra_freq_cell[0].pBlob.data)"
+			menuitem "SIB11"
+			(
+				Var.View (RRC_SysInfoType11*)((*((*((*(((DB_ObjectTraceContainer*)pTraceDb))).db_root.pTraceDb_cell_private[(*(((RRC_DB_UTRAN*)&(*((*(((DB_ObjectContainer*)(pDb)))).db_root.pDb_utran)).data))).cise_CurrentCell_Idx])).pTraceDb_sib11_info)).pCurrentUnpackBlob)
+			)
+			menuitem "SIB18"
+			(
+				Var.View (RRC_SysInfoType11*)((*((*((*(((DB_ObjectTraceContainer*)pTraceDb))).db_root.pTraceDb_cell_private[(*(((RRC_DB_UTRAN*)&(*((*(((DB_ObjectContainer*)(pDb)))).db_root.pDb_utran)).data))).cise_CurrentCell_Idx])).pTraceDb_sib11_info)).pCurrentUnpackBlob)
+			)
+			separator
+			popup "Measurement DB"
+			(
+			  menuitem "RRC_DB_MI_Measurement" "Var.View %open (RRC_DB_MI_Measurement*)&((*((*((*(((DB_ObjectContainer*)(pDb)))).db_root.pDb_measurement[1])).pBlob)).data)"
+			  menuitem "RRC_DB_MI_intraFrequency" "Var.View %open (RRC_DB_MI_intraFrequency*)(&(*((*(((*(pDb)).db_root).pDb_measurement[1])).pDb_intra_frequency_measurement)).data)"
+			  menuitem "RRC_DB_MI_trafficVolume"  "Var.View %open (RRC_DB_MI_trafficVolume*)&((*((*((*((*(((DB_ObjectContainer*)(pDb)))).db_root.pDb_measurement[4])).pDb_traffic_volume_measurement[1])).pBlob)).data)"
+			  menuitem "RRC_DB_MI_ueInternal" "Var.View %open (RRC_DB_MI_ueInternal*)&((*((*((*(((DB_ObjectContainer*)(pDb)))).db_root.pDb_measurement[6])).pDb_ue_internal_measurement)).data)"
+			)
+		)
+		popup "Urlc"
+		(
+			default
+			menuitem "RAB Mapping Table"		"v.w RABMappingTable" 
+			menuitem "Active TX RLC Entity"		"v.w %HEX ActiveTxRLCEntityTable"
+			menuitem "Active RX RLC Entity"		"v.w %HEX ActiveRxRLCEntityTable"
+			menuitem "Waitibg TX RLC Entity"	"v.w %HEX WaitingTxRLCEntityTable"
+			menuitem "Waiting RX RLC Entity"	"v.w %HEX WaitingRxRLCEntityTable"
+			separator
+			menuitem "TM TX FSM 1"	"v.w (tTMTxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+1)).pFsmContext)).pvParams"
+			menuitem "TM TX FSM 2"	"v.w (tTMTxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+2)).pFsmContext)).pvParams"
+			menuitem "TM TX FSM 3"	"v.w (tTMTxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+3)).pFsmContext)).pvParams"
+			menuitem "UM TX FSM 1"	"v.w (tUMTxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+17)).pFsmContext)).pvParams"
+			menuitem "UM TX FSM 2"	"v.w (tUMTxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+18)).pFsmContext)).pvParams"
+			menuitem "UM TX FSM 3"	"v.w (tUMTxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+19)).pFsmContext)).pvParams"
+			menuitem "AM TX FSM 1"	"v.w (tAMTxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+25)).pFsmContext)).pvParams"
+			menuitem "AM TX FSM 2"	"v.w (tAMTxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+26)).pFsmContext)).pvParams"
+			menuitem "AM TX FSM 3"	"v.w (tAMTxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+27)).pFsmContext)).pvParams"
+			menuitem "AM TX FSM 4"	"v.w (tAMTxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+28)).pFsmContext)).pvParams"
+			menuitem "TM RX FSM 1"	"v.w (tTMRxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+33)).pFsmContext)).pvParams"
+			menuitem "TM RX FSM 2"	"v.w (tTMRxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+34)).pFsmContext)).pvParams"
+			menuitem "TM RX FSM 3"	"v.w (tTMRxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+35)).pFsmContext)).pvParams"
+			menuitem "UM RX FSM 1"	"v.w (tUMRxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+52)).pFsmContext)).pvParams"
+			menuitem "UM RX FSM 2"	"v.w (tUMRxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+53)).pFsmContext)).pvParams"
+			menuitem "UM RX FSM 3"	"v.w (tUMRxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+54)).pFsmContext)).pvParams"
+			menuitem "AM RX FSM 1"	"v.w (tAMRxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+60)).pFsmContext)).pvParams"
+			menuitem "AM RX FSM 2"	"v.w (tAMRxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+61)).pFsmContext)).pvParams"
+			menuitem "AM RX FSM 3"	"v.w (tAMRxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+62)).pFsmContext)).pvParams"
+			menuitem "AM RX FSM 4"	"v.w (tAMRxVariables*)(*((*((*((*((*(pL2fsmContext)).ptCC)).ptCompInfo)).pInstanceArray+63)).pFsmContext)).pvParams"
+			separator
+			menuitem "Cipher Config"	"v.w CipheringConfig"
+			separator
+			menuitem "Timer Info"	"v.w urlc_context_info"
+			separator
+			menuitem "PDU Release"	"v.w PduToBeRel"
+			menuitem "ADM UL size"	"v.w adm_pid_uas_ul_pdu_min_left_size"
+			menuitem "ADM DL size"	"v.w adm_pid_uas_dl_pdu_min_left_size"  
+		)
+		popup "Lcl"
+		(
+			default
+		    menuitem "LCL Context"       "Var.AddWatch pLclCntx"
+		)
+		popup "Rrce"
+		(
+			default
+			menuitem "RRCE Context"	"Var.AddWatch rrce_context"
+			separator
+			menuitem "RRCE at" 		"Var.AddWatch  (char)'N' (char)'I' (char)'C' (char)(UrrContext->ptCC->ptCompInfo->pInstanceArray[5].SMInfo.processName[3])"   			
+			menuitem "RRCN state"	"Var.AddWatch (States_RRCN)(UrrContext->ptCC->ptCompInfo->pInstanceArray[5]->pFsmContext->state)" 		
+			menuitem "RRCI state"	"Var.AddWatch (States_RRCI)(UrrContext->ptCC->ptCompInfo->pInstanceArray[5]->pFsmContext->state)" 
+			menuitem "RRCC state"	"Var.AddWatch (States_RRCC)(UrrContext->ptCC->ptCompInfo->pInstanceArray[5]->pFsmContext->state)"
+			menuitem "RRCE FSM"		"Var.AddWatch ((*(((*((*(UrrContext.ptCC)).ptCompInfo)).pInstanceArray)+5)))"
+			separator
+		    menuitem "Curr Config"       
+		    (
+		    	Var.AddWatch ((RRC_DB_UTRAN*)(&(*((DB_ObjectContainer*)pDb)).db_root.pDb_utran->data))->current_cf_Idx  
+		    	Var.AddWatch (RRC_DB_Config*)(&(*((DB_ObjectContainer*)pDb)).db_root.pDb_config[((RRC_DB_UTRAN*)(&(*((DB_ObjectContainer*)pDb)).db_root.pDb_utran->data))->current_cf_Idx]->pBlob->data)   
+		    	Var.AddWatch (*((DB_ObjectContainer*)pDb)).db_root.pDb_config[((RRC_DB_UTRAN*)(&(*((DB_ObjectContainer*)pDb)).db_root.pDb_utran->data))->current_cf_Idx]
+		    	enddo
+		    )
+		    menuitem "New Config"
+		    (
+		    	Var.AddWatch  slce_context.newConfigIndex
+		    	Var.AddWatch  (RRC_DB_Config*)(&(*((DB_ObjectContainer*)pDb)).db_root.pDb_config[slce_context.newConfigIndex]->pBlob.data)
+		    	Var.AddWatch  (*((DB_ObjectContainer*)pDb)).db_root.pDb_config[slce_context.newConfigIndex]
+		    	enddo
+		    )
+		)
+		popup "Slce"
+		(
+			default
+		    menuitem "SLCE state"        "Var.AddWatch (States_SLCE)(UrrContext->ptCC->ptCompInfo->pInstanceArray[6]->pFsmContext->state)"
+		    menuitem "Curr Instance"     "Var.AddWatch  (tInstanceEntry*)(UrrContext.pCurrentInstance)"
+			menuitem "SLCE FSM"	"Var.AddWatch ((*(((*((*(UrrContext.ptCC)).ptCompInfo)).pInstanceArray)+6)))"
+		)
+		popup "Urr"
+		(
+			default
+			menuitem "URR Context"	"Var.AddWatch UrrContext"
+		)
+		popup "Umac"
+		(
+			default
+		    menuitem "UMAC Context"      "Var.AddWatch umac_context_info"
+		)
+		popup "密技"
+		(
+			default
+			menuitem "看 UAS DB"     	"Var.AddWatch (DB_ObjectContainer*)(pDb)"
+			menuitem "看 UAS DB Trace"  "Var.AddWatch (DB_ObjectTraceContainer*)(pTraceDb)"
+			menuitem "看 DB_UTRAN 的內容"     "Var.AddWatch (RRC_DB_UTRAN*)&(*((*(((DB_ObjectContainer*)(pDb)))).db_root.pDb_utran)).data"
+			menuitem "看 DB_BCH 的內容"     "Var.AddWatch (RRC_DB_BCH *)&(*((*(((DB_ObjectContainer*)(pDb)))).db_root.pDb_bch)).data"
+			menuitem "看 DB_UTRAN 的內容知道 serving cell"     "Var.AddWatch (RRC_DB_UTRAN*)&(*((*(((DB_ObjectContainer*)(pDb)))).db_root.pDb_utran)).data"
+			menuitem "看 DB_Private_Cell 的內容"               "DO show_umts_cell.cmm"
+			menuitem "看CISE serving cell的內容，利用DB_UTRAN中cise_currentCell_idx"     "Var.AddWatch (RRC_DB_Cell)(*((*((*(((DB_ObjectContainer*)(pDb)))).db_root.pDb_cell_private[(*(((RRC_DB_UTRAN*)&(*((*(((DB_ObjectContainer*)(pDb)))).db_root.pDb_utran)).data))).cise_CurrentCell_Idx])).pBlob)).data"
+			menuitem "列印 Pack Object 的原始字串"     "DO db_raw.cmm"
+			separator
+		    menuitem "Security Info"     "Var.AddWatch (RRC_DB_Security_Info*)(&((*((DB_ObjectContainer*)pDb)).db_root).pDb_security_info->data)"
+		    menuitem "Security CN Info"  "Var.AddWatch (RRC_DB_Security_CN_Info*)(&((*((DB_ObjectContainer*)pDb)).db_root).pDb_security_cn_info[0]->pBlob->data) (RRC_DB_Security_CN_Info*)(&((*((DB_ObjectContainer*)pDb)).db_root).pDb_security_cn_info[1]->pBlob->data) "
+		    menuitem "Integrity Protection Info" "Var.AddWatch (RRC_DB_Integrity_Protection_Info*)(&(*(((*((DB_ObjectContainer*)pDb)).db_root).pDb_integrity_protection_info)).data)"
+		    menuitem "Ciphering Info"    "Var.AddWatch (RRC_DB_Ciphering_Info*)(&(*(((*((DB_ObjectContainer*)pDb)).db_root).pDb_ciphering_info)).data)"
+		    menuitem "UE Info"           "Var.AddWatch (RRC_DB_UE_Info*)(&(*(((*((DB_ObjectContainer*)pDb)).db_root).pDb_ue)).data)"
+		    separator
+		    menuitem "妳確定這顆 load 是對的嗎?"
+		    (
+		    	WinPos 30. 2. 90. 31. 0. 0.
+		    	Data.List build_date_time
+		    	WinPos 33. 8. 90. 11. 0. 0.
+		    	Var.AddWatch %String.on build_date_time\build_date_time_str
+		    )
+		    menuitem "挖妳的 Interal Queue 內容"						"Var.AddWatch %compact ""敬請安心服用敬請安心服用 -- `DO' this .cmm file: '\\tpfs01\wcp1\public2\MTK_Document\Training Document\2004_05_21_coredump_and_testcase\stackdump_coredump_restore_to_T32\retrieve_task_q.cmm'"""
+		    menuitem "挖妳的 Exteral Queue 內容"						"Var.AddWatch %compact ""敬請安心服用敬請安心服用 -- `DO' this .cmm file: '\\tpfs01\wcp1\public2\MTK_Document\Training Document\2004_05_21_coredump_and_testcase\stackdump_coredump_restore_to_T32\retrieve_task_q.cmm'"""
+		    separator
+		    menuitem "統計某 Partition Pool 的佔用者(buffer history 沒開時好用)"		"DO mem_alloc_stat.cmm"
+		    menuitem "查看某 Buff Pool State (buffer history 有開時好用)"		"DO mem_statistic_stat.cmm"
+		    menuitem "統計某 Buff Pool + Task 的佔用者(buffer history 有開時好用)"		"DO mem_alloc_task_owner_stat.cmm"
+		    separator
+		    menuitem "找回 Protocol Stack 的 log 與 Layer1 的 trace" "do get_tst_trc_buffers.cmm"
+		)
+	)
+)

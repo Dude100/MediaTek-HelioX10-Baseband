@@ -1,0 +1,354 @@
+/*****************************************************************************
+*  Copyright Statement:
+*  --------------------
+*  This software is protected by Copyright and the information contained
+*  herein is confidential. The software may not be copied and the information
+*  contained herein may not be used or disclosed except with the written
+*  permission of MediaTek Inc. (C) 2007
+*
+*  BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+*  THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+*  RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
+*  AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+*  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+*  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+*  NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+*  SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+*  SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
+*  THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
+*  NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
+*  SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
+*
+*  BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
+*  LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+*  AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+*  OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
+*  MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+*
+*  THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
+*  WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
+*  LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
+*  RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
+*  THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
+*
+*****************************************************************************/
+/*
+This file is used by cgen for union Tag information.
+Usage:
+
+structure_name   tag_field_name   union_name:
+{ 
+        tag_fileld_value   field_of_union_name;
+	    tag_fileld_value   field_of_union_name;
+};
+
+For Example:
+
+InvokeChoice ChoiceId a:
+{
+    1 localValue;
+    2 globalValue;        
+};
+
+*/
+/*
+unpack_msg msg_type rr_peer_msg:
+{
+
+   STRUCT_ID_RR_PEER_ADDITIONAL_ASSIGNMENT_STRUCT 	additional_assignment;
+   STRUCT_ID_IMMEDIATE_ASSIGN_MESSAGE 			immediate_assign_msg;
+   STRUCT_ID_IMMEDIATE_ASSIGN_EXT_MESSAGE 		immediate_assign_ext_msg;
+   STRUCT_ID_IMM_ASGN_REJ_MSG_STRUCT			imm_asgn_rej_msg;
+   STRUCT_ID_CIPHER_MODE_COMMAND_STRUCT			cipher_mode_command;
+   STRUCT_ID_CIPHER_MODE_COMPLETE_STRUCT		cipher_mode_complete;
+   STRUCT_ID_ASSIGNMENT_COMMAND_STRUCT			assignment_command;
+   STRUCT_ID_PDCH_ASSIGNMENT_COMMAND_STRUCT		pdch_assignment_command;
+   STRUCT_ID_HANDOVER_COMMAND_STRUCT			handover_command;
+   STRUCT_ID_HANDOVER_COMPLETE_STRUCT			handover_complete;
+   STRUCT_ID_RR_CELL_CHANGE_ORDER_STRUCT		rr_cell_change_order;
+   STRUCT_ID_PHYSICAL_INFORMATION_STRUCT		physical_information;
+   STRUCT_ID_CHANNEL_RELEASE_STRUCT			channel_release;
+   STRUCT_ID_RR_PEER_PARTIAL_RELEASE_STRUCT		partial_release;
+   STRUCT_ID_RR_PEER_PARTIAL_RELEASE_COMPLETE_STRUCT	rr_peer_partial_release_complete;
+   STRUCT_ID_PAGING_REQUEST_TYPE1_STRUCT			paging_request_1;
+   STRUCT_ID_PAGING_REQUEST_TYPE2_STRUCT			paging_request_2;
+   STRUCT_ID_PAGING_REQUEST_TYPE3_STRUCT			paging_request_3;
+   STRUCT_ID_SI_1_STRUCT				si_1;
+   STRUCT_ID_SI_2_STRUCT				si_2;
+   STRUCT_ID_SI_2BIS_STRUCT				si_2bis;
+   STRUCT_ID_SI_2TER_STRUCT				si_2ter;
+   STRUCT_ID_SI_2QUATER_STRUCT				si_2quater;
+   STRUCT_ID_SI_3_STRUCT				si_3;
+   STRUCT_ID_SI_4_STRUCT				si_4;
+   STRUCT_ID_SI_5_STRUCT				si_5;
+   STRUCT_ID_SI_5BIS_STRUCT				si_5bis;
+   STRUCT_ID_SI_5TER_STRUCT				si_5ter;
+   STRUCT_ID_SI_6_STRUCT				si_6;
+   STRUCT_ID_SI_7_STRUCT				si_7;
+   STRUCT_ID_SI_8_STRUCT				si_8;
+   STRUCT_ID_SI_9_STRUCT				si_9;
+   STRUCT_ID_SI_13_STRUCT				si_13;
+   STRUCT_ID_SI_16_STRUCT				si_16;
+   STRUCT_ID_SI_17_STRUCT				si_17;
+   STRUCT_ID_SI_18_STRUCT				si_18;
+   STRUCT_ID_SI_19_STRUCT				si_19;
+   STRUCT_ID_SI_20_STRUCT				si_20;
+   STRUCT_ID_EXTENDED_MEASUREMENT_ORDER_STRUCT		extended_measurement_order;
+   STRUCT_ID_CHANNEL_MODE_MODIFY_STRUCT			channel_mode_modify;
+   STRUCT_ID_CHANNEL_MODE_MODIFY_ACK_STRUCT		channel_mode_modify_ack_struct;
+   STRUCT_ID_RR_PEER_CLASSMARK_CHANGE_STRUCT		classmark_change;
+   STRUCT_ID_RR_PEER_CLASSMARK_ENQUIRY_STRUCT		classmark_enquiry;
+   STRUCT_ID_FREQUENCY_REDEFINITION_STRUCT		frequency_redefinition;
+   STRUCT_ID_RR_STATUS_STRUCT				rr_status;
+   STRUCT_ID_CONFIGURATION_CHANGE_COMMAND_STRUCT	configuration_change_command;
+   STRUCT_ID_PACKET_ACCESS_REJECT			paj;
+   STRUCT_ID_PACKET_QUEING_NOTIFICATION			pqn;
+   STRUCT_ID_PKT_RESOURCE_REQUEST_STRUCT		prr;
+   STRUCT_ID_PKT_UPLINK_ASSIGNMENT_MSG			puas;
+   STRUCT_ID_PKT_DOWNLINK_ASSIGN			pdas;
+   STRUCT_ID_PKT_TBFRELEASE_STRUCT			pkt_tbf_releasel;
+   STRUCT_ID_PACKET_PAGING_REQUEST			pkt_paging;
+   STRUCT_ID_PKT_DN_LINK_ACK_NACK			pdan;
+   STRUCT_ID_PKT_UPLINK_ACK_NACK			puan;
+   STRUCT_ID_PSI1MSG					psi1;
+   STRUCT_ID_PSI2MSG					psi2;
+   STRUCT_ID_PSI3MSG					psi3;
+   STRUCT_ID_PSI3BISMSG					psi3bis;
+   STRUCT_ID_PSI4MSG					psi4;
+   STRUCT_ID_PSI5MSG					psi5;
+   STRUCT_ID_PSI13MSG					psi13;
+   STRUCT_ID_PKT_CTRL_ACK_STRUCT			pca;
+   STRUCT_ID_PKT_CELL_CHANGE_FAILURE			pkt_cell_change_failure;
+   STRUCT_ID_PKT_CELL_CHANGE_ORDER			pcco;
+   STRUCT_ID_PKT_DOWNLINK_DUMMY_CTRL_BLK		pkt_dl_dummy;
+   STRUCT_ID_PKT_UPLINK_DUMMY				pkt_ul_dummy;
+   STRUCT_ID_PKT_MEAS_REPORT_STRUCT			pkt_meas_report;
+   STRUCT_ID_PKT_MEASUREMENT_ORDER_STRUCT		pmo;
+   STRUCT_ID_PKT_MOBILE_TBFSTATUS			ptk_tbfstatus;
+   STRUCT_ID_PACKET_PDCHRELEASE				pdch_release;
+   STRUCT_ID_PACKET_POLLING_REQUEST			packet_polling;
+   STRUCT_ID_PKT_PWR_CTRL_TIM_ADV_STRUCT		pkt_pc_n_ta;
+   STRUCT_ID_PKT_PRACH_PARAMS_STRUCT			pkt_prach_params;
+   STRUCT_ID_PKTPSISTATUS				psistatus;
+   STRUCT_ID_PKT_TIMESLOT_RECONFIGURE			pkt_timeslot_reconfig;
+};
+*/
+urlc_sufi_struct selection choice:
+{
+      Sufi_NO_MORE_selected Sufi_NO_MORE;
+      Sufi_ACK_selected Sufi_ACK;
+      Sufi_WINDOW_selected Sufi_WINDOW;
+      Sufi_LIST_selected Sufi_LIST;
+      Sufi_BITMAP_selected Sufi_BITMAP;
+      Sufi_RLIST_selected Sufi_RLIST;
+      Sufi_MRW_selected Sufi_MRW;
+      Sufi_MRWACK_selected Sufi_MRWACK;
+};
+
+#ifdef __SGLTE__
+emm_mm_context_info_struct which_context context:
+{
+    MM_TO_EMM_CONTEXT mm2emm_context;
+    EMM_TO_MM_CONTEXT emm2mm_context;
+    MM_TO_MM_CONTEXT  mm2mm_context;
+};
+#endif /*__SGLTE__*/
+
+#ifdef __UMTS_TDD128_MODE__ 
+urlc_am_pdu_decode_struct PduType pdu:
+{
+    AM_DATA_PDU      AM_Data_PDU;    
+    AM_STATUS_PDU    AM_Status_PDU;  
+    AM_RESERT_PDU    AM_Reset_PDU;   
+    AM_RESETACK_PDU  AM_ResetAck_PDU;
+};
+
+urlc_pdu_decode_struct EntityMode mode:
+{
+    RLC_AM 	AM_Mode;
+		RLC_UM 	UM_Mode;
+		RLC_TM 	TM_Mode;
+};
+#endif
+
+rrce_meme_move_to_state_req_struct selection choice:
+{
+     MEME_CELL_DCH cellDCH;
+      MEME_CELL_FACH cellFACH;
+      MEME_IDLE idle;
+      MEME_INACTIVE inactive;
+     MEME_PCH pch;      
+};
+
+msg_buf_unpack_T msg_id buffer:
+{
+    MSG_ID_CPHY_PCH_SETUP_REQ                  cphy_pch_setup_req;
+    MSG_ID_CPHY_PCH_MODIFY_REQ                 cphy_pch_modify_req;
+    MSG_ID_CPHY_PCH_RELEASE_REQ                cphy_pch_release_req;
+    MSG_ID_CPHY_FACH_SETUP_REQ                 cphy_fach_setup_req;
+#ifdef __UMTS_FDD_MODE__   
+    MSG_ID_CPHY_FACH_MODIFY_REQ                cphy_fach_modify_req;
+#endif  
+    MSG_ID_CPHY_FACH_RELEASE_REQ               cphy_fach_release_req;
+    MSG_ID_CPHY_DCH_SETUP_REQ                  cphy_dch_setup_req;
+    MSG_ID_CPHY_DCH_MODIFY_REQ                 cphy_dch_modify_req;
+    MSG_ID_CPHY_DCH_RELEASE_REQ                cphy_dch_release_req;
+    MSG_ID_CPHY_RACH_SETUP_REQ                 cphy_rach_setup_req;
+    MSG_ID_CPHY_RACH_RELEASE_REQ               cphy_rach_release_req;
+#ifdef __HSDPA_SUPPORT__     
+    MSG_ID_CPHY_HSDSCH_SETUP_REQ               cphy_hsdsch_setup_req;
+    MSG_ID_CPHY_HSDSCH_MODIFY_REQ              cphy_hsdsch_modify_req;
+    MSG_ID_CPHY_HSDSCH_RELEASE_REQ             cphy_hsdsch_release_req;
+#endif    
+#ifdef __HSUPA_SUPPORT__    
+    MSG_ID_CPHY_EDCH_SETUP_REQ                 cphy_edch_setup_req;
+    MSG_ID_CPHY_EDCH_MODIFY_REQ                cphy_edch_modify_req;
+    MSG_ID_CPHY_EDCH_RELEASE_REQ               cphy_edch_release_req;
+#endif
+#ifdef __UMTS_TDD128_MODE__
+    MSG_ID_CPHY_MEASUREMENT_CONFIG_DMO_REQ     cphy_measurement_config_dmo_req;   
+#endif
+};
+
+cmac_config_tfc_subset_req_struct selection choice:
+{
+  1 fullList;
+  2 explicitList;
+};
+
+#ifdef __UMTS_TDD128_MODE__    
+ul_dpch_tfc_T gain_factor_ind gain_factor:
+{
+  GAIN_FACTOR_SIGNAL   sig_gain; 
+  GAIN_FACTOR_COMPUTE  computed_gain_id;
+};
+#endif
+
+#ifdef __UMTS_FDD_MODE__    
+ul_dpch_tfc_T sig_gain_ind gain_factor:
+{
+  KAL_FALSE   sig_gain; 
+  KAL_TRUE    computed_gain_id;
+};
+#endif
+#if 0
+#ifdef __UMTS_TDD128_MODE__  
+CsceCseSelectedCellTechnology selection choice:
+{
+     RRC_DB_Cell_cellTechnology_umts_selected umts;
+     RRC_DB_Cell_cellTechnology_gsm_selected gsm;
+};
+#endif
+#endif
+#ifdef __UMTS_FDD_MODE__
+rlc_cmd_struct cmd_selection choice:
+{
+    RLC_CMD_ESTABLISH													establish;
+    RLC_CMD_CONFIG_RX_WINDOW									config_rx_window;
+    RLC_CMD_CONFIG_CIPHER											config_cipher;
+    RLC_CMD_RLC_RESET													reset;
+    RLC_CMD_UPDATE_VR_R												update_vr_r;
+    RLC_CMD_UPDATE_CTRL_PDU_BUF								update_ctrl_pdu_buf;
+    RLC_CMD_RLC_CONTROL												rlc_control;
+    RLC_CMD_UPDATE_HW_HFN											update_hw_hfn;
+    RLC_CMD_READ_IM_BUF												read_im_buf;
+    RLC_CMD_PROCESS_PDU												process_pdu;
+};
+#endif
+
+#ifdef __UMTS_FDD_MODE__
+RRC_DB_SelectedCellTechnology selection choice:
+{
+   RRC_DB_SelectedCellTechnology_umts_selected umts;
+   RRC_DB_SelectedCellTechnology_gsm_selected gsm;
+   RRC_DB_SelectedCellTechnology_eutra_selected eutra;
+};
+
+#ifdef __UMTS_R8__
+CsceMemeAPBLayer selection choice:
+{
+    CSCE_MEME_APB_UTRAN_INTER_FREQ uarfcn;
+    CSCE_MEME_APB_GERAN            gsmCellGroup;
+    CSCE_MEME_APB_EUTRAN           earfcn;
+};
+#endif
+#endif
+
+#if defined(__UMTS_FDD_MODE__) || defined(__UMTS_TDD128_MODE__)
+uas_gas_activate_gcell_req_struct ir_cell_change_trigger target_gcell_info:
+{
+   IR_CELL_RESELECTION  target_gcell_reselect_info;
+   IR_REDIRECTION       target_gcell_redirect_list;
+};
+
+GSM_Redirect_Info redirection_type redirection_info:
+{
+   UAS_GAS_REDIRECTION_INFO  uas_redirectInfo;
+   EAS_GAS_REDIRECTION_INFO  eas_redirectInfo;
+};
+#endif
+
+l4c_nbr_cell_info_ind_struct    rat_mode    ps_nbr_cell_info_union:
+{
+#ifdef __GSM_RAT__
+    1    gas_nbr_cell_info;
+#endif
+#ifdef __UMTS_RAT__
+    2    uas_nbr_cell_info;
+#endif
+#ifdef __LTE_RAT__
+    4    eas_nbr_cell_info;
+#endif
+};
+
+l4c_nbr_cell_info_reg_cnf_struct    rat_mode    ps_nbr_cell_info_union:
+{
+#ifdef __GSM_RAT__
+    1    gas_nbr_cell_info;
+#endif
+#ifdef __UMTS_RAT__
+    2    uas_nbr_cell_info;
+#endif
+#ifdef __LTE_RAT__
+    4    eas_nbr_cell_info;
+#endif
+};
+
+#ifdef __UMTS_RAT__
+uas_freq_info_mode_specific_info_struct	mode	choice:
+{
+    1    fdd;
+    2    tdd;
+};
+
+uas_cell_measured_results_mode_specific_info_struct    mode	choice:
+{
+    UAS_CELL_MEASURED_RESULTS_MODE_FDD    fdd;
+    UAS_CELL_MEASURED_RESULTS_MODE_TDD    tdd;
+};
+#endif
+
+RRC_InterSystem_TargetInfo selection choice:
+{
+   RRC_InterSystem_TargetInfo_gsm_TargetCellInfoList_selected    gsm_TargetCellInfoList;
+#ifdef __UMTS_R8__
+   RRC_InterSystem_TargetInfo_eutra_TargetFreqInfoList_selected  eutra_TargetFreqInfoList;
+#endif
+};
+
+#ifdef __MMDS_DC__
+
+ sim_intsim_access_req_struct op req_field :
+ {
+      SIM_INTSIM_ACCESS_FLIE_INFO  file_info_req;
+      SIM_INTSIM_ACCESS_READ_BINARY  read_req;
+      SIM_INTSIM_ACCESS_READ_RECORD  read_req;
+      SIM_INTSIM_ACCESS_UPDATE_BINARY  update_req;
+      SIM_INTSIM_ACCESS_UPDATE_RECORD  update_req;
+      SIM_INTSIM_ACCESS_AUTHENTICATION  auth_req;
+      SIM_INTSIM_ACCESS_INCREASE  increase_req;
+      SIM_INTSIM_ACCESS_INVALIDATE  invalidate_req;
+      SIM_INTSIM_ACCESS_REHABILITATE  rehabilitate_req;
+}; 
+ 
+#endif

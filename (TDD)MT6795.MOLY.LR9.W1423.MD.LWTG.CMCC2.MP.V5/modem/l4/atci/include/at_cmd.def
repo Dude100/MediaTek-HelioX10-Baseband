@@ -1,0 +1,2319 @@
+/*****************************************************************************
+*  Copyright Statement:
+*  --------------------
+*  This software is protected by Copyright and the information contained
+*  herein is confidential. The software may not be copied and the information
+*  contained herein may not be used or disclosed except with the written
+*  permission of MediaTek Inc. (C) 2005
+*
+*  BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+*  THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+*  RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
+*  AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+*  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+*  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+*  NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+*  SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+*  SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
+*  THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
+*  NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
+*  SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
+*
+*  BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
+*  LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+*  AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+*  OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
+*  MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE. 
+*
+*  THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
+*  WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
+*  LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
+*  RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
+*  THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
+*
+*****************************************************************************/
+
+/*****************************************************************************
+ *
+ * Filename:
+ * ---------
+ * at_cmd.def
+ *
+ * Project:
+ * --------
+ *   MT6208
+ *
+ * Description:
+ * ------------
+ *   This file is intends for ...
+ *
+ * Author:
+ * -------
+ * Danny Kuo
+ *
+ *============================================================================
+ *             HISTORY
+ * Below this line, this part is controlled by PVCS VM. DO NOT MODIFY!!
+ *------------------------------------------------------------------------------
+ * $Log$
+ *
+ * 12 01 2014 bart.liang
+ * [MOLY00085949] [3G FDD] Force Tx Antenna Index feature.
+ *
+ * 10 24 2014 yingfui.hung
+ * [MOLY00081387] [L4] add new URC (+EVOCD) to report voice codec
+ * 	.
+ *
+ * 10 24 2014 ansel.liao
+ * [MOLY00081919] Update USIM Interface Test for SMT
+ * : remove the restriction of GEMINI project
+ *
+ * 10 23 2014 wynne.chu
+ * [MOLY00081550] [EGACT] L4C/RAT_TCM
+ * 	.
+ *
+ * 08 28 2014 hong.yu
+ * [MOLY00077433] [SoMC][K2][LTE] Clear Code #29/#33 feature check in
+ * support at+edss and +ecode33
+ *
+ * 08 14 2014 bart.liang
+ * [MOLY00075376] Remove __CGLA__ __UICC_CHANNEL_SUPPORT__.
+ *
+ * 08 12 2014 hong.yu
+ * [MOLY00074247] [L4] Resolve Potential Klocwork issue
+ * fix klocwork warning
+ *
+ * 07 24 2014 yingfui.hung
+ * [MOLY00072713] [ATCI] add a new command +EECCUD to update modem ECC table
+ * 	.
+ *
+ * 07 16 2014 bart.liang
+ * [MOLY00071851] [MT6290E2][EL1TX] ROME DSDA support for AT+EB3INFO
+ *
+ * 07 07 2014 hong.yu
+ * [MOLY00071459] Add Mobility Management for IMS Voice Termination
+ * support +EIRS
+ *
+ * 07 02 2014 chinte.chen
+ * [MOLY00071095] [AT][SAT] support AT+CUSATE
+ * .
+ *
+ * 06 19 2014 lexel.yu
+ * [MOLY00069512] 【CMCC Official 第一?入? 】【ZTE Q507T】【云南】【?1-Critical】【非用例】??其他-非用例-手?切?"APN"?，网?异常
+ * 	.
+ *
+ * 05 16 2014 xuejing.chen
+ * [MOLY00065658] [sglte dsds]ps detach and attach redesign
+ * Integration change.
+ *
+ * 04 30 2014 lexel.yu
+ * [MOLY00037211] [ATCI/L4C] New feature for IMS Support
+ * 	Support for VoLTE Gemini
+ *
+ * 04 29 2014 yingfui.hung
+ * [MOLY00063940] [SBP] Modem Single Binary Platform SBP_DOCOMO_IOT_CC, SBP_AT_ME_IDENTIFICATION_WITHOUT_HEADER, SBP_STAR_SHORT_STRING_AS_CALL, SBP_CUSTOMIZED_IDLE_STRING_AS_CALL.
+ * 	.
+ *
+ * 04 28 2014 chinte.chen
+ * [MOLY00060266] [SBP] Modem Single Binary Platform
+ * remove the option __CSIM__.
+ *
+ * 04 16 2014 ralf.chen
+ * [MOLY00062756] T-Mobile SIM-Lock Support
+ * 	Merge TMO Remote SIM Unlock to MOLY
+ *
+ * 04 02 2014 xuejing.chen
+ * [MOLY00061663] [SGLTE] AT+ERRMT support for RMM test
+ * .
+ *
+ * 03 26 2014 edwin.liu
+ * [MOLY00060012] AT+ECBMR to remove modem CB records
+ * 	.
+ *
+ * 03 24 2014 bart.liang
+ * [MOLY00060590] Implement CSUS.
+ *
+ * 03 11 2014 bart.liang
+ * [MOLY00059126] [MT6290E2][EL1] Add single Antenna feature in EM.
+ *
+ * 03 11 2014 bart.liang
+ * [MOLY00059126] [MT6290E2][EL1] Add single Antenna feature in EM.
+ *
+ * 03 05 2014 hong.yu
+ * [MOLY00042699] [Volunteer Patch][CT][EVDO] UE OPLMN check-in
+ * Merging +EPOL
+ *
+ * 02 17 2014 hong.yu
+ * [MOLY00037893] [MT6290][IMS] check IMS related modification
+ * Merging SRVCC Rel-10
+ *
+ * 02 10 2014 hong.yu
+ * [MOLY00055093] [MOLY KAL CONTROL BUFFER] prepare a dedicated AT cmd for leakage check
+ * support AT+ESWLA=2 and AT+ESWLA=3
+ *
+ * 02 05 2014 lexel.yu
+ * [MOLY00055409] [MT6582LTE][VoLTE][AdvIT][MO] NO AT Command Response for AT+CMMIVT? command
+ * 	.
+ *
+ * 01 22 2014 xuejing.chen
+ * [MOLY00054616] [MT6290E2][SGLTE][82LTEv2] Manual rename __MMDS_DC__ to __SGLTE__
+ * .
+ *
+ * 01 13 2014 hong.yu
+ * [MOLY00037893] [MT6290][IMS] check IMS related modification
+ * Merging +CSSAC and +EAPPROVE
+ *
+ * 01 13 2014 lexel.yu
+ * [MOLY00037211] [ATCI/L4C] New feature for IMS Support
+ * 	.
+ *
+ * 01 10 2014 hong.yu
+ * [MOLY00020455] [Message][Performance]MMS send and download via WCDMA performance fail
+ * <saved by Perforce>
+ *
+ * 01 09 2014 chinte.chen
+ * [MOLY00052886] [MT6582LTE][IMS][VoLTE][SMS] merge code to MOLY TRUNK
+ * .
+ *
+ * 12 09 2013 hong.yu
+ * [MOLY00049325] [L4C/ATCI] support +EGMR to query DSP information
+ * Integration change.
+ *
+ * 11 21 2013 lexel.yu
+ * [MOLY00043756] Android CellInfo API implementation
+ * [MOLY] AT+ECELL
+ *
+ * 11 13 2013 vend_edwin.liu
+ * [MOLY00046293] New AT command +EMGL to list SMS index and status
+ * 	.
+ *
+ * 11 01 2013 benjamin.kuo
+ * [MOLY00044700] Add AT+EEMODE for AT+CEMODE
+ * .
+ *
+ * 10 31 2013 poying.chuang
+ * [MOLY00044423] [MT6290] New TFT AT command development merge back to MOLY
+ * .
+ *
+ * 10 31 2013 chinte.chen
+ * [MOLY00042497] [SAT][AT] support +STKMENU
+ * .
+ *
+ * 10 30 2013 ansel.liao
+ * [MOLY00044388] modify AT command for detecting test of usim2 controller
+ * Integration change.
+ *
+ * 10 18 2013 xuejing.chen
+ * [MOLY00041595] [MT6290E1][MMDS_DC] MMDC feature patch back to MOLY trunk
+ * .
+ *
+ * 09 26 2013 lexel.yu
+ * [MOLY00038803] [HOSTED pre-SQC] DCT IPv4/v6 setting is not as expected with 8820
+ * 	AT+MBCONNECT set MBIM default IP type
+ *
+ * 09 16 2013 xuejing.chen
+ * [MOLY00037300] Remove HOO/CRO related interface
+ * Remove AT+ECRO support,since CSCS/MEME will enable HOO/CRO feature by default
+ *
+ * 09 04 2013 vend_bob.chiang
+ * [MOLY00036283] [L4C/SMU/SIM] ISIM application support
+ * .
+ *
+ * 09 03 2013 yuming.hsu
+ * [MOLY00036283] [L4C/SMU/SIM] ISIM application support
+ * .
+ *
+ * 08 30 2013 jeffery.chen
+ * [MOLY00033567] [MOLY][L4C PS] New AT cmd: CGAUTH
+ * .
+ *
+ * 08 29 2013 hong.yu
+ * [MOLY00034804] Temp solution for running FAT on MT6582+MT6290
+ * Integration Thermal change to MOLY
+ *
+ * 08 13 2013 jeffery.chen
+ * [MOLY00033567] [MOLY][L4C PS] New AT cmd: CGAUTH
+ * New AT cmd: CGAUTH.
+ *
+ * 08 08 2013 chinte.chen
+ * [MOLY00033072] [Super Dongle] revise CMGS/CMGW/CNMA hdlr to avoid stack overflow
+ * .
+ *
+ * 08 02 2013 ansel.liao
+ * [MOLY00032286] Add USIM Interface Test for SMT
+ * Integration change.
+ *
+ * 07 25 2013 jeffery.chen
+ * [MOLY00031206] [MOLY][L4C PS] Add AT+EGLD to leave data mode
+ * .
+ *
+ * 07 23 2013 kuan-wei.chen
+ * [MOLY00030587] add AT+ESVC command
+ * .
+ *
+ * 07 11 2013 chinte.chen
+ * [MOLY00029131] [Super Dongle] SMS/SAT code revise
+ * .
+ *
+ * 07 09 2013 kuan-wei.chen
+ * [MOLY00029192] [Super Dongle] Remove some difference between Hosted/RNDIS dongle - call related part
+ * .
+ *
+ * 07 04 2013 jeffery.chen
+ * [MOLY00028660] [MOLY][L4C PS] Remove NDIS_SUPPORT
+ * .
+ *
+ * 07 01 2013 lexel.yu
+ * [MOLY00028027] Customized STK ready time by AT command
+ * AT+STKPCI trigger SAT Ready
+ *
+ * 06 26 2013 vend_bart.liang
+ * [MOLY00024832] [Wifi Calling] Implement CRLA for logical channle accessing
+ * .
+ *
+ * 06 21 2013 chinte.chen
+ * [MOLY00026848] [L4C][SMS] support EMGC & ENMA
+ * .
+ *
+ * 06 20 2013 chinte.chen
+ * [MOLY00007373] [L4C][SMS] support EMGS & EMGW for FAT test
+ * .
+ *
+ * 06 10 2013 yuming.hsu
+ * [MOLY00025695] [Volunteer Patch] [L4C PHB] Let Hosted and SP AT+CPBW interface be the same, add AT+EPBW for SP
+ * .
+ *
+ * 05 30 2013 yuming.hsu
+ * [MOLY00020318] [SIM][MMDC] SIM MMDC check-in for both SERVER and CLIENT
+ * [MOLY] Revise Compile Option Naming
+ *
+ * 05 22 2013 hong.yu
+ * [MOLY00009781] [2 Stage NW Selection] CT modem new requirement
+ * Integration change.
+ *
+ * 05 15 2013 lexel.yu
+ * [MOLY00009246] [ATCI][L4C] AT command upgrade for Long Term Evolution
+ * Integration change.
+ *
+ * 04 25 2013 jeffery.chen
+ * [MOLY00020336] [Need Patch] [Sanity Fail]The browser can't access any web page.
+ * AT+EGPCAP.
+ *
+ * 04 19 2013 yuming.hsu
+ * [MOLY00020318] [SIM][MMDC] SIM MMDC check-in for both SERVER and CLIENT
+ * .
+ *
+ * 02 21 2013 lexel.yu
+ * [MOLY00009246] [ATCI][L4C] AT command upgrade for Long Term Evolution
+ * [L4C] RNC ID & Set RAT mode and prefer RAT & +CREG/+CGREG/+CEREG - Phase 4/5
+ *
+ * 02 05 2013 lexel.yu
+ * [MOLY00009246] [ATCI][L4C] AT command upgrade for Long Term Evolution
+ * [L4C] LTE Phase 3 - CREG/CEVDP/CVDP/CUES/CAVIMS/CASIMS/CEMODE
+ *
+ * 01 23 2013 lexel.yu
+ * [MOLY00009246] [ATCI][L4C] AT command upgrade for Long Term Evolution
+ * Phase 2
+ *
+ * 01 23 2013 lexel.yu
+ * [MOLY00007213] [6280][DNR] Support DHCP service for Hosted dongle
+ * Integration change.
+ *
+ * 01 23 2013 jeffery.chen
+ * [MOLY00005322] TATAKA merge to MOLY
+ * merge multimode code to MOLY trunk.
+ *
+ * 12 28 2012 yuming.hsu
+ * [MOLY00008145] [PHB][New Feature] AT+ECPBR and AT+ECPBW can support ADN and USIM ANR(1~3), SNE, EMAIL files
+ * .
+ *
+ * 11 26 2012 danny.kuo
+ * [MOLY00006380] [SIM] Terminal Capability Support
+ * .
+ *
+ * 11 21 2012 hong.yu
+ * [MOLY00006422] [3G TDD][Fast Dormancy] Move FD trigger mechanism from AP to L4
+ * [FD] remove TDD option
+ *
+ * 11 09 2012 hong.yu
+ * [MOLY00005940] [Fast Dormancy] Move FD trigger mechanism from AP to L4, AS provide NW R8 FD & UE CPC info to NAS
+ * Integration change.
+ *
+ * 11 01 2012 jeffery.chen
+ * [MOLY00005322] TATAKA merge to MOLY
+ * Tataka merge to MOLY.
+ *
+ * 10 27 2012 lexel.yu
+ * [MOLY00004981] [L4C][AT] Support AT+EUSIM to query SIM type
+ * Integration change.
+ * 
+ * 10 23 2012 hong.yu
+ * [MOLY00005141] [EM Request]CFU query setting in MMI EM mode
+ * check-in +essp
+ * 
+ * 10 18 2012 hong.yu
+ * [MOLY00004965] [L4C/ATCI] support +CSQ in SLIM projects
+ * <saved by Perforce>
+ * 
+ * 09 26 2012 chenhao.gong
+ * [MOLY00004191] [L4C][AT]AT command for SDS backup and restore
+ * .
+ * 
+ * 09 25 2012 jeffery.chen
+ * [MOLY00004091] [MOLY][MSQ] Use whitelist to upgrade R7R8 QoS format
+ * .
+ * 
+ * 09 25 2012 jeffery.chen
+ * [MOLY00004091] [MOLY][MSQ] Use whitelist to upgrade R7R8 QoS format
+ * .
+ * 
+ * 08 27 2012 danny.kuo
+ * [MOLY00002727] [AT][SIM] AT+ESIMTEST support
+ * .
+ * 
+ * 08 21 2012 jeffery.chen
+ * [MOLY00002317] [MSQ] Phase-in MediaTek Smart QoS Feature
+ * .
+ * 
+ * 08 21 2012 jeffery.chen
+ * [MOLY00002317] [MSQ] Phase-in MediaTek Smart QoS Feature
+ * .
+ *
+ * 06 05 2012 chenhao.gong
+ * [MAUI_03191529] [ZTE-NJ][U788][MT6513TD]IDLE2/3G
+ * .
+ *
+ * 05 15 2012 hong.yu
+ * [MAUI_03170036] [L4C/AT] Support +EGCMD in modem load
+ * Integration change.
+ *
+ * 05 15 2012 hong.yu
+ * [MAUI_03163325] [ALCATEL]6255????ATROEAUTHn
+ * Integration change.
+ *
+ * 05 14 2012 hong.yu
+ * [MAUI_03133279] [ZTENJ21][6210]9.5.7.2 failure
+ * Integration change.
+ *
+ * 05 14 2012 hong.yu
+ * [MAUI_03130030] SIM Recovery Enhancement and SIM hot swap check-in 11AMD related SP
+ * Integration change.
+ *
+ * 05 14 2012 hong.yu
+ * [MAUI_03123925] AT+ICF(add mark parity)
+ * Integration change.
+ *
+ * 05 14 2012 hong.yu
+ * [MAUI_03110611] [TCL] +SYSSEL command support
+ * Integration change.
+ *
+ * 05 14 2012 hong.yu
+ * [MAUI_03042588] [MT6573 Dual Talk] MT6252 modem side modification
+ * Integration change.
+ *
+ * 05 14 2012 hong.yu
+ * [MAUI_03105837] [3G switch] rename modem option from __SP_GEMINI_3G_SWITCH__ to __GEMINI_3G_SWITCH__
+ * Integration change.
+ *
+ * 05 14 2012 pohan.chu
+ * [MAUI_03184771] Sync MODEM_DEV , MAUI code
+ * Integration change.
+ *
+ * 05 09 2012 chenhao.gong
+ * [MAUI_03115780] [L4][AT]AT+ESWLA support enable software LA and assert target
+ * .
+ *
+ * 05 09 2012 chenhao.gong
+ * [MAUI_03089832] [New Feature] 3G Engineering Mode RF TX test
+ * .
+ *
+ * 05 08 2012 pohan.chu
+ * [MAUI_03112025] [Rel8] eCall support
+ * Integration change.
+ *
+ * 05 07 2012 hong.yu
+ * [MAUI_03130505] [L1D][New Feature] Calibration Data Download Check (CDDC) feature check-in MAUI, 11B and 11A_MD
+ * Integration change.
+ *
+ * 05 07 2012 hong.yu
+ * [MAUI_03180299] Support dual talk logging on dual chip
+ * check-in +ETSTLP
+ *
+ * 05 04 2012 yuming.hsu
+ * [MAUI_03134002] [SMS][L4C] __SLIM_AT__ has support AT+CGSMS
+ * .
+ *
+ * 04 13 2012 hong.yu
+ * [MAUI_03155528] [L4C/AT] support +CFUN in FP projects
+ * .
+ *
+ * 02 15 2012 yz.huang
+ * [MAUI_03115194] [MT6280] HSPA+ icon and DC-HSDPA info
+ * .
+ *
+ * 01 21 2011 kitty.sung
+ * [MAUI_02863933] [AT] Support AT+ESWM
+ * <saved by Perforce>
+ *
+ * 01 13 2011 kitty.sung
+ * [MAUI_02861166] [AT] Support AT+ESLN to sync call log
+ * .
+ *
+ * 01 11 2011 xiaolin.qiao
+ * [MAUI_02633323] checkin patch_file.pl
+ * .
+ *
+ * 12 24 2010 stanley.chou
+ * [MAUI_02852442] SCRI solution of smartphone GEMINI.
+ * [MAUI_02852442] [RRCE] SCRI solution of smartphone GEMINI.
+ * MAUI
+ *
+ * 12 22 2010 kitty.sung
+ * [MAUI_02606864] [AT] Support AT+ESMSS of __SMS_STORAGE_BY_MMI__
+ * .
+ *
+ * 12 15 2010 hong.yu
+ * [MAUI_02825294] [Gemini+][L4C] Support for N card
+ * Merge Gemini+ to Maui
+ *
+ * 12 04 2010 danny.kuo
+ * [MAUI_02845460] [AT] Solve customer AT CMD PHB IOT issue with LR lab's Carkit
+ * .
+ *
+ * 12 04 2010 hong.yu
+ * [MAUI_02617721] [ATCI] [Revise] General modem
+ * <saved by Perforce>
+ *
+ * 11 29 2010 hong.yu
+ * [MAUI_02617721] [ATCI] [Revise] General modem
+ * General modem revise
+ *
+ * 11 29 2010 lexel.yu
+ * [MAUI_02617721] [ATCI] [Revise] General modem
+ * <saved by Perforce>
+ * Fixed build error
+ *
+ * 11 28 2010 lexel.yu
+ * [MAUI_02617721] [ATCI] [Revise] General modem
+ * Integration change.
+ *
+ * 11 26 2010 danny.kuo
+ * [MAUI_02835013] CMCC AT CMD support for PHB
+ * .
+ *
+ * 11 26 2010 hong.yu
+ * [MAUI_02842445] [OP01][L4 AT] TD command support
+ * Integration change.
+ *
+ * 11 24 2010 hogan.hou
+ * [MAUI_02839761] [ATCI][Revise] ULC AT command set
+ * compile option and postion revise
+ *
+ * 11 23 2010 chenhao.gong
+ * [MAUI_02637521] [EM Request] Protocol stack need a team of EM menu for TDD CTA test
+ * L4 Add PS conformance test EM menu support & AT command Support
+ *
+ * 11 23 2010 hogan.hou
+ * [MAUI_02839761] [ATCI][Revise] ULC AT command set
+ * ULC AT
+ *
+ * 11 19 2010 danny.kuo
+ * [MAUI_02835013] CMCC AT CMD support for PHB
+ * .
+ *
+ * 11 17 2010 hong.yu
+ * [MAUI_02838525] TTY feature on smart phone
+ * Integration change.
+ *
+ * 10 14 2010 hong.yu
+ * [MAUI_02827983] [TC02][AT] AT command to reboot in normal mode
+ * .
+ * Check in +RBTI
+ *
+ * 09 23 2010 danny.kuo
+ * [MAUI_02617721] [ATCI] [Revise] General modem
+ * Integration change.
+ *
+ * 09 23 2010 hogan.hou
+ * [MAUI_02622778] [ATCI] Wrap compile option for AT+CSRM
+ * <saved by Perforce>
+ *
+ * 09 14 2010 chenhao.gong
+ * [MAUI_02320588] [AT COMMAND][TTL auto test] AT+CSO? this command no response return
+ * .
+ *
+ * 09 14 2010 chenhao.gong
+ * [MAUI_02320588] [AT COMMAND][TTL auto test] AT+CSO? this command no response return
+ * Disable some AT in Neptune MMI project.
+ *
+ * 09 04 2010 chenhao.gong
+ * [MAUI_02634329] [L4C][EM]AT+TRACE feature support
+ * .
+ *
+ * 08 31 2010 mingtsung.sun
+ * [MAUI_02615159] [L4C][GPRS] GPRS Dialup CLOG for new PS data path
+ * .
+ *
+ * 08 18 2010 mingtsung.sun
+ * [MAUI_02603165] [ATCI] AT command customized enable/disable
+ * .
+ *
+ * 08 06 2010 chenhao.gong
+ * [MAUI_02631073] [AT]Modification for String Check Tool
+ * Support enable/disable MMI string save
+ *
+ * 08 06 2010 lexel.yu
+ * [MAUI_02602650] [L4C][AT] AT+EAUTH support for SIM aunthentication
+ * Integration change.
+ *
+ * 08 05 2010 danny.kuo
+ * [MAUI_02603165] [ATCI] AT command customized enable/disable
+ * .
+ *
+ * Jul 8 2010 mtk80396
+ * [MAUI_02221943] [AT][ATK]PhaseII support code merge
+ * 
+ *
+ * Jul 7 2010 mtk01616
+ * [MAUI_02580060] [L4C][ATCI] Fix klocwork issue
+ * 
+ *
+ * Jul 7 2010 mtk02285
+ * [MAUI_02392239] [L4C][ATCI][TCM][SM] PDP related ROM/RAM optimization according to int-ext supported
+ * 
+ *
+ * Jul 6 2010 mtk02480
+ * [MAUI_02558466] AOC_COMPILE_OPTION_OF_L4C_CSM_CC
+ * 
+ *
+ * Jul 6 2010 mtk02508
+ * [MAUI_02558466] AOC_COMPILE_OPTION_OF_L4C_CSM_CC
+ * 
+ *
+ * Jun 29 2010 mtk02088
+ * [MAUI_02552445] [AT] AT+CSMA support
+ * 
+ *
+ * Jun 29 2010 mtk02088
+ * [MAUI_02301838] [AT COMMAND] Assert fail: lcd_lqt.c 218 - L4
+ * AT+ELQT add release mode
+ *
+ * Jun 15 2010 mtk02285
+ * [MAUI_02525560] [L4C][CMUX][6276] code sync with maintrunk
+ * 
+ *
+ * Jun 10 2010 mtk80396
+ * [MAUI_02292872] [AT COMMAND] AT+IPR test command bandrate incorrect
+ * 
+ *
+ * Jun 9 2010 mtk02480
+ * [MAUI_02555139] [L4C/AT] AT+EFUN to switch dual SIM mode
+ * 
+ *
+ * Jun 8 2010 mtk02480
+ * [MAUI_02555199] [L4C/AT] AT+EGTYPE to switch GPRS connection type
+ * 
+ *
+ * May 22 2010 mtk02514
+ * [MAUI_02196715] [AT] +CKPD, this command can't return any result
+ * 
+ *
+ * May 12 2010 mtk80396
+ * [MAUI_02192733] [AT][ATK]AT support Touch Screen and Screen shot on Orange project
+ * Check in ATK phase-1 feature
+ *
+ * May 11 2010 mtk01616
+ * [MAUI_02415672] [ATCI] Disable SIM2 AT command support (for MT6251)
+ * 
+ *
+ * Apr 30 2010 mtk02088
+ * [MAUI_02099272] Phonesuite does not shows mms stored in memory card.
+ * 
+ *
+ * Apr 16 2010 mtk02508
+ * [MAUI_02398466] [MAUI][VT] Split __3G_VIDEO_CALL__ for WinMo VT project
+ * replace __3G_VIDEO_CALL__ with __VIDEO_CALL_SUPPORT__
+ *
+ * Apr 14 2010 mtk02088
+ * [MAUI_02382175] Phone suite support draft (10.17 release)
+ * 
+ *
+ * Apr 13 2010 mtk02480
+ * [MAUI_02393880] [AT][NBR] Neighbor cell information
+ * 
+ *
+ * Apr 6 2010 mtk80396
+ * [MAUI_02169269] [3G GEMINI][AT]should add 19200 in its support list
+ * Modify AT+IPR test string
+ *
+ * Mar 29 2010 mtk02480
+ * [MAUI_02169353] [3G GEMINI][AT]+CFUN, the parameter support is incorrect
+ * 
+ *
+ * Mar 24 2010 mtk02088
+ * [MAUI_02379615] [AT] move AT+CLAC from rmmi_validator_eq.c to rmmi_validator.c
+ * 
+ *
+ * Mar 24 2010 mtk02088
+ * [MAUI_02166973] [Phonesuite] It should not popup "Fail to download mms list from handset"
+ * AT+EMMSFS=? should check __MMI_MMS_MEMORY_CARD_STORAGE_SUPPORT__ to return response
+ *
+ * Mar 24 2010 mtk02088
+ * [MAUI_02164468] [LG Project][AT COMMAND] +ESMSS, this command doesn't take effect
+ * #ifdef __SMS_STORAGE_BY_MMI__, we don't support AT+ESMSS.
+ *
+ * Mar 22 2010 mtk02285
+ * [MAUI_02368059] [L4C][ATCI][EQ] AT command via USB COM 2 support
+ * 
+ *
+ * Mar 22 2010 mtk02285
+ * [MAUI_02361221] [MT6276] HSPA on/off menu and H icon
+ * 
+ *
+ * Mar 19 2010 mtk80396
+ * [MAUI_02166146] [EQ] L4C EQ code revise
+ * Modify AT+CBC test string
+ *
+ * Mar 16 2010 mtk02285
+ * [MAUI_02368059] [L4C][ATCI][EQ] AT command via USB COM 2 support
+ * 
+ *
+ * Mar 16 2010 mtk01616
+ * [MAUI_02374320] [AT] Disable seldom use proprietary command
+ * 
+ *
+ * Mar 12 2010 mtk01616
+ * [MAUI_02251421] [MT6611 BQB HFP] NUM/BV/01
+ * AT+CNUM shall support in slim_at
+ *
+ * Mar 10 2010 mtk02285
+ * [MAUI_02156292] [SLIM AT]+CGQMIN&CGQREQ,should be supported in SLIM project
+ * 
+ *
+ * Mar 6 2010 mtk02514
+ * [MAUI_02354954] [L4C][RMMI] Remove obsolete context and wrap proper compile option
+ * 
+ *
+ * Mar 5 2010 mtk02480
+ * [MAUI_02156190] [AT_T]+CFUN,the parameter is incorrect
+ * 
+ *
+ * Mar 4 2010 mtk01616
+ * [MAUI_02334110] [ATCI] SLIM_AT revise
+ * 
+ *
+ * Mar 2 2010 mtk02514
+ * [MAUI_02240168] [V32/V33 SQC ][AT COMMAND]  AT+CPBS=? return Error
+ * 
+ *
+ * Mar 1 2010 mtk02514
+ * [MAUI_02156117] [SLIM AT]+EGMR,no any return value after input this command
+ * 
+ *
+ * Mar 1 2010 mtk02514
+ * [MAUI_02354631] [AT&T] AT&T Communication Manager Proprietary Commands AT$CSQ
+ * [MAUI_02354631] [AT&T] AT&T Communication Manager Proprietary Commands AT$CSQ
+ * [MAUI_02354631] [AT&T] AT&T Communication Manager Proprietary Commands AT$CSQ
+ * 
+ *
+ * Feb 27 2010 mtk01616
+ * [MAUI_02334110] [ATCI] SLIM_AT revise
+ * 
+ *
+ * Feb 26 2010 mtk02508
+ * [MAUI_02362620] [AT] at+cmer revise
+ * 
+ *
+ * Feb 26 2010 mtk02508
+ * [MAUI_02360613] [AT] at+cbklt implementation
+ * 
+ *
+ * Feb 12 2010 mtk02480
+ * [MAUI_02354790] AT&T Communication Manager AT Commands AT+CFUN/AT+COPS
+ * 
+ *
+ * Feb 12 2010 mtk02480
+ * [MAUI_00479434] [WM][SIM]AT+CSIM is not supported
+ * 
+ *
+ * Feb 12 2010 mtk02514
+ * [MAUI_02334110] [ATCI] SLIM_AT revise
+ * 
+ *
+ * Feb 11 2010 mtk02480
+ * [MAUI_02356228] [DUMA] BT SIM Access Profile
+ * 
+ *
+ * Feb 11 2010 mtk02088
+ * [MAUI_02355590] [AT] AT&T command support
+ * 
+ *
+ * Feb 5 2010 mtk02285
+ * [MAUI_02232041] [3G-Gemini][AT COMMAND] AT+CGDCONT can't work under flight mode
+ * 
+ *
+ * Feb 2 2010 mtk01616
+ * [MAUI_02334110] [ATCI] SLIM_AT revise
+ * 
+ *
+ * Jan 22 2010 mtk02088
+ * [MAUI_02070245] PhoneSuite support memory card mms
+ * 
+ *
+ * Dec 25 2009 mtk02088
+ * [MAUI_02131731] [AT] +CMER, we support <bfr>=1, but test command didn't return it
+ * 
+ *
+ * Dec 3 2009 mtk02514
+ * [MAUI_02000580] Please provide a patch that disable CHSET GSM, IRA when issue AT+ CSCS=?
+ * 
+ *
+ * Nov 26 2009 mtk01616
+ * [MAUI_01975505] [ATCI][Revise] Remove obsolete RMMI SAT code
+ * 
+ *
+ * Nov 25 2009 mtk02285
+ * [MAUI_01936885] [SM][TCM][L4C][PPP] PPP Type PDP Context Dialup modification
+ * 
+ *
+ * Nov 24 2009 mtk01616
+ * [MAUI_01975514] [ATCI][Revise] Reduce code size in FAX AT command hdlr
+ * 
+ *
+ * Nov 3 2009 mtk02480
+ * [MAUI_01979161] [AT][SML] Wrap compile option to reduce ROM size and for security
+ * 
+ *
+ * Nov 2 2009 mtk02285
+ * [MAUI_01977924] [ATCI][GPRS] merge CGEQREQ and CGEQMIN command handler (R99)
+ * 
+ *
+ * Oct 31 2009 mtk02514
+ * [MAUI_01974737] [AT] Remove AT+CPBSE and AT+EBAND
+ * 
+ *
+ * Oct 30 2009 mtk02514
+ * [MAUI_01974737] [AT] Remove AT+CPBSE and AT+EBAND
+ * 
+ *
+ * Oct 30 2009 mtk02514
+ * [MAUI_01975102] [PHB] merge wisdom phb part code to official
+ * 
+ *
+ * Oct 16 2009 mtk02514
+ * [MAUI_01965479] [L4PHB][Call Log] merge wise code about L4PHB call log part
+ * 
+ *
+ * Sep 29 2009 mtk02514
+ * [MAUI_01962388] [AT] add a new command AT+EPBSE to set preferred band
+ * 
+ *
+ * Sep 29 2009 mtk02514
+ * [MAUI_01962388] [AT] add a new command AT+EPBSE to set preferred band
+ * 
+ *
+ * Sep 29 2009 mtk02508
+ * [MAUI_01782767] [3G-Gemini] AT+CRLP=? will return error but AT+CRLP? performed well
+ * revise test mode of CRLP
+ *
+ * Sep 11 2009 mtk02480
+ * [MAUI_01896615] [3G Gemini] MS shows No service all the time but it in flight mode indeed
+ * 
+ *
+ * Sep 2 2009 mtk02285
+ * [MAUI_01948279] [New Feature] Check in Monitor PCH During PTM
+ * 
+ *
+ * Aug 31 2009 mtk02285
+ * [MAUI_01893000] the jugement of +CGEQREQ incorrect
+ * 
+ *
+ * Aug 26 2009 mtk02514
+ * [MAUI_01607613] The Contact get saved but Failed to Save popup appears
+ * 
+ *
+ * Aug 19 2009 mtk01616
+ * [MAUI_01888231] [AT]+CBST,the name support list is incorrect
+ * 
+ *
+ * Aug 11 2009 mtk02514
+ * [MAUI_01933133] [AT]AT+EPBW to support the written index
+ * 
+ *
+ * Aug 5 2009 mtk02514
+ * [MAUI_01770045] MTK:Bluetooth_it the DUN can't connect succeed
+ * 
+ *
+ * Jul 30 2009 mtk02514
+ * [MAUI_01870003] [6268_China][AT]+ATM, it shouldn't allow the value out of it bound
+ * 
+ *
+ * Jul 30 2009 mtk02514
+ * [MAUI_01873899] [Edge Module]+EMMISTR=1(or any valild number),no response
+ * 
+ *
+ * Jul 8 2009 MTK02088
+ * [MAUI_01712960] LCM qualification test mechanism implement with AT commands
+ * 
+ *
+ * Jul 3 2009 MTK02088
+ * [MAUI_01874065] [Edge Module]+CSCB,no mode1
+ * 
+ *
+ * Jun 17 2009 mtk02088
+ * [MAUI_01701980] [DT] phone suite support dual sim
+ * 
+ *
+ * Jun 12 2009 mtk02514
+ * [MAUI_01732595] [AT COMMAND]ATD dail a data call not OK return
+ * 
+ *
+ * Apr 28 2009 MTK02088
+ * [MAUI_01826112] [AT]+CMER,no 3  in the mode list ,however,it is supported indeed
+ * 
+ *
+ * Apr 25 2009 mtk02480
+ * [MAUI_01824562] [6268_China][AT]+CLCK, the error result is not syn with list command
+ * 
+ *
+ * Apr 24 2009 MTK01616
+ * [MAUI_01825303] [AT]+CBST,the list result is not syn with Document
+ * 
+ *
+ * Apr 10 2009 mtk02480
+ * [MAUI_01665103] [ATCI/L4C] Remove AT+CSIM
+ * 
+ *
+ * Apr 7 2009 mtk02480
+ * [MAUI_01733662] [AT]at+csq return result is abnormal,
+ * 
+ *
+ * Mar 31 2009 mtk01616
+ * [MAUI_01524270] [6268_China] at+cbst=? return code is abnormal.
+ * 
+ *
+ * Mar 20 2009 MTK02088
+ * [MAUI_01651278] Add AT+EMEMS
+ * Add AT+EMEMS
+ *
+ * Mar 18 2009 mtk01616
+ * [MAUI_01724939] [Monza2G Amber38] AT+CHLD=? return code is abnormal.
+ * 
+ *
+ * Mar 18 2009 mtk02285
+ * [MAUI_01643919] [WinMo][ATCI][GPRS] PS Call History AT support
+ * 
+ *
+ * Mar 14 2009 mtk02480
+ * [MAUI_01645841] [DUMA] WinMo Engineer Mode Support
+ * 
+ *
+ * Feb 10 2009 mtk01616
+ * [MAUI_01391878] [ATCI][CSM] Move AT command test mode handling to ATCI
+ * 
+ *
+ * Jan 20 2009 mtk02514
+ * [MAUI_01319443] [ATCI] Change the computed method of the hash value of AT coomand and Centralized ma
+ * Modify the hash value computed method and
+ * Centralized the AT command relative tables to the at_cmd.def
+ *
+ *------------------------------------------------------------------------------
+ * Upper this line, this part is controlled by PVCS VM. DO NOT MODIFY!!
+ *============================================================================
+ ****************************************************************************/
+
+/********************************************************************************
+*  Copyright Statement:
+*  --------------------
+*
+*  This product has been developed using a protocol stack
+*  developed by Sasken Communication Technologies Limited.
+*
+********************************************************************************/
+#if defined(__ULC_AT__)
+#if !defined(__SLIM_AT__)
+#error "__SLIM_AT__ shall be defined if __ULC_AT__ is defined"
+#endif
+#endif
+
+/****************************************************************/
+/* Basic AT commands (defined in rmmi_basic_val.c)              */
+/****************************************************************/
+BASIC_CMD("a", 1, rmmi_ata_hdlr, RMMI_CMD_ATA)
+BASIC_CMD("d", 4, rmmi_atd_hdlr, RMMI_CMD_ATD)
+BASIC_CMD("e", 5, rmmi_ate_hdlr, RMMI_CMD_ATE)
+BASIC_CMD("h", 8, rmmi_ath_hdlr, RMMI_CMD_ATH)
+
+#if !defined(__ULC_AT__)
+BASIC_CMD("i", 9, rmmi_ati_hdlr, RMMI_CMD_ATI)
+BASIC_CMD("l", 12, rmmi_atl_hdlr, RMMI_CMD_ATL)
+BASIC_CMD("m", 13, rmmi_atm_hdlr, RMMI_CMD_ATM)
+BASIC_CMD("o", 15, rmmi_ato_hdlr, RMMI_CMD_ATO)
+BASIC_CMD("p", 16, rmmi_att_hdlr, RMMI_CMD_ATP)
+BASIC_CMD("q", 17, rmmi_atq_hdlr, RMMI_CMD_ATQ)
+#endif
+BASIC_CMD("s", 19, rmmi_ats_hdlr, RMMI_CMD_ATS)
+#if !defined(__ULC_AT__)
+BASIC_CMD("t", 20, rmmi_att_hdlr, RMMI_CMD_ATT)
+#endif
+BASIC_CMD("v", 22, rmmi_atv_hdlr, RMMI_CMD_ATV)
+#if !defined(__ULC_AT__)
+BASIC_CMD("w", 23, rmmi_atw_hdlr, RMMI_CMD_ATW)
+BASIC_CMD("x", 24, rmmi_atx_hdlr, RMMI_CMD_ATX)
+BASIC_CMD("z", 26, rmmi_atz_hdlr, RMMI_CMD_ATZ)
+BASIC_CMD("&", 37, rmmi_atamp_hdlr, RMMI_CMD_ATAMP)
+#endif /* !defined(__ULC_AT__) */
+
+
+/****************************************************************/
+/* CC AT commands (defined in rmmi_validator_cc.c)              */
+/****************************************************************/
+#if defined(__MOD_CSM__)
+#if !defined(__ULC_AT__)
+#ifdef __AOC_SUPPORT__
+EXTEND_CMD("cacm", 166187, 0, "", RMMI_CMD_ATCACM, rmmi_cacm_hdlr)
+EXTEND_CMD("camm", 166567, 0, "", RMMI_CMD_ATCAMM, rmmi_camm_hdlr)
+#endif
+#endif /* !defined(__ULC_AT__) */
+
+EXTEND_CMD("clcc", 182061, 0, "", RMMI_CMD_ATCLCC, rmmi_clcc_hdlr)
+EXTEND_CMD("vts", 32547, 0, "+VTS: 0,1,2,3,4,5,6,7,8,9,A,B,C,D,#,*", RMMI_CMD_ATVTS, rmmi_vts_hdlr)
+EXTEND_CMD("chup", 176982, 0, "", RMMI_CMD_ATCHUP, rmmi_chup_hdlr)
+EXTEND_CMD("chld", 176628, 0, "+CHLD: (0, 1, 1x, 2, 2x, 3, 4, 5)", RMMI_CMD_ATCHLD, rmmi_chld_hdlr)
+EXTEND_CMD("ecpi", 279309, 0, "+ECPI: (0-4294967295)", RMMI_CMD_ATECPI, rmmi_ecpi_hdlr)
+#if defined(__BT_SUPPORT__)
+EXTEND_CMD("bldn", 127238, 0, "", RMMI_CMD_ATBLDN, rmmi_bldn_hdlr)
+#if defined(VRSI_ENABLE) || defined(VR_ENABLE)
+EXTEND_CMD("bvra", 142197, 0, "+BVRA: (0-1)", RMMI_CMD_ATBVRA, rmmi_bvra_hdlr)
+#endif /* defined(VRSI_ENABLE) */
+#endif
+#ifdef __ECALL_SUPPORT__
+EXTEND_CMD("emsd", 158764194, 0, "%EMSD: (0-1)", RMMI_CMD_ATEMSD, rmmi_emsd_hdlr)
+EXTEND_CMD("emsdset", 169636959, 210, "", RMMI_CMD_ATEMSDSET, rmmi_emsdset_hdlr)
+EXTEND_CMD("emsdpush", 169636956, 31054, "", RMMI_CMD_ATEMSDPUSH, rmmi_emsdpush_hdlr)
+EXTEND_CMD("emsdmod", 169636953, 574, "%EMSDMOD: (0-2)", RMMI_CMD_ATEMSDMOD, rmmi_emsdmod_hdlr)
+EXTEND_CMD("emsdtnum", 169636960, 21027, "", RMMI_CMD_ATEMSDTNUM, rmmi_emsdtnum_hdlr)
+EXTEND_CMD("emsdrnum", 169636958, 21027, "", RMMI_CMD_ATEMSDRNUM, rmmi_emsdrnum_hdlr)
+EXTEND_CMD("cecall", 6534150, 12, "+CECALL: (0,1,2,3)", RMMI_CMD_ATCECALL, rmmi_cecall_hdlr)
+#endif 
+#ifdef __ECALL_PSAP_SUPPORT__
+EXTEND_CMD("epsap", 169801458, 0, "", RMMI_CMD_ATEPSAP, rmmi_epsap_hdlr)
+EXTEND_CMD("epsappull", 169801458, 908744, "", RMMI_CMD_ATEPSAPPULL, rmmi_epsappull_hdlr)
+#endif 
+EXTEND_CMD("eccp", 278822, 0, "", RMMI_CMD_ATECCP, rmmi_eccp_hdlr)
+#if !defined(__SLIM_AT__)
+#ifdef __AOC_SUPPORT__
+EXTEND_CMD("caoc", 166633, 0, "+CAOC: (0-2)", RMMI_CMD_ATCAOC, rmmi_caoc_hdlr)
+EXTEND_CMD("ccwe", 169827, 0, "+CCWE: (0-1)", RMMI_CMD_ATCCWE, rmmi_ccwe_hdlr)
+#endif
+EXTEND_CMD("ccug", 169753, 0, "", RMMI_CMD_ATCCUG, rmmi_ccug_hdlr)
+EXTEND_CMD("cpas", 187777, 0, "+CPAS: (0-5)", RMMI_CMD_ATCPAS, rmmi_cpas_hdlr)
+EXTEND_CMD("cvhu", 196709, 0, "+CVHU: (0-1)", RMMI_CMD_CVHU, rmmi_cvhu_hdlr) //MAUI_02862643, mtk02285, support CVHU=1 to ignore ATH
+EXTEND_CMD("ctfr", 193742, 0, "", RMMI_CMD_ATCTFR, rmmi_ctfr_hdlr)
+EXTEND_CMD("ciwf", 178492, 0, "+CIWF: (0,1)", RMMI_CMD_ATCIWF, rmmi_ciwf_hdlr)
+EXTEND_CMD("crc", 5019, 0, "+CRC: (0, 1)", RMMI_CMD_ATCRC, rmmi_crc_hdlr) 
+EXTEND_CMD("cr", 132, 0, "+CR: (0, 1)", RMMI_CMD_ATCR, rmmi_cr_hdlr) 
+EXTEND_CMD("csta", 192813, 0, "+CSTA: (128-255)", RMMI_CMD_ATCSTA, rmmi_csta_hdlr)
+#if !defined(__MMI_FMI__)
+EXTEND_CMD("evts", 306907, 0, "+EVTS: 0,1,2,3,4,5,6,7,8,9,#,*", RMMI_CMD_ATEVTS, rmmi_evts_hdlr)
+EXTEND_CMD("eals", 276279, 0, "+EALS: (0,1)", RMMI_CMD_ATEALS, rmmi_eals_hdlr)
+EXTEND_CMD("echup", 10602662, 0, "+ECHUP: (1-7)", RMMI_CMD_ATECHUP, rmmi_echup_hdlr)
+#endif /* !defined(__MMI_FMI__) */
+EXTEND_CMD("eaic", 276149, 0, "+EAIC: (0,1,2,3)", RMMI_CMD_ATEAIC, rmmi_eaic_hdlr)
+EXTEND_CMD("crm", 5029, 0, "", RMMI_CMD_ATCRM, rmmi_crm_hdlr)
+EXTEND_CMD("esvc", 302635, 0, "+ESVC: (0-127)", RMMI_CMD_ATESVC, rmmi_esvc_hdlr)
+#ifdef __IMS_SUPPORT__
+EXTEND_CMD("esrvcctfr", 11495079, 193742, "", RMMI_CMD_ATESRVCCTFR, rmmi_esrvcctfr_hdlr)
+#endif /* __IMS_SUPPORT__ */
+EXTEND_CMD("evocd", 11654642, 0, "+EVOCD: (0-1)", RMMI_CMD_ATEVOCD, rmmi_evocd_hdlr)
+#endif /* !defined(__SLIM_AT__) */
+#endif /* __MOD_CSM__ */
+
+/****************************************************************/
+/* CTM AT commands (defined in rmmi_validator_ctm.c)            */
+/****************************************************************/
+#if defined(__CTM_SUPPORT__)
+#if defined(__CTM_AT_CMD_SUPPORT__)
+EXTEND_CMD("ctmset", 7372347, 20, "+CTMSET: (0, 1), (0, 1, 2, 3)", RMMI_CMD_ATCTMSET, rmmi_ctmset_hdlr)
+EXTEND_CMD("ctmopen", 7372206, 204, "", RMMI_CMD_ATCTMOPEN, rmmi_ctmopen_hdlr)
+EXTEND_CMD("ctmclose", 7371746, 22387, "", RMMI_CMD_ATCTMCLOSE, rmmi_ctmclose_hdlr)
+EXTEND_CMD("ctmconn", 7371749, 546, "", RMMI_CMD_ATCTMCONN, rmmi_ctmconn_hdlr)
+EXTEND_CMD("ctms", 194009, 0, "", RMMI_CMD_ATCTMS, rmmi_ctms_hdlr)
+EXTEND_CMD("ctmcfg", 7371740, 7, "", RMMI_CMD_ATCTMCFG, rmmi_ctmcfg_hdlr)
+#endif /* __CTM_AT_CMD_SUPPORT__ */
+EXTEND_CMD("ctmcall", 7371735, 468, "+CTMCALL: (0,1)", RMMI_CMD_ATCTMCALL, rmmi_ctmcall_hdlr)
+#endif /* __CTM_SUPPORT__ */
+
+/****************************************************************/
+/* CSD/FAX AT commands (defined in rmmi_validator_data.c)       */
+/****************************************************************/
+#if !defined(__ULC_AT__)
+EXTEND_CMD("fclass", 12692817, 19, "(0, 1, 2, 2.0)", RMMI_CMD_ATFCLASS, rmmi_fclass_hdlr)
+
+#if !defined(__SLIM_AT__)
+EXTEND_CMD("csns", 192603, 0, "+CSNS: (0-7)", RMMI_CMD_ATCSNS, rmmi_csns_hdlr)
+#endif
+
+#if defined(CSD_SUPPORT)
+#if defined(__VIDEO_CALL_SUPPORT__) && defined(__REL5__)
+#ifdef __CSD_T__
+#ifdef __CSD_NT_2400__
+EXTEND_CMD("cbst", 168246, 0, "+CBST: (0,4-7,12,14,68,70-71,75,134),(0-1,4),(0-3)", RMMI_CMD_ATCBST, rmmi_cbst_hdlr)
+#else  /* __CSD_NT_2400__ */
+EXTEND_CMD("cbst", 168246, 0, "+CBST: (0,6-7,12,14,70-71,75,134),(0-1,4),(0-3)", RMMI_CMD_ATCBST, rmmi_cbst_hdlr)
+#endif /* __CSD_NT_2400__ */
+#else  /* __CSD_T__*/
+#ifdef __CSD_NT_2400__
+EXTEND_CMD("cbst", 168246, 0, "+CBST: (0,4-7,12,14,68,70-71,75,134),(0-1,4),(0-1)", RMMI_CMD_ATCBST, rmmi_cbst_hdlr)
+#else  /* __CSD_NT_2400__ */
+EXTEND_CMD("cbst", 168246, 0, "+CBST: (0,6-7,12,14,70-71,75,134),(0-1,4),(0-1)", RMMI_CMD_ATCBST, rmmi_cbst_hdlr)
+#endif /* __CSD_NT_2400__ */
+#endif  /* __CSD_T__*/
+#else /*(__VIDEO_CALL_SUPPORT__) && (__REL5__)*/
+#ifdef __CSD_T__
+#ifdef __CSD_NT_2400__
+EXTEND_CMD("cbst", 168246, 0, "+CBST: (0,4-7,12,14,68,70-71,75),(0,4),(0-3)", RMMI_CMD_ATCBST, rmmi_cbst_hdlr)
+#else  /* __CSD_NT_2400__ */
+EXTEND_CMD("cbst", 168246, 0, "+CBST: (0,6-7,12,14,70-71,75),(0,4),(0-3)", RMMI_CMD_ATCBST, rmmi_cbst_hdlr)
+#endif /* __CSD_NT_2400__ */
+#else  /* __CSD_T__*/
+#ifdef __CSD_NT_2400__
+EXTEND_CMD("cbst", 168246, 0, "+CBST: (0,4-7,12,14,68,70-71,75),(0,4),(1)", RMMI_CMD_ATCBST, rmmi_cbst_hdlr)
+#else  /* __CSD_NT_2400__ */
+EXTEND_CMD("cbst", 168246, 0, "+CBST: (0,6-7,12,14,70-71,75),(0,4),(1)", RMMI_CMD_ATCBST, rmmi_cbst_hdlr)
+#endif /* __CSD_NT_2400__ */
+#endif  /* __CSD_T__*/
+#endif /*(__VIDEO_CALL_SUPPORT__) && (__REL5__)*/
+#else /* CSD_SUPPORT */
+#if defined(__VIDEO_CALL_SUPPORT__) && defined(__REL5__)
+EXTEND_CMD("cbst", 168246, 0, "+CBST: 134, 1, 0", RMMI_CMD_ATCBST, rmmi_cbst_hdlr)
+#endif
+#endif /* CSD_SUPPORT */
+
+#if defined(CSD_SUPPORT)
+EXTEND_CMD("cmod", 183962, 0, "+CMOD: (0-3)", RMMI_CMD_ATCMOD, rmmi_cmod_hdlr)
+EXTEND_CMD("crlp", 191080, 0, "+CRLP: (0-61),(0-61),(39-255),(1-255)", RMMI_CMD_ATCRLP, rmmi_crlp_hdlr)
+EXTEND_CMD("icf", 13116, 0, "+ICF: (0-6), (0-3)", RMMI_CMD_ATICF, rmmi_icf_hdlr)
+EXTEND_CMD("ds", 171, 0, "+DS: 0, (0-1), (512-4096), (6-250)", RMMI_CMD_ATDS, rmmi_ds_hdlr)
+EXTEND_CMD("dr", 170, 0, "+DR: (0)", RMMI_CMD_ATDR, rmmi_dr_hdlr)
+#endif /* CSD_SUPPORT */
+
+#if defined(__CSD_FAX__)
+EXTEND_CMD("fmi", 9167, 0, "", RMMI_CMD_ATFMI, rmmi_fmi_hdlr)
+EXTEND_CMD("fmm", 9171, 0, "", RMMI_CMD_ATFMM, rmmi_fmi_hdlr)
+EXTEND_CMD("fmr", 9176, 0, "", RMMI_CMD_ATFMR, rmmi_fmi_hdlr)
+EXTEND_CMD("fpr", 9290, 0, "0,1,2,4,8,10,18", RMMI_CMD_ATFPR, rmmi_fpr_hdlr)
+EXTEND_CMD("fdt", 8836, 0, "", RMMI_CMD_ATFDT, rmmi_fdt_hdlr)
+EXTEND_CMD("fdr", 8834, 0, "", RMMI_CMD_ATFDR, rmmi_fdr_hdlr)
+EXTEND_CMD("fip", 9022, 0, "", RMMI_CMD_ATFIP, rmmi_fip_hdlr)
+EXTEND_CMD("fks", 9101, 0, "", RMMI_CMD_ATFKS, rmmi_fks_hdlr)
+EXTEND_CMD("fk", 239, 0, "", RMMI_CMD_ATFK, rmmi_fk_hdlr)
+EXTEND_CMD("fet", 8874, 0, "", RMMI_CMD_ATFET, rmmi_fet_hdlr)
+EXTEND_CMD("ftm", 9437, 0, "", RMMI_CMD_ATFTM, rmmi_ftm_hdlr)
+EXTEND_CMD("frm", 9361, 0, "", RMMI_CMD_ATFRM, rmmi_frm_hdlr)
+EXTEND_CMD("fth", 9432, 0, "", RMMI_CMD_ATFTH, rmmi_fth_hdlr)
+EXTEND_CMD("frh", 9356, 0, "", RMMI_CMD_ATFRH, rmmi_frh_hdlr)
+EXTEND_CMD("fts", 9443, 0, "", RMMI_CMD_ATFTS, rmmi_fts_hdlr)
+EXTEND_CMD("frs", 9367, 0, "", RMMI_CMD_ATFRS, rmmi_frs_hdlr)
+EXTEND_CMD("fcc", 8781, 0, "", RMMI_CMD_ATFCC, rmmi_fcc_hdlr)
+EXTEND_CMD("fdcc", 335125, 0, "", RMMI_CMD_ATFDCC, rmmi_fdcc_hdlr)
+EXTEND_CMD("fis", 9025, 0, "", RMMI_CMD_ATFIS, rmmi_fis_hdlr)
+EXTEND_CMD("fdis", 335369, 0, "", RMMI_CMD_ATFDIS, rmmi_fdis_hdlr)
+EXTEND_CMD("fcs", 8797, 0, "", RMMI_CMD_ATFCS, rmmi_fcs_hdlr)
+EXTEND_CMD("fdcs", 335141, 0, "", RMMI_CMD_ATFDCS, rmmi_fdcs_hdlr)
+EXTEND_CMD("fli", 9129, 0, "", RMMI_CMD_ATFLI, rmmi_fli_hdlr)
+EXTEND_CMD("flid", 346906, 0, "", RMMI_CMD_ATFLID, rmmi_flid_hdlr)
+EXTEND_CMD("fpi", 9281, 0, "", RMMI_CMD_ATFPI, rmmi_fpi_hdlr)
+EXTEND_CMD("fcig", 333913, 0, "", RMMI_CMD_ATFCIG, rmmi_fcig_hdlr)
+EXTEND_CMD("flp", 9136, 0, "", RMMI_CMD_ATFLP, rmmi_flp_hdlr)
+EXTEND_CMD("flpl", 347180, 0, "", RMMI_CMD_ATFLPL, rmmi_flpl_hdlr)
+EXTEND_CMD("fsp", 9402, 0, "", RMMI_CMD_ATFSP, rmmi_fsp_hdlr)
+EXTEND_CMD("fspl", 357288, 0, "", RMMI_CMD_ATFSPL, rmmi_fspl_hdlr)
+EXTEND_CMD("fnr", 9214, 0, "", RMMI_CMD_ATFNR, rmmi_fnr_hdlr)
+EXTEND_CMD("fie", 9011, 0, "", RMMI_CMD_ATFIE, rmmi_fie_hdlr)
+EXTEND_CMD("fps", 9291, 0, "", RMMI_CMD_ATFPS, rmmi_fps_hdlr)
+EXTEND_CMD("fpts", 353115, 0, "", RMMI_CMD_ATFPTS, rmmi_fpts_hdlr)
+EXTEND_CMD("frq", 9365, 0, "", RMMI_CMD_ATFRQ, rmmi_frq_hdlr)
+EXTEND_CMD("fbadlin", 12622168, 356, "", RMMI_CMD_ATFBADLIN, rmmi_fbadlin_hdlr)
+EXTEND_CMD("fbadmul", 12622169, 810, "", RMMI_CMD_ATFBADMUL, rmmi_fbadmul_hdlr)
+EXTEND_CMD("fcq", 8795, 0, "", RMMI_CMD_ATFCQ, rmmi_fcq_hdlr)
+EXTEND_CMD("fit", 9026, 0, "", RMMI_CMD_ATFIT, rmmi_fit_hdlr)
+EXTEND_CMD("fpp", 9288, 0, "", RMMI_CMD_ATFPP, rmmi_fpp_hdlr)
+EXTEND_CMD("fbo", 8755, 0, "", RMMI_CMD_ATFBO, rmmi_fbo_hdlr)
+EXTEND_CMD("fbor", 332708, 0, "", RMMI_CMD_ATFBOR, rmmi_fbor_hdlr)
+EXTEND_CMD("fea", 8855, 0, "", RMMI_CMD_ATFEA, rmmi_fea_hdlr)
+EXTEND_CMD("frel", 355426, 0, "", RMMI_CMD_ATFREL, rmmi_frel_hdlr)
+EXTEND_CMD("fns", 9215, 0, "", RMMI_CMD_ATFNS, rmmi_fns_hdlr)
+EXTEND_CMD("fcr", 8796, 0, "", RMMI_CMD_ATFCR, rmmi_fcr_hdlr)
+EXTEND_CMD("fbu", 8761, 0, "", RMMI_CMD_ATFBU, rmmi_fbu_hdlr)
+EXTEND_CMD("fbug", 332925, 0, "", RMMI_CMD_ATFBUG, rmmi_fbug_hdlr)
+EXTEND_CMD("fap", 8718, 0, "", RMMI_CMD_ATFAP, rmmi_fap_hdlr)
+EXTEND_CMD("fsa", 9387, 0, "", RMMI_CMD_ATFSA, rmmi_fsa_hdlr)
+EXTEND_CMD("fpa", 9273, 0, "", RMMI_CMD_ATFPA, rmmi_fpa_hdlr)
+EXTEND_CMD("fpw", 9295, 0, "", RMMI_CMD_ATFPW, rmmi_fpw_hdlr)
+EXTEND_CMD("fct", 8798, 0, "", RMMI_CMD_ATFCT, rmmi_fct_hdlr)
+EXTEND_CMD("fphcto", 13400454, 15, "", RMMI_CMD_ATFPHCTO, rmmi_fphcto_hdlr)
+EXTEND_CMD("fhs", 8987, 0, "", RMMI_CMD_ATFHS, rmmi_fhs_hdlr)
+EXTEND_CMD("fms", 9177, 0, "", RMMI_CMD_ATFMS, rmmi_fms_hdlr)
+EXTEND_CMD("fminsp", 13237699, 16, "", RMMI_CMD_ATFMINSP, rmmi_fminsp_hdlr)
+EXTEND_CMD("fry", 9373, 0, "", RMMI_CMD_ATFRY, rmmi_fry_hdlr)
+EXTEND_CMD("fbs", 8759, 0, "", RMMI_CMD_ATFBS, rmmi_fbs_hdlr)
+EXTEND_CMD("ffc", 8895, 0, "", RMMI_CMD_ATFFC, rmmi_ffc_hdlr)
+EXTEND_CMD("fvrfc", 13744223, 0, "", RMMI_CMD_ATFVRFC, rmmi_fvrfc_hdlr)
+EXTEND_CMD("fdffc", 12739199, 0, "", RMMI_CMD_ATFDFFC, rmmi_fdffc_hdlr)
+EXTEND_CMD("flnfc", 13189727, 0, "", RMMI_CMD_ATFLNFC, rmmi_flnfc_hdlr)
+EXTEND_CMD("fwdfc", 13778879, 0, "", RMMI_CMD_ATFWDFC, rmmi_fwdfc_hdlr)
+#endif /* __CSD_FAX__ */
+#endif /* !defined(__ULC_AT__) */
+
+
+/****************************************************************/
+/* CISS AT commands (defined in rmmi_validator_ciss.c)          */
+/****************************************************************/
+#if defined(__MOD_CSM__)
+EXTEND_CMD("ccwa", 169823, 0, "+CCWA: (0-1)", RMMI_CMD_ATCCWA, rmmi_ccwa_hdlr)
+EXTEND_CMD("clip", 182302, 0, "+CLIP: (0-1)", RMMI_CMD_ATCLIP, rmmi_clip_hdlr)
+EXTEND_CMD("ccfc", 169179, 0, "+CCFC: (0-5)", RMMI_CMD_ATCCFC, rmmi_ccfc_hdlr)
+#if !defined(__SLIM_AT__)
+EXTEND_CMD("caemlpp", 6318006, 624, "", RMMI_CMD_ATCAEMLPP, rmmi_caemlpp_hdlr)
+EXTEND_CMD("cdip", 170750, 0, "+CDIP: (0-1)", RMMI_CMD_ATCDIP, rmmi_cdip_hdlr)
+#if !defined(__MMI_FMI__) || defined(__CLCK_FDN_SUPPORT__)
+EXTEND_CMD("clck", 182069, 0, "+CLCK: (\"PF\",\"SC\",\"AO\",\"OI\",\"OX\",\"AI\",\"IR\",\"AB\",\"AG\",\"AC\",\"FD\",\"PN\",\"PU\",\"PP\",\"PC\")", RMMI_CMD_ATCLCK, rmmi_clck_hdlr)
+#else
+EXTEND_CMD("clck", 182069, 0, "+CLCK: (\"PF\",\"SC\",\"AO\",\"OI\",\"OX\",\"AI\",\"IR\",\"AB\",\"AG\",\"AC\",\"PN\",\"PU\",\"PP\",\"PC\")", RMMI_CMD_ATCLCK, rmmi_clck_hdlr)
+#endif
+EXTEND_CMD("essp", 302534, 0, "+ESSP: (0-2)", RMMI_CMD_ATESSP, rmmi_essp_hdlr)
+EXTEND_CMD("clir", 182304, 0, "+CLIR: (0-2)", RMMI_CMD_ATCLIR, rmmi_clir_hdlr)
+EXTEND_CMD("colp", 186748, 0, "+COLP: (0-1)", RMMI_CMD_ATCOLP, rmmi_colp_hdlr)
+EXTEND_CMD("cnap", 184886, 0, "+CNAP: (?-?)", RMMI_CMD_ATCNAP, rmmi_cnap_hdlr)
+EXTEND_CMD("cpwd", 188598, 0, "+CPWD: (\"SC\",8),(\"P2\",8),(\"AO\",4),(\"OI\",4),(\"OX\",4),(\"AI\",4),(\"IR\",4),(\"AB\",4),(\"AG\",4),(\"AC\",4)", RMMI_CMD_ATCPWD, rmmi_cpwd_hdlr)
+EXTEND_CMD("cssn", 192788, 0, "+CSSN: (0-1),(0-1)", RMMI_CMD_ATCSSN, rmmi_cssn_hdlr)
+EXTEND_CMD("ccbs", 169043, 0, "+CCBS: <ccbs_id>", RMMI_CMD_ATCCBS, rmmi_ccbs_hdlr)
+EXTEND_CMD("cusd", 195666, 0, "+CUSD: (0-2)", RMMI_CMD_ATCUSD, rmmi_cusd_hdlr)
+#if !defined(__MMI_FMI__) || defined(__ECUSD_SUPPORT__)
+EXTEND_CMD("ecusd", 10621346, 0, "", RMMI_CMD_ATECUSD, rmmi_ecusd_hdlr)
+#endif
+#if !defined(__MMI_FMI__)
+EXTEND_CMD("colr", 186750, 0, "", RMMI_CMD_ATCOLR, rmmi_colr_hdlr)
+#endif /* !defined(__MMI_FMI__) */
+#endif /* !defined(__SLIM_AT__) */
+#endif /* __MOD_CSM__ */
+
+
+/****************************************************************/
+/* GPRS AT commands (defined in rmmi_validator_tcm.c)          */
+/****************************************************************/
+#ifdef __MOD_TCM__
+	#if !defined(__ULC_AT__)
+	EXTEND_CMD("cgatt", 6641736, 0, "+CGATT:(0,1)", RMMI_CMD_ATCGATT, rmmi_cgatt_hdlr)
+	EXTEND_CMD("cgreg", 6665701, 0, "+CGREG: (0-3)", RMMI_CMD_ATCGREG, rmmi_cgreg_hdlr)
+	EXTEND_CMD("cgclass", 6644301, 741, "", RMMI_CMD_ATCGCLASS, rmmi_cgclass_hdlr)
+	#if defined(__EXT_PDP_CONTEXT_ON__)
+		EXTEND_CMD("cgact", 6641090, 0, "\r\n+CGACT: (0,1)\r\n", RMMI_CMD_ATCGACT, rmmi_cgact_hdlr)
+		EXTEND_CMD("cgcmod", 6644353, 4, "", RMMI_CMD_ATCGCMOD, rmmi_cgcmod_hdlr)
+		#ifdef __PPP_TYPE_PDP_DIALUP_SUPPORT__
+			EXTEND_CMD("cgdcont", 6645417, 552, "\r\n+CGDCONT: (1-3),\"IP\",,,(0),(0)\r\n+CGDCONT: (1-3),\"PPP\",,,(0),(0)\r\n", RMMI_CMD_ATCGDCONT, rmmi_cgdcont_hdlr)
+			EXTEND_CMD("cgqmin", 6664563, 14, "\r\n+CGQMIN: \"IP\", (0,1,2,3), (0,1,2,3,4), (0,1,2,3,4,5) , (0,1,2,3,4,5,6,7,8,9), (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,31)\r\n+CGQMIN: \"PPP\", (0,1,2,3), (0,1,2,3,4), (0,1,2,3,4,5) , (0,1,2,3,4,5,6,7,8,9), (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,31)\r\n", RMMI_CMD_ATCGQMIN, rmmi_cgqmin_hdlr)
+			EXTEND_CMD("cgqreq", 6664749, 17, "\r\n+CGQREQ: \"IP\", (0,1,2,3), (0,1,2,3,4), (0,1,2,3,4,5) , (0,1,2,3,4,5,6,7,8,9), (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,31)\r\n+CGQREQ: \"PPP\", (0,1,2,3), (0,1,2,3,4), (0,1,2,3,4,5) , (0,1,2,3,4,5,6,7,8,9), (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,31)\r\n", RMMI_CMD_ATCGQREQ, rmmi_cgqreq_hdlr)
+		#else
+			EXTEND_CMD("cgdcont", 6645417, 552, "\r\n+CGDCONT: (1-3),\"IP\",,,(0),(0)\r\n", RMMI_CMD_ATCGDCONT, rmmi_cgdcont_hdlr)
+			EXTEND_CMD("cgqmin", 6664563, 14, "\r\n+CGQMIN: \"IP\", (0,1,2,3), (0,1,2,3,4), (0,1,2,3,4,5) , (0,1,2,3,4,5,6,7,8,9), (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,31)\r\n", RMMI_CMD_ATCGQMIN, rmmi_cgqmin_hdlr)
+			EXTEND_CMD("cgqreq", 6664749, 17, "\r\n+CGQREQ: \"IP\", (0,1,2,3), (0,1,2,3,4), (0,1,2,3,4,5) , (0,1,2,3,4,5,6,7,8,9), (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,31)\r\n", RMMI_CMD_ATCGQREQ, rmmi_cgqreq_hdlr)
+		#endif /* __PPP_TYPE_PDP_DIALUP_SUPPORT__ */ 
+		EXTEND_CMD("cgsdata", 6667101, 761, "", RMMI_CMD_ATCGSDATA, rmmi_cgsdata_hdlr)
+		EXTEND_CMD("acttest", 2279397, 742, "", RMMI_CMD_ATACTTEST, rmmi_acttest_hdlr)
+		#ifdef __R99__
+			EXTEND_CMD("cgeqmin", 6647391, 356, "", RMMI_CMD_ATCGEQMIN, rmmi_cgeq_hdlr) //MAUI_02232041, mtk02285, 20100203
+			EXTEND_CMD("cgeqreq", 6647396, 207, "", RMMI_CMD_ATCGEQREQ, rmmi_cgeq_hdlr) //MAUI_02232041, mtk02285, 20100203
+			EXTEND_CMD("cgeqneg", 6647392, 197, "", RMMI_CMD_ATCGEQNEG, rmmi_cgeq_hdlr) /* mtk02285, 20111003 */
+		#endif /* __R99__ */
+		EXTEND_CMD("egact", 10811362, 0, "\r\n+EGACT: (0,1)\r\n", RMMI_CMD_ATEGACT, rmmi_egact_hdlr)		
+	#endif /* __EXT_PDP_CONTEXT_ON__ */
+    #endif /* !defined(__ULC_AT__) */
+
+	#if !defined(__SLIM_AT__)
+		#ifdef __EXT_PDP_CONTEXT_ON__
+			EXTEND_CMD("cgans", 6641507, 0, "+CGANS: (0-1), \"PPP\"", RMMI_CMD_ATCGANS, rmmi_cgans_hdlr)
+			EXTEND_CMD("cgauto", 6641774, 15, "+CGAUTO: (0,1)", RMMI_CMD_ATCGAUTO, rmmi_cgauto_hdlr)
+			EXTEND_CMD("cgpaddr", 6662658, 170, "\r\n+CGPADDR: (1-3)\r\n", RMMI_CMD_ATCGPADDR, rmmi_cgpaddr_hdlr)
+			EXTEND_CMD("egpau", 10832947, 0, "\r\n+EGPAU: (0-1), (1-3), (0-1)\r\n", RMMI_CMD_ATEGPAU, rmmi_egpau_hdlr) 
+			EXTEND_CMD("cgerep", 6647421, 16, "\r\n+CGEREP: (0,1), (0)", RMMI_CMD_ATCGEREQ, rmmi_cgerep_hdlr)
+			#ifdef __EXT_SECONDARY_PDP_FEASIBLE__
+				EXTEND_CMD("cgdscont", 6646013, 22212, "", RMMI_CMD_ATCGDSCONT, rmmi_cgdscont_hdlr) 
+				EXTEND_CMD("cgtft", 6668640, 0, "", RMMI_CMD_ATCGTFT, rmmi_cgtft_hdlr) 
+				EXTEND_CMD("egdelpf", 10815762, 614, "\r\n+EGDELPF: (1-16)\r\n", RMMI_CMD_ATEGDELPF, rmmi_egdelpf_hdlr) 
+				EXTEND_CMD("eglnkpf", 10827655, 614, "\r\n+EGLNKPF: (1-16)\r\n", RMMI_CMD_ATEGLNKPF, rmmi_eglnkpf_hdlr) 				
+			#endif /* __EXT_SECONDARY_PDP_FEASIBLE__ */
+				EXTEND_CMD("cgdata", 6645346, 1, "+CGDATA: \"M-CCMNI\",\"M-RNDIS\",\"M-MBIM\",\"ppp\"", RMMI_CMD_ATCGDATA, rmmi_cgdata_hdlr)
+			EXTEND_CMD("cgprco", 6663303, 15, "\r\n+CGPRCO: (1-3)\r\n", RMMI_CMD_ATCGPRCO, rmmi_cgprco_hdlr)
+			EXTEND_CMD("cgauth", 6641774, 8, "\r\n+CGAUTH: (1-3),(0-2),(1-31),(1-31)\r\n", RMMI_CMD_ATCGAUTH, rmmi_cgauth_hdlr)
+			EXTEND_CMD("egld", 284928, 0, "+EGLD: (0-9)", RMMI_CMD_ATEGLD, rmmi_egld_hdlr)
+            #ifdef __MOBILE_BROADBAND_PROVISION_CONTEXT__
+            	EXTEND_CMD("mbpc", 716835, 0, "", RMMI_CMD_ATMBPC, rmmi_mbpc_hdlr)
+            #endif 
+			#ifdef __MBIM_SUPPORT__
+				EXTEND_CMD("mbconnect", 27221428, 775562, "", RMMI_CMD_ATMBCONNECT, rmmi_mbconnect_hdlr)
+			#endif
+			#if 0 //defined(__DIALUP_GPRS_COUNTER_SUPPORT__)
+				EXTEND_CMD("egch", 284590, 0, "+EGCH: (0-1),(0-3)", RMMI_CMD_EGCH, rmmi_egch_hdlr)
+			#endif
+		#endif /* __EXT_PDP_CONTEXT_ON__ */
+
+		#if defined(__MONITOR_PAGE_DURING_TRANSFER__)
+			EXTEND_CMD("egtp", 285244, 0, "+EGTP: (0-1)", RMMI_CMD_EGTP, rmmi_egtp_hdlr)
+		#endif
+			EXTEND_CMD("ehsm", 286647, 0, "+EHSM: (0-2),(0-1)", RMMI_CMD_EHSM, rmmi_ehsm_hdlr) //mtk02285, hspa_mmi
+		#ifdef __IPV4V6__
+			EXTEND_CMD("egfb", 284698, 0, "", RMMI_CMD_EGFB, rmmi_egfb_hdlr)
+		#endif		
+		EXTEND_CMD("egpcap", 10833003, 16, "+EGPCAP: (0-11),(0-11)", RMMI_CMD_ATEGPCAP, rmmi_egpcap_hdlr)
+		EXTEND_CMD("egtype", 10839630, 5, "+EGTYPE: (0-3)", RMMI_CMD_EGTYPE, rmmi_egtype_hdlr)
+                EXTEND_CMD("psbearer", 34407823, 26200, "+PSBEARER: (0-1)", RMMI_CMD_PSBEARER, rmmi_psbearer_hdlr)
+		#ifdef __MEDIATEK_SMART_QOS__
+			EXTEND_CMD("msq", 19511, 0, "+MSQ: (1-100),", RMMI_CMD_ATMSQ, rmmi_msq_hdlr)
+			EXTEND_CMD("msqon", 28174468, 0, "+MSQON: (0-1)", RMMI_CMD_ATMSQON, rmmi_msqon_hdlr)
+		#endif
+  #endif /* __SLIM_AT__ */
+
+	/* 27.007 Ch10 R10 */
+    EXTEND_CMD("cgcontrdp",  6644428, 1123600,  "+CGCONTRDP: (0-1)",  RMMI_CMD_CGCONTRDP,  rmmi_cgcontrdp_hdlr)
+    EXTEND_CMD("cgscontrdp", 6667077, 30315504, "+CGSCONTRDP: (0-1)", RMMI_CMD_CGSCONTRDP, rmmi_cgscontrdp_hdlr)
+    EXTEND_CMD("cgeqos",     6647393, 19      , "+CGEQOS: (0-1)",     RMMI_CMD_CGEQOS,     rmmi_cgeqos_hdlr)
+    EXTEND_CMD("cgeqosrdp",  6647393, 1068728,  "+CGEQOSRDP: (0-1)",  RMMI_CMD_CGEQOSRDP,  rmmi_cgeqosrdp_hdlr)
+    EXTEND_CMD("cgtftrdp",   6668640, 26160,    "+CGTFTRDP: (0-1)",   RMMI_CMD_CGTFTRDP,   rmmi_cgtftrdp_hdlr)
+    EXTEND_CMD("cgdel",      6645490, 0,        "+CGDEL: (0-1)",      RMMI_CMD_CGDEL,      rmmi_cgdel_hdlr)
+	/* 27.007 Ch10 R10 end */
+
+#endif /* __MOD_TCM__ */
+
+
+/****************************************************************/
+/* NW AT commands (defined in rmmi_validator_nw.c)              */
+/****************************************************************/
+#ifdef __MOD_RAC__
+EXTEND_CMD("cops", 186903, 0, "", RMMI_CMD_ATCOPS, rmmi_cops_hdlr)
+EXTEND_CMD("erat", 300410, 0, "", RMMI_CMD_ATERAT, rmmi_erat_hdlr)
+EXTEND_CMD("csq", 5071, 0, "+CSQ: (0-31,99),(0-7,99)", RMMI_CMD_ATCSQ, rmmi_csq_hdlr)
+EXTEND_CMD("cesq", 172575, 0, "+CESQ: (0-63,99),(0-7,99),(0-96,255),(0-49,255),(0-34,255),(0-97,255)", RMMI_CMD_ATCESQ, rmmi_cesq_hdlr)
+EXTEND_CMD("errmt", 11439882, 0, "", RMMI_CMD_ATERRMT, rmmi_errmt_hdlr)
+
+#if defined(NEPTUNE_MMI)
+EXTEND_CMD("cfun", 174092, 0, "+CFUN: (0,1,4)", RMMI_CMD_ATCFUN, rmmi_cfun_hdlr)
+#else
+EXTEND_CMD("cfun", 174092, 0, "+CFUN: (0,1,4),(0,1)", RMMI_CMD_ATCFUN, rmmi_cfun_hdlr)
+#endif
+
+#if !defined(__ULC_AT__) 
+EXTEND_CMD("efun", 283836, 0, "", RMMI_CMD_ATEFUN, rmmi_efun_hdlr)
+EXTEND_CMD("eops", 296647, 0, "", RMMI_CMD_ATEOPS, rmmi_eops_hdlr)
+EXTEND_CMD("creg", 190805, 0, "+CREG: (0-3)", RMMI_CMD_ATCREG, rmmi_creg_hdlr)
+EXTEND_CMD("eopn", 296642, 0, "", RMMI_CMD_ATEOPN, rmmi_eopn_hdlr)
+EXTEND_CMD("epof", 298040, 0, "", RMMI_CMD_ATEPOF, rmmi_epof_hdlr)
+EXTEND_CMD("epbse", 11307247, 0, "", RMMI_CMD_ATEPBSE, rmmi_epbse_hdlr)
+#endif /* !defined(__ULC_AT__) */
+
+#if !defined(__SLIM_AT__)
+EXTEND_CMD("copn", 186898, 0, "", RMMI_CMD_ATCOPN, rmmi_copn_hdlr)
+EXTEND_CMD("capl", 166680, 0, "", RMMI_CMD_ATCAPL, rmmi_capl_hdlr)
+EXTEND_CMD("ws46", 1290703, 0, "+WS46: (25)", RMMI_CMD_ATWS46, rmmi_ws46_hdlr)
+EXTEND_CMD("ctzr", 194502, 0, "+CTZR: (0-1)", RMMI_CMD_ATCTZR, rmmi_ctzr_hdlr)
+
+EXTEND_CMD("cvdp", 196552, 0, "+CVDP: (1-3)", RMMI_CMD_ATCVDP, rmmi_cvdp_hdlr)
+EXTEND_CMD("cavims", 6342403, 19, "+CAVIMS: (0-1)", RMMI_CMD_ATCAVIMS, rmmi_cavims_hdlr)
+EXTEND_CMD("casims", 6338071, 19, "+CASIMS: (0-1)", RMMI_CMD_ATCASIMS, rmmi_casims_hdlr)
+
+#ifdef __LTE_RAT__
+EXTEND_CMD("ceus", 172653, 0, "+CEUS: (0-1)", RMMI_CMD_ATCEUS, rmmi_ceus_hdlr)
+EXTEND_CMD("cevdp", 6561704, 0, "+CEVDP: (1-4)", RMMI_CMD_ATCEVDP, rmmi_cevdp_hdlr)
+EXTEND_CMD("cemode", 6549114, 5, "+CEMODE: (0-3)", RMMI_CMD_ATCEMODE, rmmi_cemode_hdlr)
+EXTEND_CMD("cereg", 6555957, 0, "+CEREG: (0-3)", RMMI_CMD_ATCEREG, rmmi_cereg_hdlr)
+EXTEND_CMD("eemode", 10719386, 5, "+EEMODE: (0-4)", RMMI_CMD_ATEEMODE, rmmi_eemode_hdlr)
+#endif
+
+#if defined(__CSG_SUPPORT__)
+EXTEND_CMD("ecsg", 279421, 0, "+ECSG: (0-3)", RMMI_CMD_ATECSG, rmmi_ecsg_hdlr)
+#endif
+
+#if defined(__GEMINI__) || defined(__SGLTE__)
+#ifdef __GEMINI_MONITOR_PAGE_DURING_TRANSFER__
+EXTEND_CMD("emppch", 11162731, 8, "+EMPPCH: (0,1)", RMMI_CMD_ATEMPPCH, rmmi_emppch_hdlr)
+#endif
+#if defined(__WM_RIL_SUPPORT__)
+EXTEND_CMD("edsim", 10672959, 0, "+EDSIM: (0-3)", RMMI_CMD_ATEDSIM, rmmi_edsim_hdlr)
+EXTEND_CMD("euds", 304855, 0, "+EUDS: (0-3)", RMMI_CMD_ATEUDS, rmmi_euds_hdlr)
+EXTEND_CMD("edsw", 280881, 0, "+EDSW: (0,1)", RMMI_CMD_ATEDSW, rmmi_edsw_hdlr)
+#endif
+#endif
+
+#if defined(__NO_PSDATA_SEND_SCRI__) || defined(__FAST_DORMANCY__)
+EXTEND_CMD("escri", 11473273, 0, "", RMMI_CMD_ATESCRI, rmmi_escri_hdlr)
+EXTEND_CMD("efd", 7452, 0, "+EFD: (0-3)", RMMI_CMD_ATEFD, rmmi_efd_hdlr)
+#endif
+
+#if defined(__MODEM_EM_MODE__)
+EXTEND_CMD("ecelck", 10597975, 11, "+ECELCK: (0,1)", RMMI_CMD_ATECELCK, rmmi_ecelck_hdlr)  
+#endif
+
+#if !defined(__MMI_FMI__)
+EXTEND_CMD("ecsq", 279431, 0, "+ECSQ: (0-2)", RMMI_CMD_ATECSQ, rmmi_ecsq_hdlr)
+EXTEND_CMD("enbr", 294670, 0, "", RMMI_CMD_ATENBR, rmmi_enbr_hdlr)
+EXTEND_CMD("ecell", 10597984, 0, "", RMMI_CMD_ATECELL, rmmi_ecell_hdlr)
+EXTEND_CMD("epsb", 298188, 0, "", RMMI_CMD_ATEPSB, rmmi_epsb_hdlr) 
+#else
+EXTEND_CMD("ecsq", 279431, 0, "+ECSQ: (0,1)", RMMI_CMD_ATECSQ, rmmi_ecsq_hdlr)
+#endif
+
+#if defined(__SYSSEL_SUPPORT__)
+EXTEND_CMD("syssel", 41017547, 12, "", RMMI_CMD_ATSYSSEL, rmmi_syssel_hdlr) 
+#endif
+#endif  /* !defined(__SLIM_AT__) */
+
+#if defined(__ACMT_SUPPORT__)
+EXTEND_CMD("eacmt", 10485398, 0, "+EACMT: (0,1)", RMMI_CMD_ATEACMT, rmmi_eacmt_hdlr)
+#endif /* __ACMT_SUPPORT__ */
+
+#if defined(__REPORT_AVAILABLE_PLMN__)
+EXTEND_CMD("ecops", 10612583, 0, "+ECOPS: (0,1)", RMMI_CMD_ATECOPS, rmmi_ecops_hdlr)
+#endif
+
+#if defined(__2STAGE_NW_SELECTION__)
+EXTEND_CMD("emsr", 293872, 0, "+EMSR: (0,1)", RMMI_CMD_ATEMSR, rmmi_emsr_hdlr)
+#endif
+
+#ifdef __IMS_SUPPORT__
+EXTEND_CMD("CIREG", 6775445, 0, "+CIREG: (0-2)", RMMI_CMD_ATCIREG, rmmi_cireg_hdlr)
+EXTEND_CMD("CIREP", 6775454, 0, "+CIREP: (0,1)", RMMI_CMD_ATCIREP, rmmi_cirep_hdlr)
+EXTEND_CMD("CNEM", 185035, 0, "+CNEM: (0,1)", RMMI_CMD_ATCNEM, rmmi_cnem_hdlr)
+EXTEND_CMD("ECFGGET", 10599233, 210, "", RMMI_CMD_ATECFGGET, rmmi_ecfgget_hdlr)
+EXTEND_CMD("ECFGSET", 10599245, 210, "", RMMI_CMD_ATECFGSET, rmmi_ecfgset_hdlr)
+EXTEND_CMD("EIREG", 10945717, 0, "", RMMI_CMD_ATEIREG, rmmi_eireg_hdlr)
+EXTEND_CMD("EIMS", 287869, 0, "", RMMI_CMD_ATEIMS, rmmi_eims_hdlr)
+EXTEND_CMD("ENWSEL", 11227827, 12, "", RMMI_CMD_ATENWSEL, rmmi_enwsel_hdlr)
+EXTEND_CMD("EIRS", 288059, 0, "+EIRS: (0,1)", RMMI_CMD_ATEIRS, rmmi_eirs_hdlr)
+#endif
+#ifdef __VOLTE_SUPPORT__
+EXTEND_CMD("CSSAC", 7325453, 0, "", RMMI_CMD_ATCSSAC, rmmi_cssac_hdlr)
+EXTEND_CMD("CMMIVT", 6987880, 20, "+CMMIVT: (1,2)", RMMI_CMD_ATCMMIVT, rmmi_cmmivt_hdlr)
+EXTEND_CMD("EVVS", 306983, 0, "(0,1)", RMMI_CMD_ATEVVS, rmmi_evvs_hdlr)
+#endif
+#ifdef __UE_EFOPLMN__
+EXTEND_CMD("epol", 298046, 0, "", RMMI_CMD_ATEPOL, rmmi_epol_hdlr)
+#endif
+EXTEND_CMD("egrea", 10835967, 0, "", RMMI_CMD_ATEGREA, rmmi_egrea_hdlr)
+#endif /* __MOD_RAC__ */
+
+/****************************************************************/
+/* PHB AT commands (defined in rmmi_validator_phb.c)            */
+/****************************************************************/
+#if defined(__MOD_PHB__)
+
+#if !defined(__ULC_AT__) 
+    EXTEND_CMD("cpbr", 187814, 0, "", RMMI_CMD_ATCPBR, rmmi_cpbr_hdlr)
+    EXTEND_CMD("ecpbr", 10613494, 0, "", RMMI_CMD_ATECPBR, rmmi_cpbr_hdlr)
+
+    #if defined(EXTERNAL_MMI)
+        EXTEND_CMD("cpbs", 187815, 0, "+CPBS: (\"SM\",\"FD\",\"ON\")", RMMI_CMD_ATCPBS, rmmi_cpbs_hdlr)
+    #else
+	    EXTEND_CMD("cpbs", 187815, 0, "+CPBS: (\"ME\",\"SM\",\"LD\",\"MC\",\"RC\",\"FD\",\"DC\",\"ON\")", RMMI_CMD_ATCPBS, rmmi_cpbs_hdlr)
+    #endif
+
+    EXTEND_CMD("cpbw", 187819, 0, "", RMMI_CMD_ATCPBW, rmmi_cpbw_hdlr)
+    EXTEND_CMD("ecpbw", 10613499, 0, "", RMMI_CMD_ATECPBW, rmmi_cpbw_hdlr)
+        EXTEND_CMD("epbw", 297563, 0, "", RMMI_CMD_ATEPBW, rmmi_cpbw_hdlr)
+    EXTEND_CMD("eeccud", 10704507, 4, "", RMMI_CMD_ATEECCUD, rmmi_eeccud_hdlr)
+#endif /* !defined(__ULC_AT__) */
+
+#if defined(__AT_EPBUM_SUPPORT__)
+    EXTEND_CMD("epbum", 11307331, 0, "", RMMI_CMD_ATEPBUM, rmmi_epbum_hdlr)
+#endif
+
+EXTEND_CMD("cnum", 185643, 0, "", RMMI_CMD_ATCNUM, rmmi_cnum_hdlr)
+
+#if !defined(__SLIM_AT__)
+    EXTEND_CMD("cpbf", 187802, 0, "", RMMI_CMD_ATCPBF, rmmi_cpbf_hdlr)	
+#endif /* !defined(__SLIM_AT__) */
+
+#if !defined(__MMI_FMI__)
+    EXTEND_CMD("esln", 302266, 0, "", RMMI_CMD_ATESLN, rmmi_esln_hdlr)	
+#endif
+
+#ifdef __IMS_SUPPORT__
+EXTEND_CMD("eapprove", 10504282, 22501, "", RMMI_CMD_ATEAPPROVE, rmmi_eapprove_hdlr)
+#endif
+#endif /* defined(__MOD_PHB__) */
+
+
+/****************************************************************/
+/* SMS AT commands (defined in rmmi_validator_sms.c)            */
+/****************************************************************/
+#ifdef __MOD_SMSAL__
+
+#if !defined(__SLIM_AT__)
+EXTEND_CMD("csms", 192565, 0, "+CSMS: (0,1)", RMMI_CMD_ATCSMS, rmmi_csms_hdlr)
+EXTEND_CMD("cmgl", 183666, 0, "", RMMI_CMD_ATCMGL, rmmi_cmgl_hdlr)
+EXTEND_CMD("csas", 192109, 0, "", RMMI_CMD_ATCSAS, rmmi_csas_hdlr)
+EXTEND_CMD("cres", 190817, 0, "", RMMI_CMD_ATCRES, rmmi_cres_hdlr)
+EXTEND_CMD("csmp", 192562, 0, "", RMMI_CMD_ATCSMP, rmmi_csmp_hdlr)
+EXTEND_CMD("csdh", 192212, 0, "+CSDH: (0, 1)", RMMI_CMD_ATCSDH, rmmi_csdh_hdlr)
+EXTEND_CMD("cnmi", 185335, 0, "+CNMI: (0-3), (0-3), (0,2,3), (0,1), (0,1)", RMMI_CMD_ATCNMI, rmmi_cnmi_hdlr)
+EXTEND_CMD("cmms", 183901, 0, "+CMMS: (0-2)", RMMI_CMD_ATCMMS, rmmi_cmms_hdlr)
+EXTEND_CMD("cmss", 184129, 0, "", RMMI_CMD_ATCMSS, rmmi_cmss_hdlr)
+EXTEND_CMD("cmgc", 183657, 0, "", RMMI_CMD_ATCMGC, rmmi_cmgc_hdlr)
+EXTEND_CMD("cnma", 185327, 0, "", RMMI_CMD_ATCNMA, rmmi_cnma_dispatch_hdlr)
+#ifdef __CB__
+EXTEND_CMD("cscb", 192168, 0, "+CSCB: (0,1)", RMMI_CMD_ATCSCB, rmmi_cscb_hdlr)
+EXTEND_CMD("ecbmr", 10593696, 0, "", RMMI_CMD_ATECBMR, rmmi_ecbmr_hdlr)
+#endif
+EXTEND_CMD("esmss", 11487761, 0, "+ESMSS: (0-1)", RMMI_CMD_ATESMSS, rmmi_esmss_hdlr)
+EXTEND_CMD("csma", 192547, 0, "", RMMI_CMD_ATCSMA, rmmi_csma_hdlr)
+#endif /* !defined(__SLIM_AT__) */
+
+#if !defined(__ULC_AT__)
+EXTEND_CMD("cgsms", 6667461, 0, "", RMMI_CMD_ATCGSMS, rmmi_cgsms_hdlr)
+EXTEND_CMD("cmgs", 183673, 0, "", RMMI_CMD_ATCMGS, rmmi_cmgs_dispatch_hdlr)
+EXTEND_CMD("cmgw", 183677, 0, "", RMMI_CMD_ATCMGW, rmmi_cmgw_dispatch_hdlr)
+EXTEND_CMD("emgc", 293401, 0, "", RMMI_CMD_ATEMGC, rmmi_emgc_hdlr)
+EXTEND_CMD("enma", 295071, 0, "", RMMI_CMD_ATENMA, rmmi_enma_hdlr)
+EXTEND_CMD("emgs", 293417, 0, "", RMMI_CMD_ATEMGS, rmmi_emgs_hdlr)
+EXTEND_CMD("emgw", 293421, 0, "", RMMI_CMD_ATEMGW, rmmi_emgw_hdlr)
+EXTEND_CMD("emgl", 293410, 0, "", RMMI_CMD_ATEMGL, rmmi_emgl_hdlr)
+EXTEND_CMD("emems", 11146749, 0, "+EMEMS: (1), (0, 1)", RMMI_CMD_ATEMEMS, rmmi_emems_hdlr) 
+EXTEND_CMD("csca", 192167, 0, "", RMMI_CMD_ATCSCA, rmmi_csca_hdlr)
+EXTEND_CMD("cmgd", 183658, 0, "", RMMI_CMD_ATCMGD, rmmi_cmgd_hdlr)
+EXTEND_CMD("cmgf", 183660, 0, "+CMGF: (0,1)", RMMI_CMD_ATCMGF, rmmi_cmgf_hdlr)
+EXTEND_CMD("cmgr", 183672, 0, "", RMMI_CMD_ATCMGR, rmmi_cmgr_hdlr)
+EXTEND_CMD("cpms", 188233, 0, "", RMMI_CMD_ATCPMS, rmmi_cpms_hdlr)
+EXTEND_CMD("eqsi", 299639, 0, "", RMMI_CMD_ATEQSI, rmmi_eqsi_hdlr)
+EXTEND_CMD("emgr", 293416, 0, "", RMMI_CMD_ATEMGR, rmmi_cmgr_hdlr) 
+#ifdef __ETWS_SUPPORT__
+EXTEND_CMD("etws", 304133,0, "", RMMI_CMD_ATETWS, rmmi_etws_hdlr)
+#endif
+#ifdef __IMS_SUPPORT__
+EXTEND_CMD("esmsmaip", 11487755,1802, "", RMMI_CMD_ATESMSMAIP, rmmi_esmsmaip_hdlr)
+EXTEND_CMD("esmsmoip", 11487755,22018, "", RMMI_CMD_ATESMSMOIP, rmmi_esmsmoip_hdlr)
+EXTEND_CMD("esmsmtip", 11487755,29238, "", RMMI_CMD_ATESMSMTIP, rmmi_esmsmtip_hdlr)
+EXTEND_CMD("esmma", 11487515,0, "", RMMI_CMD_ATESMMA, rmmi_esmma_hdlr)
+#endif
+
+#endif /* !defined(__ULC_AT__) */
+
+#endif /* __MOD_SMSAL__ */
+
+/****************************************************************/
+/* SIM AT commands (defined in rmmi_validator_sim.c)            */
+/****************************************************************/
+#ifdef __MOD_SMU__
+EXTEND_CMD("esims", 11481757, 0, "", RMMI_CMD_ATESIMS, rmmi_esims_hdlr)
+EXTEND_CMD("esimapp", 11481739, 624, "", RMMI_CMD_ESIMAPP, rmmi_esimapp_hdlr)
+#if !defined(__ULC_AT__)
+EXTEND_CMD("cimi", 178115, 0, "", RMMI_CMD_ATCIMI, rmmi_cimi_hdlr)
+#ifdef __VSIM__
+EXTEND_CMD("evsim", 11660655, 0, "", RMMI_CMD_ATEVSIM, rmmi_evsim_hdlr)
+#endif
+#endif
+#if !defined(__SLIM_AT__)
+EXTEND_CMD("eusim", 11605783, 0, "+EUSIM: (0,1)", RMMI_CMD_ATEUSIM, rmmi_eusim_hdlr)
+EXTEND_CMD("etestsim", 11531082, 27791, "+ETESTSIM: (0,1)", RMMI_CMD_ATETESTSIM, rmmi_etestsim_hdlr)
+EXTEND_CMD("cpin", 188076, 0, "", RMMI_CMD_ATCPIN, rmmi_cpin_hdlr)
+EXTEND_CMD("epin", 297820, 0, "", RMMI_CMD_ATEPIN, rmmi_epin_hdlr)
+EXTEND_CMD("epin1", 11317188, 0, "", RMMI_CMD_ATEPIN1, rmmi_epin1_hdlr)
+EXTEND_CMD("epin2", 11317189, 0, "", RMMI_CMD_ATEPIN2, rmmi_epin2_hdlr)
+EXTEND_CMD("epinc", 11317163, 0, "", RMMI_CMD_ATEPINC, rmmi_epinc_hdlr)
+EXTEND_CMD("cpol", 188302, 0, "", RMMI_CMD_ATCPOL, rmmi_cpol_hdlr)
+EXTEND_CMD("cpls", 188195, 0, "", RMMI_CMD_ATCPLS, rmmi_cpls_hdlr)
+EXTEND_CMD("pacsp", 33422118, 0, "", RMMI_CMD_ATPACSP, rmmi_pacsp_hdlr)
+#ifdef __SIM_RECOVERY_ENHANCEMENT__
+EXTEND_CMD("esimrec", 11481756, 193, "", RMMI_CMD_ATESIMREC, rmmi_esimrec_hdlr)
+#endif
+#ifdef __AOC_SUPPORT__
+EXTEND_CMD("cpuc", 188521, 0, "", RMMI_CMD_ATCPUC, rmmi_cpuc_hdlr)
+#endif
+EXTEND_CMD("crsm", 191343, 0, "", RMMI_CMD_ATCRSM, rmmi_crsm_hdlr)
+#if defined(__SIM_UT__)
+EXTEND_CMD("csrm", 192749, 0, "", RMMI_CMD_ATCSRM, rmmi_csrm_hdlr)
+#endif
+EXTEND_CMD("csim", 192407, 0, "", RMMI_CMD_ATCSIM, rmmi_csim_hdlr)
+EXTEND_CMD("cgla", 175181, 0, "", RMMI_CMD_ATCGLA, rmmi_cgla_hdlr)
+EXTEND_CMD("crla", 191065, 0, "", RMMI_CMD_ATCRLA, rmmi_crla_hdlr)
+EXTEND_CMD("ccho", 169267, 0, "", RMMI_CMD_ATCCHO, rmmi_ccho_hdlr)
+EXTEND_CMD("cchc", 169255, 0, "", RMMI_CMD_ATCCHC, rmmi_cchc_hdlr)
+#if !defined(__MMI_FMI__)
+EXTEND_CMD("esmlck", 11487479, 11, "+ESMLCK:(0-4), (0-4), <key>, <data_imsi>, <data_gid1>, <data_gid2>", RMMI_CMD_ATESMLCK, rmmi_esmlck_hdlr)
+EXTEND_CMD("etmosk", 11542481, 11, "+ETMOSK: 0", RMMI_CMD_ATETMOSK, rmmi_etmosk_hdlr)
+EXTEND_CMD("etmoslb", 11542481, 458, "+ETMOSLB: (1-3)", RMMI_CMD_ATETMOSLB, rmmi_etmoslb_hdlr)
+EXTEND_CMD("espn", 302418, 0, "+ESPN: (0-1)", RMMI_CMD_ESPN, rmmi_espn_hdlr)
+EXTEND_CMD("iccid", 18935518, 0, "", RMMI_CMD_ICCID, rmmi_iccid_hdlr)
+#if defined(__SINGLE_AP_DUAL_MODEM__)
+EXTEND_CMD("esadm", 11469857, 0, "", RMMI_CMD_ESADM, rmmi_esadm_hdlr)
+#endif
+#ifdef __BT_SIM_PROFILE__
+EXTEND_CMD("ebtsap", 10565027, 16, "", RMMI_CMD_ATEBTSAP, rmmi_ebtsap_hdlr)
+#endif
+EXTEND_CMD("esiminfo", 11481747, 20459, "", RMMI_CMD_ATESIMINFO, rmmi_esiminfo_hdlr)
+EXTEND_CMD("esimtc", 11481758, 3, "", RMMI_CMD_ATESIMTC, rmmi_esimtc_hdlr)
+#endif
+#if defined(__SIM_UNIT_TEST__)
+EXTEND_CMD("esimtest", 11481758, 7962, "", RMMI_CMD_ATESIMTEST, rmmi_esimtest_hdlr)  //mtk02514_hot_recovery
+#endif
+EXTEND_CMD("esimauth", 11481739, 31092, "", RMMI_CMD_ATESIMAUTH, rmmi_esimauth_hdlr)
+#if !defined(__MMI_FMI__) || defined(__EAUTH_SUPPORT__)
+EXTEND_CMD("eauth", 10511644, 0, "", RMMI_CMD_ATEAUTH, rmmi_eauth_hdlr)
+#endif
+#ifdef __SAT__
+#ifdef __RSAT__
+/////EXTEND_CMD("stkpd", 40731520, 0, "", RMMI_CMD_ATSTKPD, rmmi_stkpd_hdlr)
+/* mtk01616_110211 : MAUI_02868445 phase out RSAT AT+STKPD */
+EXTEND_CMD("stkpci", 40731519, 9, "", RMMI_CMD_ATSTKPCI, rmmi_stkpci_hdlr)
+EXTEND_CMD("stktr", 40731686, 0, "", RMMI_CMD_ATSTKTR, rmmi_stktr_hdlr)
+EXTEND_CMD("stkenv", 40731112, 22, "", RMMI_CMD_ATSTKENV, rmmi_stkenv_hdlr)
+EXTEND_CMD("stkcall", 40731023, 468, "", RMMI_CMD_STCALL, rmmi_stkcall_hdlr)
+EXTEND_CMD("stksms", 40731643, 19, "", RMMI_CMD_STKSMS, rmmi_stksms_hdlr)
+EXTEND_CMD("stkss", 40731649, 0, "", RMMI_CMD_STKSS, rmmi_stkss_hdlr)
+EXTEND_CMD("stkussd", 40731725, 726, "", RMMI_CMD_STKUSSD, rmmi_stkussd_hdlr)
+EXTEND_CMD("stkdtmf", 40731080, 500, "", RMMI_CMD_STKDTMF, rmmi_stkdtmf_hdlr)
+EXTEND_CMD("stkmenu", 40731407, 553, "", RMMI_CMD_STKMENU, rmmi_stkmenu_hdlr)
+EXTEND_CMD("cusate", 7435214, 5, "", RMMI_CMD_CUSATE, rmmi_cusate_hdlr)
+#endif /* __RSAT__ */
+#endif /* __SAT__ */
+#ifdef __GEMINI_3G_SWITCH__
+	EXTEND_CMD("es3g", 302943, 0, "", RMMI_CMD_ES3G, rmmi_es3g_hdlr)
+#endif
+#endif  /* !defined(__SLIM_AT__) */
+#if defined(__SIM_MMDS_CLIENT__)
+	EXTEND_CMD("edmsim", 10664671, 13, "", RMMI_CMD_EDMSIM, rmmi_edmsim_hdlr)
+#endif
+EXTEND_CMD("csus", 192869, 0, "", RMMI_CMD_CSUS, rmmi_csus_hdlr)
+#endif
+
+/****************************************************************/
+/* EQ AT commands (defined in rmmi_validator_eq.c)              */
+/* For Standard Equipment related commands                      */
+/****************************************************************/
+#ifdef __MOD_UEM__
+EXTEND_CMD("cgmr", 175236, 0, "", RMMI_CMD_ATCGMR, rmmi_cgmr_hdlr)
+EXTEND_CMD("gmr", 10620, 0, "", RMMI_CMD_ATGMR, rmmi_cgmr_hdlr)
+#if defined(__MMI_FMI__) && defined(TOUCH_PANEL_SUPPORT)
+EXTEND_CMD("cmer", 183596, 0, "+CMER: (0-3), (0-2), (0), (0-2), (0,1), (0-3)", RMMI_CMD_ATCMER, rmmi_cmer_hdlr)
+#else
+EXTEND_CMD("cmer", 183596, 0, "+CMER: (0-3), (0-2), (0), (0-2), (0,1)", RMMI_CMD_ATCMER, rmmi_cmer_hdlr)
+#endif
+#if !defined(__ULC_AT__)
+EXTEND_CMD("ifc", 13227, 0, "+IFC: (0-2),(0-2)", RMMI_CMD_ATIFC, rmmi_ifc_hdlr)
+EXTEND_CMD("ipr", 13622, 0, "+IPR: 0,75,150,300,600,1200,2400,4800,7200,9600,14400,19200,28800,38400,57600,115200,230400,460800,921600", RMMI_CMD_ATIPR, rmmi_ipr_hdlr)
+EXTEND_CMD("cclk", 169415, 0, "", RMMI_CMD_ATCCLK, rmmi_cclk_hdlr)
+EXTEND_CMD("cala", 166517, 0, "", RMMI_CMD_ATCALA, rmmi_cala_hdlr)
+EXTEND_CMD("cald", 166520, 0, "", RMMI_CMD_ATCALD, rmmi_cald_hdlr)
+#endif /*!defined(__ULC_AT__) */
+#if defined (__MMI_FMI__)
+EXTEND_CMD("ckpd", 181112, 0, "", RMMI_CMD_ATCKPD, rmmi_ckpd_hdlr)
+#endif /* defined(__MMI_FMI__) */
+
+EXTEND_CMD("cgmm", 175231, 0, "", RMMI_CMD_ATCGMM, rmmi_cgmm_hdlr)
+EXTEND_CMD("cmec", 183581, 0, "+CMEC: (0,2),(0),(0)", RMMI_CMD_ATCMEC, rmmi_cmec_hdlr) 
+EXTEND_CMD("ecal", 278742, 0, "", RMMI_CMD_ATECAL, rmmi_ecal_hdlr)
+
+#if !defined(__SLIM_AT__) 
+#if defined(__MMI_FMI__)
+EXTEND_CMD("csdf", 192210, 0, "", RMMI_CMD_ATCSDF, rmmi_csdf_hdlr)
+#if defined(__AT_CSGT_SUPPORT__)
+EXTEND_CMD("csgt", 192338, 0, "", RMMI_CMD_ATCSGT, rmmi_csgt_hdlr)
+#endif
+EXTEND_CMD("csil", 192406, 0, "", RMMI_CMD_ATCSIL, rmmi_csil_hdlr)
+EXTEND_CMD("cstf", 192818, 0, "", RMMI_CMD_ATCSTF, rmmi_cstf_hdlr)
+EXTEND_CMD("cvib", 196728, 0, "", RMMI_CMD_ATCVIB, rmmi_cvib_hdlr)
+EXTEND_CMD("cbklt", 6381512, 0, "+CBKLT: (0-3)", RMMI_CMD_ATCBKLT, rmmi_cbklt_hdlr)
+#endif /* defined(__MMI_FMI__) */
+EXTEND_CMD("clan", 181996, 0, "", RMMI_CMD_ATCLAN, rmmi_clan_hdlr)
+EXTEND_CMD("clae", 181987, 0, "+CLAE: (0,1)", RMMI_CMD_ATCLAE, rmmi_clae_hdlr)
+EXTEND_CMD("vgr", 32052, 0, "+VGR: (0-255)", RMMI_CMD_VGR, rmmi_vgr_hdlr)
+EXTEND_CMD("vgt", 32054, 0, "+VGT: (0-255)", RMMI_CMD_VGT, rmmi_vgt_hdlr)
+EXTEND_CMD("cbc", 4411, 0, "+CBC: (0,2), (0-100)", RMMI_CMD_ATCBC, rmmi_cbc_hdlr)
+EXTEND_CMD("clvl", 182792, 0, "", RMMI_CMD_ATCLVL, rmmi_clvl_hdlr)
+EXTEND_CMD("cmut", 184206, 0, "+CMUT: (0,1)", RMMI_CMD_ATCMUT, rmmi_cmut_hdlr)
+EXTEND_CMD("crsl", 191342, 0, "", RMMI_CMD_ATCRSL, rmmi_crsl_hdlr)
+EXTEND_CMD("cgmi", 175227, 0, "", RMMI_CMD_ATCGMI, rmmi_cgmi_hdlr)
+EXTEND_CMD("gmi", 10611, 0, "", RMMI_CMD_ATGMI, rmmi_cgmi_hdlr)
+EXTEND_CMD("gmm", 10615, 0, "", RMMI_CMD_ATGMM, rmmi_cgmm_hdlr)
+EXTEND_CMD("cgsn", 175460, 0, "", RMMI_CMD_ATCGSN, rmmi_cgsn_hdlr)
+#if defined(PLUTO_MMI)
+EXTEND_CMD("cso", 5069, 0, "+CSO: (0-1)", RMMI_CMD_ATCSO, rmmi_cso_hdlr)
+EXTEND_CMD("css", 5073, 0, "", RMMI_CMD_ATCSS, rmmi_css_hdlr)
+#endif
+#endif /* !defined(__SLIM_AT__) */
+
+#if defined(PLUTO_MMI)
+#if defined(TOUCH_PANEL_SUPPORT)
+EXTEND_CMD("ctsa", 194219, 0, "+CTSA: (0-3)", RMMI_CMD_ATCTSA, rmmi_ctsa_hdlr)
+#endif
+EXTEND_CMD("ecscn", 10617860, 0, "+ECSCN: (0-3)", RMMI_CMD_ATECSCN, rmmi_ecscn_hdlr)
+#endif /* defined(PLUTO_MMI) */
+
+#endif /* __MOD_UEM__ */
+
+
+/****************************************************************/
+/* EM AT commands (defined in rmmi_validator_em.c)              */
+/* For Proprietary HW testing or enginering mode commands       */
+/****************************************************************/
+	#if defined(MT6318) && defined(PLUTO_MMI)
+		EXTEND_CMD("ereg", 300549, 0, "", RMMI_CMD_EREG, rmmi_ereg_hdlr)
+		EXTEND_CMD("epmic", 11322749, 0, "", RMMI_CMD_EPMIC, rmmi_epmic_hdlr)
+	#endif /* defined(MT6318) && defined(PLUTO_MMI) */
+	#ifdef __MMI_FMI__
+        #if !defined(__ULC_AT__)
+		EXTEND_CMD("evcld", 11637656, 0, "", RMMI_CMD_ATEVCLD, rmmi_evcld_hdlr)
+		EXTEND_CMD("elsm", 292423, 0, "+ELSM: (0,1)", RMMI_CMD_ATELSM, rmmi_elsm_hdlr)
+        #endif	
+		EXTEND_CMD("ekpd", 290856, 0, "+EKPD: (0,1)", RMMI_CMD_ATEKPD, rmmi_ekpd_hdlr)
+		#if defined(PLUTO_MMI)
+		EXTEND_CMD("elcm", 291815, 0, "+ELCM: (0-6)", RMMI_CMD_ATELCM, rmmi_elcm_hdlr)
+		#else
+		EXTEND_CMD("elcm", 291815, 0, "+ELCM: (0-4)", RMMI_CMD_ATELCM, rmmi_elcm_hdlr)
+		#endif
+		EXTEND_CMD("etest", 11531082, 0, "", RMMI_CMD_ATETEST, rmmi_etest_hdlr)
+        #if !defined(__ULC_AT__)
+        EXTEND_CMD("ekey", 290459, 0, "+EKEY: (0, 1)", RMMI_CMD_ATEKEY, rmmi_ekey_hdlr) //mtk02514_context
+        #endif 
+		#ifdef LQT_SUPPORT
+        EXTEND_CMD("elqt", 292354, 0, "+ELQT: (0-6)", RMMI_CMD_ATELQT, rmmi_elqt_hdlr)
+		#endif /* LQT_SUPPORT */ 
+		#ifdef __BT_SUPPORT__
+			EXTEND_CMD("embt", 293228, 0, "+EMBT: (0-5)", RMMI_CMD_ATEMBT, rmmi_embt_hdlr)
+			EXTEND_CMD("ebtlb", 10564762, 0, "", RMMI_CMD_ATEBTLB, rmmi_ebtlb_hdlr)
+		#endif /* __BT_SUPPORT__ */
+	#endif /* __MMI_FMI__ */
+	#if defined(__USB_MULTIPLE_COMPORT_SUPPORT__) && defined(__USB_ENABLE__)
+		EXTEND_CMD("diag", 232529, 0, "+DIAG: (0,1)", RMMI_CMD_ATDIAG, rmmi_diag_hdlr)
+	#endif /* __USB_MULTIPLE_COMPORT_SUPPORT__, mtk02285_usb2 */
+	EXTEND_CMD("egcmd", 10814614, 0, "", RMMI_CMD_ATEGCMD, rmmi_egcmd_hdlr)
+	EXTEND_CMD("casp", 166798, 0, "+CASP: <1-2>,<id>[,<0-3>[,<1-25>[,<0-6>[,<0-7>]]]]", RMMI_CMD_ATCASP, rmmi_casp_hdlr)
+	EXTEND_CMD("esam", 301847, 0, "+ESAM: (0-2)", RMMI_CMD_ATESAM, rmmi_esam_hdlr)
+	#if defined(__GEMINI__) || defined(__SGLTE__)
+		EXTEND_CMD("egmr", 284980, 0, "+EGMR: (0,1),(0-5,7-15)", RMMI_CMD_ATEGMR, rmmi_egmr_hdlr)
+	#else
+		EXTEND_CMD("egmr", 284980, 0, "+EGMR: (0,1),(0-5,7-9,13-15)", RMMI_CMD_ATEGMR, rmmi_egmr_hdlr)
+	#endif
+    EXTEND_CMD("eslp", 302268, 0, "+ESLP: (0,1)", RMMI_CMD_ATESLP, rmmi_eslp_hdlr)
+    EXTEND_CMD("elnvrm", 11105214, 13, "+ELNVRM: (1)", RMMI_CMD_ATENVRM, rmmi_elnvrm_hdlr)
+    EXTEND_CMD("erftx", 11422824, 0, "+ERFTX: (0)", RMMI_CMD_ATERFTX, rmmi_erftx_hdlr)
+    EXTEND_CMD("epct", 297598, 0, "+EPCT: (0-3)", RMMI_CMD_ATEPCT, rmmi_epct_hdlr)
+    EXTEND_CMD("eswla", 11501917, 0, "+ESWLA: (0-3)", RMMI_CMD_ATESWLA, rmmi_eswla_hdlr)
+    #if defined(__AT_BACKUP_DATA_SUPPORT__)
+        EXTEND_CMD("esds", 301967, 0, "", RMMI_CMD_ATESDS, rmmi_esds_hdlr)
+    #endif
+	#ifdef __TC02__
+		EXTEND_CMD("rbti", 991353, 0, "", RMMI_CMD_ATRBTI, rmmi_rbti_hdlr)
+	#endif
+	EXTEND_CMD("ethermal", 11534880, 18822, "", RMMI_CMD_ATETHERMAL, rmmi_ethermal_hdlr)
+
+/*mtk01616_100303: The commands below are not used by MTK internally now.
+   We wrap this feature option, so that we can disable these seldom used command to save ROM size 
+   Currently, we only add this feature option in low cost project to default disable these command support */
+#if !defined(__DISABLE_SELDOM_USED_PROPRIETARY_CMD__)
+    #ifdef __MMI_FMI__
+        EXTEND_CMD("cems", 172349, 0, "+CEMS: (0-3)", RMMI_CMD_ATCEMS, rmmi_cems_hdlr)
+	EXTEND_CMD("eslcd", 11485694, 0, "+ESLCD: (0,1), (0-254)", RMMI_CMD_ATESLCD, rmmi_eslcd_hdlr)
+        EXTEND_CMD("eshw", 302123, 0, "+ESHW: (0,1), (1-5)", RMMI_CMD_ATESHW, rmmi_eshw_hdlr)
+        EXTEND_CMD("emmistr", 11158149, 778, "", RMMI_CMD_ATEMMISTR, rmmi_emmistr_hdlr)
+        EXTEND_CMD("esdp", 301964, 0, "", RMMI_CMD_ATESDP, rmmi_esdp_hdlr)
+    #endif /* __MMI_FMI__ */
+    EXTEND_CMD("egpio", 10833245, 0, "", RMMI_CMD_ATEGPIO, rmmi_egpio_hdlr)
+    EXTEND_CMD("epwm", 298351, 0, "+EPWM: (0-3),(0-2),(0-4),(0-65535),(0-100)", RMMI_CMD_ATEPWM, rmmi_epwm_hdlr)
+    EXTEND_CMD("eslt", 302272, 0, "+ESLT: (0-6),(0-255)", RMMI_CMD_ATESLT, rmmi_eslt_hdlr)
+    EXTEND_CMD("ealt", 276280, 0, "+EALT: (0,1)", RMMI_CMD_ATEALT, rmmi_ealt_hdlr)	
+    EXTEND_CMD("eadc", 275959, 0, "+EADC: (0,1)", RMMI_CMD_ATEADC, rmmi_eadc_hdlr)
+    EXTEND_CMD("egpo", 285091, 0, "+EGPO: (0-254),(0-254)", RMMI_CMD_ATEGPO, rmmi_egpo_hdlr)
+    EXTEND_CMD("edft", 280384, 0, "+EDFT: (0-20),(0,1-5)", RMMI_CMD_ATEDFT, rmmi_edft_hdlr)    
+#endif /* !defined(__DISABLE_SELDOM_USED_PROPRIETARY_CMD__) */
+
+#if defined(__AT_RRC_TRACE_SUPPORT__)
+    EXTEND_CMD("trace", 42691979, 0, "+TRACE: (0-1)", RMMI_CMD_ATTRACE, rmmi_trace_hdlr)
+#endif
+
+EXTEND_CMD("eswm", 302683, 0, "", RMMI_CMD_ATESWM, rmmi_eswm_hdlr)
+
+#if defined(__AT_ETSTLP_SUPPORT__) || !defined(__MMI_FMI__)
+    EXTEND_CMD("etstlp", 11551328, 16, "", RMMI_CMD_ATETSTLP, rmmi_etstlp_hdlr)
+#endif
+
+#if !defined(__SLIM_AT__) || defined(__AT_FOR_SPEECH_TUNING_TOOL__)
+EXTEND_CMD("eadp", 275972, 0, "+EADP: (0,1),(0-2),(0-4),(0-6),(0-255)", RMMI_CMD_ATEADP, rmmi_eadp_hdlr)
+EXTEND_CMD("eaps", 276431, 0, "+EAPS: (0-1),(0-4)", RMMI_CMD_ATEAPS, rmmi_eaps_hdlr)
+#endif
+
+#if defined(__NFC_SUPPORT__)
+EXTEND_CMD("enfc", 294807, 0, "+ENFC: (0-3)", RMMI_CMD_ATENFC, rmmi_enfc_hdlr)
+#endif
+
+EXTEND_CMD("erxpath", 11448641, 768, "+ERXPATH: (0-2)", RMMI_CMD_ATERXPATH, rmmi_erxpath_hdlr)
+EXTEND_CMD("etxant", 11557828, 20, "+ETXANT: (0-2),(1-3),(0-1)", RMMI_CMD_ATETXANT, rmmi_etxant_hdlr)
+
+/****************************************************************/
+/* MISC AT commands (defined in rmmi_validator.c)               */
+/* For Standard or Proprietary genreal commands                 */
+/****************************************************************/
+EXTEND_CMD("cscs", 192185, 0, "", RMMI_CMD_ATCSCS, rmmi_cscs_hdlr)
+EXTEND_CMD("cmee", 183583, 0, "+CMEE: (0-2)", RMMI_CMD_ATCMEE, rmmi_cmee_hdlr)
+EXTEND_CMD("cind", 178148, 0, "", RMMI_CMD_ATCIND, rmmi_cind_hdlr)
+
+#if defined(__DT_SUPPORT__) && defined(__GEMINI__) && !defined(__DISABLE_SIM2_AT_SUPPORT__)
+EXTEND_CMD("esuo", 302609, 0, "+ESUO: (3-5)", RMMI_CMD_ATESUO, rmmi_esuo_hdlr)
+#elif  !defined(__DT_SUPPORT__) && defined(__GEMINI__) && !defined(__DISABLE_SIM2_AT_SUPPORT__)
+EXTEND_CMD("esuo", 302609, 0, "+ESUO: (4-5)", RMMI_CMD_ATESUO, rmmi_esuo_hdlr)
+#elif  defined(__DT_SUPPORT__) && (!defined(__GEMINI__) || defined(__DISABLE_SIM2_AT_SUPPORT__))
+EXTEND_CMD("esuo", 302609, 0, "+ESUO: (3-4)", RMMI_CMD_ATESUO, rmmi_esuo_hdlr)
+#else
+EXTEND_CMD("esuo", 302609, 0, "+ESUO: (?-?)", RMMI_CMD_ATESUO, rmmi_esuo_hdlr)
+#endif
+EXTEND_CMD("equery", 11389036, 25, "", RMMI_CMD_ATEQUERY, rmmi_equery_hdlr)
+
+#if !defined(__SLIM_AT__)
+EXTEND_CMD("eboot", 10557674, 0, "", RMMI_CMD_ATEBOOT, rmmi_eboot_hdlr)
+EXTEND_CMD("ceer", 172044, 0, "", RMMI_CMD_ATCEER, rmmi_ceer_hdlr)
+EXTEND_CMD("gcap", 388490, 0, "", RMMI_CMD_ATGCAP, rmmi_gcap_hdlr)
+EXTEND_CMD("eind", 287892, 0, "+EIND: (0-4294967295)", RMMI_CMD_ATEIND, rmmi_eind_hdlr)
+EXTEND_CMD("einfo", 10939987, 0, "+EINFO: (0-4294967295)", RMMI_CMD_ATEINFO, rmmi_einfo_hdlr)
+EXTEND_CMD("epon", 298048, 0, "", RMMI_CMD_ATEPON, rmmi_epon_hdlr)
+#ifdef __CMUX_SUPPORT__
+EXTEND_CMD("cmux", 184210, 0, "+CMUX: (0)", RMMI_CMD_CMUX, rmmi_cmux_hdlr)
+#endif
+EXTEND_CMD("clac", 181985, 0, "", RMMI_CMD_ATCLAC, rmmi_clac_hdlr)  
+#endif /* !defined(__SLIM_AT__) */
+
+#if defined(__OP11_ATK__) || defined(__AUTO_ATK__)
+EXTEND_CMD("ecpu", 279321, 0, "", RMMI_CMD_ATECPU, rmmi_ecpu_hdlr)
+#if defined(PLUTO_MMI)
+EXTEND_CMD("eram", 300403, 0, "", RMMI_CMD_ATERAM, rmmi_eram_hdlr)
+EXTEND_CMD("elaunch", 11086400, 122, "+ELAUNCH: (0-1)", RMMI_CMD_ATELAUNCH, rmmi_elaunch_hdlr)
+EXTEND_CMD("elog", 292265, 0, "+ELOG: (0-1)", RMMI_CMD_ATELOG, rmmi_elog_hdlr)
+#endif /* defined(PLUTO_MMI) */
+#endif /* defined(__OP11_ATK__) || defined(__AUTO_ATK__) */
+
+#if defined(__DUAL_TALK_MODEM_SUPPORT__)
+EXTEND_CMD("espeech", 11491547, 122, "+ESPEECH: (0-1)", RMMI_CMD_ATESPEECH, rmmi_espeech_hdlr)
+EXTEND_CMD("esstv", 11496466, 0, "+ESSTV: (0-255)", RMMI_CMD_ATESSTV, rmmi_esstv_hdlr)
+EXTEND_CMD("edtp", 280912, 0, "+EDTP: (0-255)", RMMI_CMD_ATEDTP, rmmi_edtp_hdlr)
+EXTEND_CMD("edts", 280915, 0, "", RMMI_CMD_ATEDTS, rmmi_edts_hdlr)
+EXTEND_CMD("esetdev", 11476232, 212, "+ESETDEV: (0-1),(0-255)", RMMI_CMD_ATESETDEV, rmmi_esetdev_hdlr)
+EXTEND_CMD("esov", 302388, 0, "+ESOV: (0-255),(0-255)", RMMI_CMD_ATESOV, rmmi_esov_hdlr)
+EXTEND_CMD("esmv", 302312, 0, "+ESMV: (0-255)", RMMI_CMD_ATESMV, rmmi_esmv_hdlr)
+EXTEND_CMD("essma", 11496179, 0, "+ESSMA: (0-255)", RMMI_CMD_ATESSMA, rmmi_essma_hdlr)
+#endif /* defined(__DUAL_TALK_MODEM_SUPPORT__) */
+
+#if defined(__SGLTE__)
+EXTEND_CMD("emmdc", 11157943, 0, "+EMMDC: (0,2)", RMMI_CMD_ATEMMDC, rmmi_emmdc_hdlr)
+EXTEND_CMD("ebgs", 277533, 0, "+EBGS: (0,1,2)", RMMI_CMD_ATEBGS, rmmi_ebgs_hdlr)
+EXTEND_CMD("empc", 293743,0, "", RMMI_CMD_ATEMPC, rmmi_empc_hdlr)
+EXTEND_CMD("epsd", 298190,0, "", RMMI_CMD_ATEPSD, rmmi_epsd_hdlr)
+EXTEND_CMD("erscfg", 11440932, 7, "", RMMI_CMD_ATERSCFG, rmmi_erscfg_hdlr)
+#endif
+
+#if defined(__SGLTE_DSDS__)
+EXTEND_CMD("eacts", 10485663, 0, "+EACTS: (0,1,2)", RMMI_CMD_ATEACTS, rmmi_eacts_hdlr)
+#endif
+
+EXTEND_CMD("eb3info", 10579100, 243, "", RMMI_CMD_ATEB3INFO, rmmi_eb3info_hdlr)
+EXTEND_CMD("edss", 280877, 0, "+EDSS: (0,1)", RMMI_CMD_ATEDSS, rmmi_edss_hdlr)
+EXTEND_CMD("ecode33", 10612113, 1170, "+ECODE33: (0,1)", RMMI_CMD_ATECODE33, rmmi_ecode33_hdlr)
+/****************************************************************/
+/* Phonesuite commands (defined in rmmi_validator_phonesuite.c) */
+/* For Proprietary Phonesuite used commands                     */ 
+/****************************************************************/
+#if defined(__DT_SUPPORT__)
+#if !defined(NEPTUNE_MMI)
+EXTEND_CMD("evcard", 11637252, 4, "", RMMI_CMD_ATEVCARD, rmmi_evcard_hdlr)
+#endif 
+    #ifdef __MMI_FMI__
+        #ifdef MMS_SUPPORT
+            #ifdef __MMS_MEMORY_CARD_STORAGE_SUPPORT__ 
+                EXTEND_CMD("emmsfs", 11158516, 19, "+EMMSFS: (1,2,4,8,64), (1-4)", RMMI_CMD_ATEMMSFS, rmmi_emmsfs_hdlr)
+            #else
+                EXTEND_CMD("emmsfs", 11158516, 19, "+EMMSFS: (1,2,4,8,64), (1-2)", RMMI_CMD_ATEMMSFS, rmmi_emmsfs_hdlr)
+            #endif
+            EXTEND_CMD("emmsexe", 11158515, 917, "+EMMSEXE: (0-2)", RMMI_CMD_ATEMMSEXE, rmmi_emmsexe_hdlr)
+        #endif /* MMS_SUPPORT */
+        EXTEND_CMD("ejava", 10976681, 0, "", RMMI_CMD_ATEJAVA, rmmi_ejava_hdlr)
+    #endif
+#endif
+
+/****************************************************************/
+/* AT commands (defined in rmmi_validator_sim.c) */
+/****************************************************************/
+#if defined(__MTK_TARGET__)
+EXTEND_CMD("usimsmt", 44843933, 514, "+USIMSMT: (2)", RMMI_CMD_USIMSMT, rmmi_usim_smt_hdlr)
+#endif
+
+
+/****************************************************************/
+/* Define command enumeration */
+/****************************************************************/
+
+/* Basic command enum, should be in order */
+CMD_ENUM(RMMI_CMD_ATA)
+CMD_ENUM(RMMI_CMD_ATD)
+CMD_ENUM(RMMI_CMD_ATE)
+CMD_ENUM(RMMI_CMD_ATH)
+CMD_ENUM(RMMI_CMD_ATI)
+CMD_ENUM(RMMI_CMD_ATL)
+CMD_ENUM(RMMI_CMD_ATM)
+CMD_ENUM(RMMI_CMD_ATO)
+CMD_ENUM(RMMI_CMD_ATP)
+CMD_ENUM(RMMI_CMD_ATQ)
+CMD_ENUM(RMMI_CMD_ATS)
+CMD_ENUM(RMMI_CMD_ATT)
+CMD_ENUM(RMMI_CMD_ATV)
+CMD_ENUM(RMMI_CMD_ATW)
+CMD_ENUM(RMMI_CMD_ATX)
+CMD_ENUM(RMMI_CMD_ATZ)
+CMD_ENUM(RMMI_CMD_ATAMP)
+
+
+
+/* Extend command enum */
+CMD_ENUM(RMMI_CMD_ATCACM)
+CMD_ENUM(RMMI_CMD_ATCAMM)
+CMD_ENUM(RMMI_CMD_ATCLCC)
+CMD_ENUM(RMMI_CMD_ATVTS)
+CMD_ENUM(RMMI_CMD_ATCHUP)
+CMD_ENUM(RMMI_CMD_ATCHLD)
+CMD_ENUM(RMMI_CMD_ATECPI)
+CMD_ENUM(RMMI_CMD_ATBLDN)
+CMD_ENUM(RMMI_CMD_ATBVRA)
+CMD_ENUM(RMMI_CMD_ATEMSD)
+CMD_ENUM(RMMI_CMD_ATEMSDSET)
+CMD_ENUM(RMMI_CMD_ATEMSDPUSH)
+CMD_ENUM(RMMI_CMD_ATEMSDMOD)
+CMD_ENUM(RMMI_CMD_ATEMSDTNUM)
+CMD_ENUM(RMMI_CMD_ATEMSDRNUM)
+CMD_ENUM(RMMI_CMD_ATCECALL)
+CMD_ENUM(RMMI_CMD_ATEPSAP)
+CMD_ENUM(RMMI_CMD_ATEPSAPPULL)
+CMD_ENUM(RMMI_CMD_ATECCP)
+CMD_ENUM(RMMI_CMD_ATCAOC)
+CMD_ENUM(RMMI_CMD_ATCCWE)
+CMD_ENUM(RMMI_CMD_ATCCUG)
+CMD_ENUM(RMMI_CMD_ATCPAS)
+CMD_ENUM(RMMI_CMD_CVHU)
+CMD_ENUM(RMMI_CMD_ATCTFR)
+CMD_ENUM(RMMI_CMD_ATCIWF)
+CMD_ENUM(RMMI_CMD_ATCRC)
+CMD_ENUM(RMMI_CMD_ATCR)
+CMD_ENUM(RMMI_CMD_ATCSTA)
+CMD_ENUM(RMMI_CMD_ATEVTS)
+CMD_ENUM(RMMI_CMD_ATEALS)
+CMD_ENUM(RMMI_CMD_ATECHUP)
+CMD_ENUM(RMMI_CMD_ATEAIC)
+CMD_ENUM(RMMI_CMD_ATCRM)
+CMD_ENUM(RMMI_CMD_ATESVC)
+CMD_ENUM(RMMI_CMD_ATESRVCCTFR)
+CMD_ENUM(RMMI_CMD_ATEVOCD)
+CMD_ENUM(RMMI_CMD_ATCTMSET)
+CMD_ENUM(RMMI_CMD_ATCTMOPEN)
+CMD_ENUM(RMMI_CMD_ATCTMCLOSE)
+CMD_ENUM(RMMI_CMD_ATCTMCONN)
+CMD_ENUM(RMMI_CMD_ATCTMS)
+CMD_ENUM(RMMI_CMD_ATCTMCFG)
+CMD_ENUM(RMMI_CMD_ATCTMCALL)
+CMD_ENUM(RMMI_CMD_ATFCLASS)
+CMD_ENUM(RMMI_CMD_ATCSNS)
+CMD_ENUM(RMMI_CMD_ATCBST)
+CMD_ENUM(RMMI_CMD_ATCMOD)
+CMD_ENUM(RMMI_CMD_ATCRLP)
+CMD_ENUM(RMMI_CMD_ATICF)
+CMD_ENUM(RMMI_CMD_ATDS)
+CMD_ENUM(RMMI_CMD_ATDR)
+CMD_ENUM(RMMI_CMD_ATFMI)
+CMD_ENUM(RMMI_CMD_ATFMM)
+CMD_ENUM(RMMI_CMD_ATFMR)
+CMD_ENUM(RMMI_CMD_ATFPR)
+CMD_ENUM(RMMI_CMD_ATFDT)
+CMD_ENUM(RMMI_CMD_ATFDR)
+CMD_ENUM(RMMI_CMD_ATFIP)
+CMD_ENUM(RMMI_CMD_ATFKS)
+CMD_ENUM(RMMI_CMD_ATFK)
+CMD_ENUM(RMMI_CMD_ATFET)
+CMD_ENUM(RMMI_CMD_ATFTM)
+CMD_ENUM(RMMI_CMD_ATFRM)
+CMD_ENUM(RMMI_CMD_ATFTH)
+CMD_ENUM(RMMI_CMD_ATFRH)
+CMD_ENUM(RMMI_CMD_ATFTS)
+CMD_ENUM(RMMI_CMD_ATFRS)
+CMD_ENUM(RMMI_CMD_ATFCC)
+CMD_ENUM(RMMI_CMD_ATFDCC)
+CMD_ENUM(RMMI_CMD_ATFIS)
+CMD_ENUM(RMMI_CMD_ATFDIS)
+CMD_ENUM(RMMI_CMD_ATFCS)
+CMD_ENUM(RMMI_CMD_ATFDCS)
+CMD_ENUM(RMMI_CMD_ATFLI)
+CMD_ENUM(RMMI_CMD_ATFLID)
+CMD_ENUM(RMMI_CMD_ATFPI)
+CMD_ENUM(RMMI_CMD_ATFCIG)
+CMD_ENUM(RMMI_CMD_ATFLP)
+CMD_ENUM(RMMI_CMD_ATFLPL)
+CMD_ENUM(RMMI_CMD_ATFSP)
+CMD_ENUM(RMMI_CMD_ATFSPL)
+CMD_ENUM(RMMI_CMD_ATFNR)
+CMD_ENUM(RMMI_CMD_ATFIE)
+CMD_ENUM(RMMI_CMD_ATFPS)
+CMD_ENUM(RMMI_CMD_ATFPTS)
+CMD_ENUM(RMMI_CMD_ATFRQ)
+CMD_ENUM(RMMI_CMD_ATFBADLIN)
+CMD_ENUM(RMMI_CMD_ATFBADMUL)
+CMD_ENUM(RMMI_CMD_ATFCQ)
+CMD_ENUM(RMMI_CMD_ATFIT)
+CMD_ENUM(RMMI_CMD_ATFPP)
+CMD_ENUM(RMMI_CMD_ATFBO)
+CMD_ENUM(RMMI_CMD_ATFBOR)
+CMD_ENUM(RMMI_CMD_ATFEA)
+CMD_ENUM(RMMI_CMD_ATFREL)
+CMD_ENUM(RMMI_CMD_ATFNS)
+CMD_ENUM(RMMI_CMD_ATFCR)
+CMD_ENUM(RMMI_CMD_ATFBU)
+CMD_ENUM(RMMI_CMD_ATFBUG)
+CMD_ENUM(RMMI_CMD_ATFAP)
+CMD_ENUM(RMMI_CMD_ATFSA)
+CMD_ENUM(RMMI_CMD_ATFPA)
+CMD_ENUM(RMMI_CMD_ATFPW)
+CMD_ENUM(RMMI_CMD_ATFCT)
+CMD_ENUM(RMMI_CMD_ATFPHCTO)
+CMD_ENUM(RMMI_CMD_ATFHS)
+CMD_ENUM(RMMI_CMD_ATFMS)
+CMD_ENUM(RMMI_CMD_ATFMINSP)
+CMD_ENUM(RMMI_CMD_ATFRY)
+CMD_ENUM(RMMI_CMD_ATFBS)
+CMD_ENUM(RMMI_CMD_ATFFC)
+CMD_ENUM(RMMI_CMD_ATFVRFC)
+CMD_ENUM(RMMI_CMD_ATFDFFC)
+CMD_ENUM(RMMI_CMD_ATFLNFC)
+CMD_ENUM(RMMI_CMD_ATFWDFC)
+CMD_ENUM(RMMI_CMD_ATCCWA)
+CMD_ENUM(RMMI_CMD_ATCLIP)
+CMD_ENUM(RMMI_CMD_ATCAEMLPP)
+CMD_ENUM(RMMI_CMD_ATCCFC)
+CMD_ENUM(RMMI_CMD_ATCDIP)
+CMD_ENUM(RMMI_CMD_ATCLCK)
+CMD_ENUM(RMMI_CMD_ATESSP)
+CMD_ENUM(RMMI_CMD_ATCLIR)
+CMD_ENUM(RMMI_CMD_ATCOLP)
+CMD_ENUM(RMMI_CMD_ATCNAP)
+CMD_ENUM(RMMI_CMD_ATCPWD)
+CMD_ENUM(RMMI_CMD_ATCSSN)
+CMD_ENUM(RMMI_CMD_ATCCBS)
+CMD_ENUM(RMMI_CMD_ATCUSD)
+CMD_ENUM(RMMI_CMD_ATECUSD)
+CMD_ENUM(RMMI_CMD_ATCOLR)
+CMD_ENUM(RMMI_CMD_ATCGATT)
+CMD_ENUM(RMMI_CMD_ATCGREG)
+CMD_ENUM(RMMI_CMD_ATCGCLASS)
+CMD_ENUM(RMMI_CMD_ATCGACT)
+CMD_ENUM(RMMI_CMD_ATCGCMOD)
+CMD_ENUM(RMMI_CMD_ATCGDCONT)
+CMD_ENUM(RMMI_CMD_ATCGQMIN)
+CMD_ENUM(RMMI_CMD_ATCGQREQ)
+CMD_ENUM(RMMI_CMD_ATCGSDATA)
+CMD_ENUM(RMMI_CMD_ATACTTEST)
+CMD_ENUM(RMMI_CMD_ATCGEQMIN)
+CMD_ENUM(RMMI_CMD_ATCGEQREQ)
+CMD_ENUM(RMMI_CMD_ATCGEQNEG) /* mtk02285, 20111003 */
+CMD_ENUM(RMMI_CMD_ATCGANS)
+CMD_ENUM(RMMI_CMD_ATCGAUTO)
+CMD_ENUM(RMMI_CMD_ATCGPADDR)
+CMD_ENUM(RMMI_CMD_ATCGDSCONT)
+CMD_ENUM(RMMI_CMD_ATEGPAU)
+CMD_ENUM(RMMI_CMD_ATCGTFT)
+CMD_ENUM(RMMI_CMD_ATEGDELPF)
+CMD_ENUM(RMMI_CMD_ATEGLNKPF)
+CMD_ENUM(RMMI_CMD_ATCGEREQ)
+CMD_ENUM(RMMI_CMD_ATCGDATA)
+CMD_ENUM(RMMI_CMD_ATEGACT)
+CMD_ENUM(RMMI_CMD_ATEGLD)
+CMD_ENUM(RMMI_CMD_ATMBPC)
+CMD_ENUM(RMMI_CMD_ATMBCONNECT)
+CMD_ENUM(RMMI_CMD_ATCGPRCO)
+CMD_ENUM(RMMI_CMD_ATCGAUTH)
+CMD_ENUM(RMMI_CMD_EHSM)
+CMD_ENUM(RMMI_CMD_EGFB) // __IPV4V6__
+#if 0 //defined(__DIALUP_GPRS_COUNTER_SUPPORT__)
+CMD_ENUM(RMMI_CMD_EGCH)
+#endif
+CMD_ENUM(RMMI_CMD_EGTP)
+CMD_ENUM(RMMI_CMD_EGTYPE)
+CMD_ENUM(RMMI_CMD_ATEGPCAP)
+CMD_ENUM(RMMI_CMD_ATMSQ)        // __MEDIATEK_SMART_QOS__
+CMD_ENUM(RMMI_CMD_ATMSQON)      // __MEDIATEK_SMART_QOS__
+CMD_ENUM(RMMI_CMD_PSBEARER)
+
+CMD_ENUM(RMMI_CMD_CGCONTRDP)
+CMD_ENUM(RMMI_CMD_CGSCONTRDP)
+CMD_ENUM(RMMI_CMD_CGEQOS)
+CMD_ENUM(RMMI_CMD_CGEQOSRDP)
+CMD_ENUM(RMMI_CMD_CGTFTRDP)
+CMD_ENUM(RMMI_CMD_ATCEMODE)
+CMD_ENUM(RMMI_CMD_ATCEREG)
+CMD_ENUM(RMMI_CMD_CGDEL)
+
+CMD_ENUM(RMMI_CMD_ATCOPS) 
+CMD_ENUM(RMMI_CMD_ATCFUN)
+CMD_ENUM(RMMI_CMD_ATEFUN)
+CMD_ENUM(RMMI_CMD_ATEOPS)
+CMD_ENUM(RMMI_CMD_ATCREG)
+CMD_ENUM(RMMI_CMD_ATEOPN)
+CMD_ENUM(RMMI_CMD_ATEPOF)
+CMD_ENUM(RMMI_CMD_ATEPBSE)
+CMD_ENUM(RMMI_CMD_ATCOPN)
+CMD_ENUM(RMMI_CMD_ATCSQ)
+CMD_ENUM(RMMI_CMD_ATCESQ)
+CMD_ENUM(RMMI_CMD_ATERRMT)
+CMD_ENUM(RMMI_CMD_ATCAPL)
+CMD_ENUM(RMMI_CMD_ATWS46)
+CMD_ENUM(RMMI_CMD_ATCTZR)
+CMD_ENUM(RMMI_CMD_ATERAT)
+CMD_ENUM(RMMI_CMD_ATEMPPCH)
+CMD_ENUM(RMMI_CMD_ATCEUS)
+CMD_ENUM(RMMI_CMD_ATCEVDP)
+CMD_ENUM(RMMI_CMD_ATCVDP)
+CMD_ENUM(RMMI_CMD_ATCAVIMS)
+CMD_ENUM(RMMI_CMD_ATCASIMS)
+CMD_ENUM(RMMI_CMD_ATECSG)
+CMD_ENUM(RMMI_CMD_ATEDSIM)
+CMD_ENUM(RMMI_CMD_ATEUDS)
+CMD_ENUM(RMMI_CMD_ATEDSW)
+CMD_ENUM(RMMI_CMD_ATESCRI)
+CMD_ENUM(RMMI_CMD_ATEFD)
+CMD_ENUM(RMMI_CMD_ATECSQ)
+CMD_ENUM(RMMI_CMD_ATEACMT)
+CMD_ENUM(RMMI_CMD_ATECOPS)
+CMD_ENUM(RMMI_CMD_ATEMSR)
+CMD_ENUM(RMMI_CMD_ATEPOL)
+CMD_ENUM(RMMI_CMD_ATECELCK)
+CMD_ENUM(RMMI_CMD_ATENBR)
+CMD_ENUM(RMMI_CMD_ATECELL)
+CMD_ENUM(RMMI_CMD_ATEPSB)
+CMD_ENUM(RMMI_CMD_ATSYSSEL)
+CMD_ENUM(RMMI_CMD_ATCPBR)
+CMD_ENUM(RMMI_CMD_ATEECCUD)
+CMD_ENUM(RMMI_CMD_ATECPBR)
+CMD_ENUM(RMMI_CMD_ATCPBS)
+CMD_ENUM(RMMI_CMD_ATCPBW)
+CMD_ENUM(RMMI_CMD_ATECPBW)
+CMD_ENUM(RMMI_CMD_ATEPBW)
+CMD_ENUM(RMMI_CMD_ATEPBUM)
+CMD_ENUM(RMMI_CMD_ATCNUM)
+CMD_ENUM(RMMI_CMD_ATCPBF)
+CMD_ENUM(RMMI_CMD_ATESLN)
+CMD_ENUM(RMMI_CMD_ATEAPPROVE)
+CMD_ENUM(RMMI_CMD_ATCSMS)
+CMD_ENUM(RMMI_CMD_ATCMGL)
+CMD_ENUM(RMMI_CMD_ATCSAS)
+CMD_ENUM(RMMI_CMD_ATCRES)
+CMD_ENUM(RMMI_CMD_ATCSMP)
+CMD_ENUM(RMMI_CMD_ATCSDH)
+CMD_ENUM(RMMI_CMD_ATCNMI)
+CMD_ENUM(RMMI_CMD_ATCMMS)
+CMD_ENUM(RMMI_CMD_ATCMSS)
+CMD_ENUM(RMMI_CMD_ATCMGC)
+CMD_ENUM(RMMI_CMD_ATCNMA)
+CMD_ENUM(RMMI_CMD_ATCSCB)
+CMD_ENUM(RMMI_CMD_ATECBMR)
+CMD_ENUM(RMMI_CMD_ATESMSS)
+CMD_ENUM(RMMI_CMD_ATCSMA)
+CMD_ENUM(RMMI_CMD_ATCGSMS)
+CMD_ENUM(RMMI_CMD_ATCMGS)
+CMD_ENUM(RMMI_CMD_ATCMGW)
+CMD_ENUM(RMMI_CMD_ATEMGC)
+CMD_ENUM(RMMI_CMD_ATENMA)
+CMD_ENUM(RMMI_CMD_ATEMGS)
+CMD_ENUM(RMMI_CMD_ATEMGW)
+CMD_ENUM(RMMI_CMD_ATEMGL)
+CMD_ENUM(RMMI_CMD_ATEMEMS)
+CMD_ENUM(RMMI_CMD_ATCSCA)
+CMD_ENUM(RMMI_CMD_ATCMGD)
+CMD_ENUM(RMMI_CMD_ATCMGF)
+CMD_ENUM(RMMI_CMD_ATCMGR)
+CMD_ENUM(RMMI_CMD_ATCPMS)
+CMD_ENUM(RMMI_CMD_ATEQSI)
+CMD_ENUM(RMMI_CMD_ATEMGR)
+CMD_ENUM(RMMI_CMD_ATETWS)
+CMD_ENUM(RMMI_CMD_ATESMSMAIP)
+CMD_ENUM(RMMI_CMD_ATESMSMOIP)
+CMD_ENUM(RMMI_CMD_ATESMSMTIP)
+CMD_ENUM(RMMI_CMD_ATESMMA)
+CMD_ENUM(RMMI_CMD_ATEUSIM)
+CMD_ENUM(RMMI_CMD_ATETESTSIM)
+CMD_ENUM(RMMI_CMD_ATESIMS)
+CMD_ENUM(RMMI_CMD_ESIMAPP)
+CMD_ENUM(RMMI_CMD_ATCIMI)
+CMD_ENUM(RMMI_CMD_ATEVSIM)
+CMD_ENUM(RMMI_CMD_ATCPIN)
+CMD_ENUM(RMMI_CMD_ATEPIN)
+CMD_ENUM(RMMI_CMD_ATEPIN1)
+CMD_ENUM(RMMI_CMD_ATEPIN2)
+CMD_ENUM(RMMI_CMD_ATEPINC)
+CMD_ENUM(RMMI_CMD_ATCPOL)
+CMD_ENUM(RMMI_CMD_ATCPLS)
+CMD_ENUM(RMMI_CMD_ATPACSP)
+CMD_ENUM(RMMI_CMD_ATESIMREC)
+CMD_ENUM(RMMI_CMD_ATCPUC)
+CMD_ENUM(RMMI_CMD_ATCRSM)
+CMD_ENUM(RMMI_CMD_ATCSRM)
+CMD_ENUM(RMMI_CMD_ATCSIM)
+CMD_ENUM(RMMI_CMD_ATCGLA) 
+CMD_ENUM(RMMI_CMD_ATCRLA) 
+CMD_ENUM(RMMI_CMD_ATCCHO)
+CMD_ENUM(RMMI_CMD_ATCCHC)
+CMD_ENUM(RMMI_CMD_ATESMLCK)
+CMD_ENUM(RMMI_CMD_ATETMOSK)
+CMD_ENUM(RMMI_CMD_ATETMOSLB)
+CMD_ENUM(RMMI_CMD_ATESIMAUTH)
+CMD_ENUM(RMMI_CMD_ATEAUTH)
+CMD_ENUM(RMMI_CMD_ATEBTSAP)
+CMD_ENUM(RMMI_CMD_ATESIMINFO)
+CMD_ENUM(RMMI_CMD_ATESIMTC)
+CMD_ENUM(RMMI_CMD_ATESIMTEST)	
+CMD_ENUM(RMMI_CMD_ATSTKPCI)
+CMD_ENUM(RMMI_CMD_ATSTKTR)
+CMD_ENUM(RMMI_CMD_ATSTKENV)
+CMD_ENUM(RMMI_CMD_STCALL)
+CMD_ENUM(RMMI_CMD_STKSMS)
+CMD_ENUM(RMMI_CMD_STKSS)
+CMD_ENUM(RMMI_CMD_STKUSSD)
+CMD_ENUM(RMMI_CMD_STKDTMF)
+CMD_ENUM(RMMI_CMD_STKMENU)
+CMD_ENUM(RMMI_CMD_CUSATE)
+CMD_ENUM(RMMI_CMD_ES3G)
+CMD_ENUM(RMMI_CMD_EDMSIM)
+CMD_ENUM(RMMI_CMD_CSUS)
+CMD_ENUM(RMMI_CMD_ESPN)
+CMD_ENUM(RMMI_CMD_ICCID)
+CMD_ENUM(RMMI_CMD_ESADM)
+CMD_ENUM(RMMI_CMD_ATCGMR)
+CMD_ENUM(RMMI_CMD_ATGMR)
+CMD_ENUM(RMMI_CMD_ATCMER)
+CMD_ENUM(RMMI_CMD_ATIFC)
+CMD_ENUM(RMMI_CMD_ATIPR)
+CMD_ENUM(RMMI_CMD_ATCCLK)
+CMD_ENUM(RMMI_CMD_ATCALA)
+CMD_ENUM(RMMI_CMD_ATCALD)
+CMD_ENUM(RMMI_CMD_ATCKPD)
+CMD_ENUM(RMMI_CMD_ATCSDF)
+CMD_ENUM(RMMI_CMD_ATCSGT)
+CMD_ENUM(RMMI_CMD_ATCSIL)
+CMD_ENUM(RMMI_CMD_ATCSTF)
+CMD_ENUM(RMMI_CMD_ATCVIB)
+CMD_ENUM(RMMI_CMD_ATCBKLT)
+CMD_ENUM(RMMI_CMD_ATCLAN)
+CMD_ENUM(RMMI_CMD_ATCLAE)
+CMD_ENUM(RMMI_CMD_VGR)
+CMD_ENUM(RMMI_CMD_VGT)
+CMD_ENUM(RMMI_CMD_ATCBC)
+CMD_ENUM(RMMI_CMD_ATCLVL)
+CMD_ENUM(RMMI_CMD_ATCMUT)
+CMD_ENUM(RMMI_CMD_ATCRSL)
+CMD_ENUM(RMMI_CMD_ATCGMI)
+CMD_ENUM(RMMI_CMD_ATGMI)
+CMD_ENUM(RMMI_CMD_ATCGMM)
+CMD_ENUM(RMMI_CMD_ATGMM)
+CMD_ENUM(RMMI_CMD_ATCGSN)
+CMD_ENUM(RMMI_CMD_ATCMEC)
+CMD_ENUM(RMMI_CMD_ATCSO)
+CMD_ENUM(RMMI_CMD_ATCSS)
+CMD_ENUM(RMMI_CMD_ATECAL)
+CMD_ENUM(RMMI_CMD_ATCTSA)
+CMD_ENUM(RMMI_CMD_ATECSCN)
+CMD_ENUM(RMMI_CMD_EREG)
+CMD_ENUM(RMMI_CMD_EPMIC)
+CMD_ENUM(RMMI_CMD_ATEVCLD)
+CMD_ENUM(RMMI_CMD_ATELSM)
+CMD_ENUM(RMMI_CMD_ATEKPD)
+CMD_ENUM(RMMI_CMD_ATELCM)
+CMD_ENUM(RMMI_CMD_ATETEST)
+CMD_ENUM(RMMI_CMD_ATEKEY)
+CMD_ENUM(RMMI_CMD_ATELQT)
+CMD_ENUM(RMMI_CMD_ATEMBT)
+CMD_ENUM(RMMI_CMD_ATEBTLB)
+CMD_ENUM(RMMI_CMD_ATDIAG)
+CMD_ENUM(RMMI_CMD_ATEGCMD)
+CMD_ENUM(RMMI_CMD_ATCASP)
+CMD_ENUM(RMMI_CMD_ATESAM)
+CMD_ENUM(RMMI_CMD_ATEGMR)
+CMD_ENUM(RMMI_CMD_ATESLP)
+CMD_ENUM(RMMI_CMD_ATENVRM)
+CMD_ENUM(RMMI_CMD_ATERFTX)
+CMD_ENUM(RMMI_CMD_ATEPCT)
+CMD_ENUM(RMMI_CMD_ATESWLA)
+CMD_ENUM(RMMI_CMD_ATESDS)
+CMD_ENUM(RMMI_CMD_ATRBTI)
+CMD_ENUM(RMMI_CMD_ATETHERMAL)
+CMD_ENUM(RMMI_CMD_ATCEMS)
+CMD_ENUM(RMMI_CMD_ATESLCD)
+CMD_ENUM(RMMI_CMD_ATESHW)
+CMD_ENUM(RMMI_CMD_ATEMMISTR)
+CMD_ENUM(RMMI_CMD_ATESDP)
+CMD_ENUM(RMMI_CMD_ATEGPIO)
+CMD_ENUM(RMMI_CMD_ATEPWM)
+CMD_ENUM(RMMI_CMD_ATESLT)
+CMD_ENUM(RMMI_CMD_ATEALT)
+CMD_ENUM(RMMI_CMD_ATEADC)
+CMD_ENUM(RMMI_CMD_ATEGPO)
+CMD_ENUM(RMMI_CMD_ATEDFT)
+CMD_ENUM(RMMI_CMD_ATTRACE)
+CMD_ENUM(RMMI_CMD_ATESWM)
+CMD_ENUM(RMMI_CMD_ATETSTLP)
+CMD_ENUM(RMMI_CMD_ATEADP)
+CMD_ENUM(RMMI_CMD_ATEAPS)
+CMD_ENUM(RMMI_CMD_ATENFC)
+CMD_ENUM(RMMI_CMD_ATERXPATH)
+CMD_ENUM(RMMI_CMD_ATETXANT)
+CMD_ENUM(RMMI_CMD_ATCSCS)
+CMD_ENUM(RMMI_CMD_ATCMEE)
+CMD_ENUM(RMMI_CMD_ATCIND)
+CMD_ENUM(RMMI_CMD_ATESUO)
+CMD_ENUM(RMMI_CMD_ATEQUERY)
+CMD_ENUM(RMMI_CMD_ATEBOOT)
+CMD_ENUM(RMMI_CMD_ATCEER)
+CMD_ENUM(RMMI_CMD_ATGCAP)
+CMD_ENUM(RMMI_CMD_ATEIND)
+CMD_ENUM(RMMI_CMD_ATEINFO)
+CMD_ENUM(RMMI_CMD_ATEPON)
+CMD_ENUM(RMMI_CMD_CMUX)
+CMD_ENUM(RMMI_CMD_ATCLAC)
+CMD_ENUM(RMMI_CMD_ATECPU)
+CMD_ENUM(RMMI_CMD_ATERAM)
+CMD_ENUM(RMMI_CMD_ATELAUNCH)
+CMD_ENUM(RMMI_CMD_ATELOG)
+CMD_ENUM(RMMI_CMD_ATESPEECH)
+CMD_ENUM(RMMI_CMD_ATESSTV)
+CMD_ENUM(RMMI_CMD_ATEDTP)
+CMD_ENUM(RMMI_CMD_ATEDTS)
+CMD_ENUM(RMMI_CMD_ATESETDEV)
+CMD_ENUM(RMMI_CMD_ATESOV)
+CMD_ENUM(RMMI_CMD_ATESMV)
+CMD_ENUM(RMMI_CMD_ATESSMA)
+CMD_ENUM(RMMI_CMD_ATEVCARD)
+CMD_ENUM(RMMI_CMD_ATEMMSFS)
+CMD_ENUM(RMMI_CMD_ATEMMSEXE)
+CMD_ENUM(RMMI_CMD_ATEJAVA)
+CMD_ENUM(RMMI_CMD_ATEMMDC)
+CMD_ENUM(RMMI_CMD_ATEBGS)
+CMD_ENUM(RMMI_CMD_ATEMPC)
+CMD_ENUM(RMMI_CMD_ATEPSD)
+CMD_ENUM(RMMI_CMD_ATERSCFG)
+CMD_ENUM(RMMI_CMD_ATEACTS)
+CMD_ENUM(RMMI_CMD_ATEB3INFO)
+CMD_ENUM(RMMI_CMD_ATEDSS)
+CMD_ENUM(RMMI_CMD_ATECODE33)
+CMD_ENUM(RMMI_CMD_USIMSMT)
+CMD_ENUM(RMMI_CMD_ATEEMODE)
+CMD_ENUM(RMMI_CMD_ATCIREG)
+CMD_ENUM(RMMI_CMD_ATCIREP)
+CMD_ENUM(RMMI_CMD_ATCNEM)
+CMD_ENUM(RMMI_CMD_ATECFGGET)
+CMD_ENUM(RMMI_CMD_ATECFGSET)
+CMD_ENUM(RMMI_CMD_ATEIREG)
+CMD_ENUM(RMMI_CMD_ATEIMS)
+CMD_ENUM(RMMI_CMD_ATENWSEL)
+CMD_ENUM(RMMI_CMD_ATEIRS)
+CMD_ENUM(RMMI_CMD_ATCSSAC)
+CMD_ENUM(RMMI_CMD_ATCMMIVT)
+CMD_ENUM(RMMI_CMD_ATEGREA)
+CMD_ENUM(RMMI_CMD_ATEVVS)

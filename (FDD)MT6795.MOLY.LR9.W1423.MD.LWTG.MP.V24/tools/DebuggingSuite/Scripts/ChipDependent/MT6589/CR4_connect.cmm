@@ -1,0 +1,44 @@
+ENTRY 
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; CR4_connect.cmm start
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+print "Connection to MD1 (CR4) ... "
+;; CR4(MD1) Connection
+SYSTEM.reset
+SYSTEM.CPU CortexR4
+SYSTEM.JtagClock 5.MHz
+;; NOTE: CR4 Corebase address
+;; AHB-AP -> 0x20093000
+;; APB-AP -> 0x90123000 (Default)
+;; In case connection fail or operation abnormal, try the other address
+SYSTEM.MULTICORE COREBASE EAPB:0x90123000 ; CR4 Corebase
+SYStem.Option ResBreak OFF
+SYStem.Option WaitReset OFF
+SYSTEM.Option EnReset Off
+SYSTEM.Option TRST off
+SYSTEM.up
+
+;; disable PWRUPREQ for entry sleep mode
+SYSTEM.Option.SYSPWRUPREQ OFF
+
+;; Check CPU ID
+IF &OPT_CHECK_CPU_ID==1
+(
+	print "Check MD1 CPU ID ... "
+	&CPU_ID=data.long(C15:0x0000)
+	IF ((&CPU_ID&(0x410FC140))!=0x410FC140)
+	(
+		print "[FAIL]"
+		print "Expected: 0x410FC140 (CR4)"
+		print "Read Val: &CPU_ID"
+		;DIALOG.OK "[MD1 CONN] Wrong CPU ID: &CPU_ID"
+		END
+	)
+)
+
+;; Set base addresses
+&OPT_MD_START_ADDRESS=0x0
+&AP_APB_BASE=0xA0000000
+&MD1_WDT_BASE=0x80050000
+&MD2_WDT_BASE=0x80050000

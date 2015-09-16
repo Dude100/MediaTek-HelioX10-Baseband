@@ -1,0 +1,91 @@
+PRINT "CMM Setting by tiny-bootloader"
+
+;; Temp workaround for non-pre-loader
+
+;; PRINT "[GPIO] Set UART"
+;; Data.Set 0xA0005760 0x3FDB
+
+;; By pass TDD setting first
+;; ;; MT6752 GPIO Additional Setting
+;; ;; Notes that most setting should be done in tiny-bootloader, here we only
+;; ;; configure those are different to default setting
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 
+;; LOCAL &mclass
+;; LOCAL &gpio_base
+;; LOCAL &val
+;; LOCAL &addr
+;; 
+;; &mclass="eahb"
+;; &gpio_base=0x10005000
+;; 
+;; PRINT "TDD Additional GPIO Configuration"
+;; 
+;; ; [ZSP JTAG] (mode) gpio1 & gpio 4 select mode 4
+;; &addr=&gpio_base+0x600
+;; &val=Data.Word(&mclass:&addr)
+;; &val=&val&(~((7<<(1*3))|(7<<(4*3))))
+;; &val=&val|((4<<(1*3))|(4<<(4*3)))
+;; Data.Set &mclass:&addr %LE %WORD &val
+;; 
+;; ; [ZSP JTAG] (mode) gpio5 & gpio6 & gpio7 select mode 4
+;; &addr=&gpio_base+0x610
+;; &val=Data.Word(&mclass:&addr)
+;; &val=&val&(~((7<<(0*3))|(7<<(1*3))|(7<<(2*3))))
+;; &val=&val|((4<<(0*3))|(4<<(1*3))|(4<<(2*3)))
+;; Data.Set &mclass:&addr %LE %WORD &val
+;; 
+;; ; [UART] (mode) gpio40 select mode 5
+;; &addr=&gpio_base+0x680
+;; &val=Data.Word(&mclass:&addr)
+;; &val=&val&(~((7<<(0*3))))
+;; &val=&val|((5<<(0*3)))
+;; Data.Set &mclass:&addr %LE %WORD &val
+;; 
+;; ; [ZSP JTAG] (pull_en) gpio4 & gpio5 & gpio6 & gpio7 pull enable; gpio1 pull disable
+;; &addr=&gpio_base+0x100
+;; &val=Data.Word(&mclass:&addr)
+;; &val=&val&(~((1<<1)|(1<<4)|(1<<5)|(1<<6)|(1<<7)))
+;; &val=&val|((0<<1)|(1<<4)|(1<<5)|(1<<6)|(1<<7))
+;; Data.Set &mclass:&addr %LE %WORD &val
+;; 
+;; ; [ZSP JTAG] (direction) gpio4 & gpio5 & gpio6 & gpio7 input; gpio1 output
+;; &addr=&gpio_base+0x000
+;; &val=Data.Word(&mclass:&addr)
+;; &val=&val&(~((1<<1)|(1<<4)|(1<<5)|(1<<6)|(1<<7)))
+;; &val=&val|((1<<1)|(0<<4)|(0<<5)|(0<<6)|(0<<7))
+;; Data.Set &mclass:&addr %LE %WORD &val
+;; 
+;; ; [ZSP JTAG] (pull h/l) gpio4 & gpio5 & gpio 7 pull up; gpio6 pull down
+;; &addr=&gpio_base+0x200
+;; &val=Data.Word(&mclass:&addr)
+;; &val=&val&(~((1<<4)|(1<<5)|(1<<6)|(1<<7)))
+;; &val=&val|((1<<4)|(1<<5)|(0<<6)|(1<<7))
+;; Data.Set &mclass:&addr %LE %WORD &val
+;; 
+;; ; Omit SMT setting first, suggested by MingTe Lin
+;; ; ; [ZSP JTAG] (SMT) gpio4 & gpio6 SMT set to 1 //0x10005920[2] 0-6 use the same SMT
+;; ; &addr=&gpio_base+0x920
+;; ; &val=Data.Word(&mclass:&addr)
+;; ; &val=&val&(~((1<<2)))
+;; ; &val=&val|((1<<2))
+;; ; Data.Set &mclass:&addr %LE %WORD &val
+;; 
+;; ; [ZSP JTAG] gpio1 driving (E4) set to 1
+;; ;            gpio0-4: 0x10005B20[3:0]
+;; ;            It's 0 by default ; SR/E8/E4/E2
+;; &addr=&gpio_base+0xb20
+;; &val=Data.Word(&mclass:&addr)
+;; &val=&val&(~((0xf<<0)))
+;; &val=&val|((1<<(1+0)))
+;; Data.Set &mclass:&addr %LE %WORD &val
+;; 
+;; ; [BSI] gpio66 & gpio67 & gpio68 & gpio69 & gpio70 driving (E4) set to 1
+;; ;       gpio66-73: 0x10005B30[7:4]
+;; &addr=&gpio_base+0xb30
+;; &val=Data.Word(&mclass:&addr)
+;; &val=&val&(~((0xf<<4)))
+;; &val=&val|((1<<(1+4)))
+;; Data.Set &mclass:&addr %LE %WORD &val
+;; 
+;; PRINT "GPIO Configuration Completed"

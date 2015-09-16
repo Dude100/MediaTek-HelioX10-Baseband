@@ -1,0 +1,6 @@
+band5_ch_sel	wdata.c
+min_rx_end_offset	wdata.c
+min_tx_end_offset	wdata.c
+UMTS_PDATA2_RX_TABLE	wdata.c
+UMTS_RX_END_TQ_TABLE	wdata.c
+vm_offset	wdata.c

@@ -1,0 +1,141 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; File:         MT6589_MultiCore_AP.cmm
+;
+; Description:  For MT6589 AP reset and go/attach
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+ENTRY &OPT_RESET
+
+&OPT_AP_DEBUG=0 ; set 1 if at ap side
+
+; 1. Show CVD information window
+AREA.reset
+winpos 0% 50% 50% 50%
+AREA
+print "== MT6589_MultiCore_AP.cmm =="
+print "OPT_MD_SEL = &OPT_MD_SEL"
+print "OPT_RESET = &OPT_RESET"
+print "============================="
+
+; 2. CodeViser setting for Cortex-A7
+&NR_CPUS=4
+
+SYSTEM.RESET
+
+IF "&OPT_RESET"=="RESET"
+(
+    SYSTEM.OPTION ENRESET ON
+)
+ELSE
+(
+    SYSTEM.OPTION ENRESET OFF
+)
+SYStem.Option ResBreak OFF
+SYStem.Option WaitReset OFF
+SYStem.JtagClock 10.MHz
+if &NR_CPUS==1
+(
+	SYSTEM.CPU CortexA7MPCore
+)
+else
+(
+    SYStem.CPU CortexA7MPCore
+)
+
+if &NR_CPUS==1
+(
+    ; Setting Core debug register access
+    SYStem.CONFIG CORENUMBER 1;
+    SYSTEM.MULTICORE COREBASE 0x80070000
+)
+else
+(
+
+	; Setting Core debug register access
+    SYSTEM.CONFIG CORENUMBER 4;
+    SYSTEM.CONFIG COREBASE 0x80070000 0x80072000 0x80074000 0x80076000;
+
+)
+
+; 3. CodeViser connect to Cortex-A7
+print "System up"
+SYStem.Up
+wait 100.ms
+
+; 4. Setting attribute of breakpoints
+; Setting HW breakpoint by default
+Break.Select Program OnChip
+Break.Select Hll OnChip
+Break.Select Read OnChip
+Break.Select Write OnChip
+
+; 5. Disable wdt
+D.S c:0x10000000 %le %long 0x22000024
+
+; 6. Set bit0 for CCCI wait handshake forever
+D.S C:0x1011A010 %LE %WORD DATA.LONG(C:0x1011A010)|0x1
+
+
+; 7. Set PLL for MD1
+IF &OPT_MD_SEL!=2
+(
+    print "Set MD1 PLL ..."
+    do MT6589_MD1_PLL_INIT.cmm
+)
+
+; Disable DABORT and PABORT breakpoint
+tronchip.set dabort off
+tronchip.set pabort off
+tronchip.set undef  off
+
+; 
+; Linux kernel init
+;
+
+&KernelPath="../../../../kernel/out"
+
+if OS.FILE(&KernelPath/vmlinux)
+(
+    print "loading Linux kernel symbols..."
+    Data.LOAD.Elf &KernelPath/vmlinux /gnu /nocode
+    wait 100.ms
+)
+else
+(
+    print "can't find vmlinux"
+    IF &OPT_AP_DEBUG==1
+    (
+        Dialog.file *.elf
+        entry &elf
+        if OS.FILE("&elf")
+        (
+            Data.LOAD.Elf "&elf" /gnu /nocode
+            wait 100.ms
+        )
+    )
+)
+
+y.spath.reset
+y.spath.srd &KernelPath/init
+y.spath.srd &KernelPath/mm
+y.spath.srd &KernelPath/kernel
+y.spath.srd &KernelPath/kernel/irq
+y.spath.srd &KernelPath/arch/arm/kernel
+y.spath.srd &KernelPath/arch/arm/mm
+y.spath.srd &KernelPath/arch/arm/lib
+y.spath.srd &KernelPath/lib
+y.spath.srd &KernelPath/drivers/serial
+
+
+; Setup Linx awareness
+TASK.CONFIG linux       ; loads Linux awareness (linux.t32)
+MENU.ReProgram linux    ; loads Linux menu (linux.men)
+HELP.FILTER.Add rtoslinux  ; add linux awareness manual to help filter
+
+;d.l
+
+print "MT6589 is on the way!"
+go
+enddo

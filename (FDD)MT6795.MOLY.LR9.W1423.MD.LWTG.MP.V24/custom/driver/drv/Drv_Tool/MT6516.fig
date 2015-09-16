@@ -1,0 +1,22 @@
+[Chip Type]
+Chip = MT6516
+GPIO_Pull_Sel=1
+
+[GPIO]
+GPIO0 = MODE0(GPIO0)          MODE1(BPI_BUS6)         MODE2()        MODE3()          PUPD
+GPIO1 = MODE0(GPIO1)          MODE1(BPI_BUS7)         MODE2()        MODE3()          PUPD
+GPIO2 = MODE0(GPIO2)          MODE1(BPI_BUS8)         MODE2()        MODE3()          PUPD
+GPIO3 = MODE0(GPIO3)          MODE1(BPI_BUS9)         MODE2()        MODE3()          PUPD
+
+[GPO]
+
+[EINT]
+EINT_COUNT=24
+EINT_DEBOUNE_TIME_COUNT=24
+
+[ADC]
+ADC_COUNT=7
+
+[KEYPAD]
+KEY_ROW=0
+KEY_COLUMN=0

@@ -1,0 +1,70 @@
+{ Validation }
+Title 		= "[9_2G_Pkt_Transfer]PT9: GPRS Attach on CCCh + Neighbor BSIC and BCCH during TBF(No Sleep)"
+ModuleID 	= MOD_DUMMYMPAL
+MsgID 		= MSG_ID_DPS_CCCH_TBF_SC_TEST_REQ    // will be defined in appropriate header file
+
+
+/* Data Structure accomnying the above primitive
+typedef struct
+{
+       kal_uint8  ref_count;
+       kal_uint16  msg_len;
+       kal_uint8  bands;
+       ARFCN arfcnSpec;
+       kal_bool RlcChanReq;
+       kal_bool AutoRepeat;
+       kal_bool InfiniteTBF;
+       kal_uint16 NumTestPdu;       
+	    ARFCN  arfcn2nd;
+	    ARFCN  arfcn3rd;
+	    kal_uint8 nc_order;
+	    kal_uint8 nc_reporting_period_T;		    
+        
+}dps_ccch_tbf_sc_test_req_struct;
+*/
+
+{Parameters}
+
+// The variable and the corresponding label showen on GUI
+[bands] "Bands used for power scan"
+// The following is the constrained range for the input of this value.
+// Some combination of the following bit-fields may be suported
+// The parameter range can be changed to support combinations of different bands
+@PGSM900            1
+EGSM900            2
+DCS1800            8
+PCS1900            16
+GSM850             128
+PGSM900_DCS1800    9
+EGSM900_DCS1800    10
+PGSM900_PCS1900    17  
+EGSM900_PCS1900    18
+GSM850_DCS1800     136
+GSM850_DCS1900     144
+
+[arfcnSpec] "Bcch (C0) ARFCN"
+0~124
+975~1023
+512~885
+128~251
+@20
+[arfcn2nd] "First Neighbor ARFCN"
+0~124
+975~1023
+512~885
+128~251
+@40
+[arfcn3rd] "Second Neighbor ARFCN"
+0~124
+975~1023
+512~885
+128~251
+@60
+[nc_order] "NC Measurement Order"
+@NC0 0
+NC1 1
+NC2 2
+
+[nc_reporting_period_T] "NC measurement reporting period (TBF)"
+1~255
+@1

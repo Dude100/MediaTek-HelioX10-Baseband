@@ -1,0 +1,245 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; MT6592/MT6582/MT6572 Frequency Meter
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+LOCAL &opt_gui_enable
+&opt_gui_enable=0
+
+LOCAL &key_in
+&key_in=0
+
+LOCAL &opt_cvd_connect
+&opt_cvd_connect="none"
+
+LOCAL &mclass           ;; Memory Class
+&mclass="eahb"
+
+LOCAL &pll_base         ;; MD PLL base address
+&pll_base=0x20120000    ;; Use AP's view, since we use eahb memory class
+;&pll_base=0x80120000
+
+LOCAL &fqmtr_winset     ;; Frequency Meter Windoiw Setting (= Number of FIXED clock cycle)
+&fqmtr_winset=0x1ff     ;; Choose 0x1ff in MT6592/MT6572/MT6582, notes that MT6589 choose 0x10
+                        ;; This is hardware-depdndent
+
+LOCAL &fqmtr_fcksel_val ;; Frequency Meter FIXED clock selection
+&fqmtr_fcksel_val=0x1a  ;; Select 26Mhz by default
+
+;AREA
+
+DIALOG
+(&
+    HEADER "PLL Frequency Meter"
+    ICON ":chip"
+    
+    POS  0. 0. 20. 1.
+    LINE "FQMTR Selection"
+    ;    x  y  w   h
+    POS  0. 1. 20. 1.
+    SEL.NONE:   CHOOSEBOX "None"
+    (
+        &key_in=0x00
+    )
+    SEL.SRC1:   CHOOSEBOX "AD_SYS_26M_CK"
+    (
+        &key_in=0x01
+    )
+    SEL.SRC2:   CHOOSEBOX "CSW_HMDMCU_CK"
+    (
+        &key_in=0x02
+    )
+    SEL.SRC4:   CHOOSEBOX "CSW_HDSP_CK"
+    (
+        &key_in=0x04
+    )
+    SEL.SRC5:   CHOOSEBOX "CSW_HMDBUS_CK"
+    (
+        &key_in=0x05
+    )
+    SEL.SRC7:   CHOOSEBOX "CSW_FX64W_CK"
+    (
+        &key_in=0x07
+    )
+    SEL.SRC8:   CHOOSEBOX "CSW_HX64W_CK"
+    (
+        &key_in=0x08
+    )
+    SEL.SRC10:  CHOOSEBOX "CSW_FX16G_CK"
+    (
+        &key_in=0x0A
+    )
+    SEL.SRC14:  CHOOSEBOX "AD_MDPLL_416M_CK"
+    (
+        &key_in=0x0E
+    )
+    SEL.SRC15:  CHOOSEBOX "AD_WHPLL_251M_CK"
+    (
+        &key_in=0x0F
+    )
+    SEL.SRC17:  CHOOSEBOX "AD_MCUPLL_481M_CK"
+    (
+        &key_in=0x11
+    )
+    SEL.SRC18:  CHOOSEBOX "AD_WPLL_246M_CK"
+    (
+        &key_in=0x12
+    )
+    SEL.SRC22:  CHOOSEBOX "F32K_CK"
+    (
+        &key_in=0x16
+    )
+
+    POS  21. 0. 20. 1.
+    LINE "Explicit CVD Connection"
+    SEL.CVD_NONE:       CHOOSEBOX "None"
+    (
+        &opt_cvd_connect="none"
+    )
+    SEL.CVD_CR4:        CHOOSEBOX "CR4 (No Reset)"
+    (
+        &opt_cvd_connect="cr4"
+    )
+    SEL.CVD_CR4_PLL:    CHOOSEBOX "CR4 (With MD PLL Init)"
+    (
+        &opt_cvd_connect="cr4_pll"
+    )
+    SEL.CVD_CA7:        CHOOSEBOX "CA7 (No Reset)"
+    (
+        &opt_cvd_connect="ca7"
+    )
+
+    POSY 1. 20. 1.
+    LINE "FQMTR Information"
+    INFO1: EDIT "Window Seting: &fqmtr_winset" ""
+    INFO2: EDIT "Fixed Clock: &fqmtr_fcksel_val" ""
+
+    POSY 1. 20. 1.
+    LINE "FQMTR Result"
+    RESULT: EDIT "" ""
+
+    POSY 1. 20. 1.
+    DEFBUTTON "OK"
+    (
+        ;; Clear Result
+        DIALOG.Set RESULT ""
+        GOSUB fqmtr_main
+    )
+  
+    CLOSE 
+    (
+        PRINT "bye~"
+        DIALOG.END
+    )
+)
+    
+    ;; Set default value to UI
+    DIALOG.Set SEL.NONE
+    DIALOG.Set SEL.CVD_NONE
+    ;; Disable EDIT of showing information
+    DIALOG.Disable INFO1
+    DIALOG.Disable INFO2
+    ;DIALOG.Disable RESULT
+STOP
+ENDDO
+
+fqmtr_main:
+(
+    ;PRINT "fqmtrsrc: 0x" FORMAT.HEX(2,&key_in)
+    ;PRINT "opt_cvd_connect: &opt_cvd_connect"
+
+    LOCAL &unit
+    LOCAL &fqmtr_result
+    LOCAL &fqmtr_result_raw
+    LOCAL &fqmtr_result_str
+    LOCAL &safe_wait_cnt
+    LOCAL &safe_wait_cnt_max
+
+    &safe_wait_cnt=0
+    &safe_wait_cnt_max=10
+
+    IF &fqmtr_fcksel_val==0x1a
+    (
+        &unit="Mhz"
+    )
+    ELSE
+    (
+        &unit=""
+    )
+    
+    IF "&opt_cvd_connect"=="cr4"
+    (
+        LOCAL &OPT_JTAG
+        LOCAL_&OPT_CHECK_CPU_ID
+
+        &OPT_JTAG=0
+        &OPT_CHECK_CPU_ID=0
+
+        DO CR4_connect.cmm
+    )
+    ELSE IF "&opt_cvd_connect"=="cr4_pll"
+    (
+        LOCAL &OPT_JTAG
+        LOCAL_&OPT_CHECK_CPU_ID
+
+        &OPT_JTAG=0
+        &OPT_CHECK_CPU_ID=0
+
+        DO CR4_connect.cmm RESET
+
+        PRINT "MD PLL Init ..."
+        DO MT6595_MD_PLL_Init.cmm
+    )
+    ELSE IF "&opt_cvd_connect"=="ca7"
+    (
+        LOCAL &OPT_JTAG
+        LOCAL &OPT_AP_NR_CPUS
+        LOCAL &OPT_AP_COREBASE
+
+        &OPT_JTAG=0
+        &OPT_AP_NR_CPUS=2
+        &OPT_AP_COREBASE="0x80070000 0x80072000"
+        ;&OPT_AP_NR_CPUS=4
+        ;&OPT_AP_COREBASE="0x80070000 0x80072000 0x80074000 0x80076000"
+        DO CA7_connect.cmm
+    )
+    ELSE
+    (
+        PRINT "No explicit CVD connection, use current status"
+    )
+
+    IF &key_in==0
+    (
+        ;; This is used for connect CVD only, no FQMTR test
+        RETURN
+    )
+
+    Data.Set &mclass:(&pll_base+0x0408) %LE %LONG 0x0003   ;; Divided by 16
+    Data.Set &mclass:(&pll_base+0x0404) %LE %LONG 0x0011   ;; Selection, default key_in=0x11=17
+
+    ;; ABIST monitor mode selection
+    Data.Set &mclass:(&pll_base+0x0424) %LE %LONG 0x0101   ;; Start ABIST monitor mode selection
+
+    Data.Set &mclass:(&pll_base+0x0400) %LE %LONG (0x4000)|(&fqmtr_winset)  ;; Reset, windows
+    Data.Set &mclass:(&pll_base+0x0404) %LE %LONG &key_in                   ;; Using 26Mhz as fixed clock
+    Data.Set &mclass:(&pll_base+0x0400) %LE %LONG (0x8000)|(&fqmtr_winset)  ;; Enable, windows
+ 
+    &fqmtr_busy=DATA.LONG(&mclass:(&pll_base+0x404))&(1<<15)
+    WHILE &fqmtr_busy!=0
+    (
+        PRINT ". &fqmtr_busy"
+        &fqmtr_busy=DATA.LONG(pm:(&pll_base+0x404))&(1<<15)
+        &safe_wait_cnt=&safe_wait_cnt+1
+        IF &safe_wait_cnt==&safe_wait_cnt_max
+        (
+            PRINT "Wait Fail, exit"
+            GOSUB CloseDialog
+        )
+    )
+    &fqmtr_result_raw=DATA.LONG(&mclass:(&pll_base+0x40c))
+    &fqmtr_result=&fqmtr_result_raw*&fqmtr_fcksel_val/&fqmtr_winset
+    &fqmtr_result_str=""+FORMAT.DECIMAL(0,&fqmtr_result)+" &unit"
+    PRINT "Frequency Meter Result: &fqmtr_result_str (&fqmtr_result_raw)"
+    PRINT ""
+    DIALOG.Set RESULT "&fqmtr_result_str"
+    RETURN
+)

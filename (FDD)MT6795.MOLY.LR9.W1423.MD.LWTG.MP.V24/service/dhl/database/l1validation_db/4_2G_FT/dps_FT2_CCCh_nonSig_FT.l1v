@@ -1,0 +1,81 @@
+{ Validation }
+Title 		= "[4_2G_FT]FT2: GPRS PDTCH for field trail"
+ModuleID 	= MOD_DUMMYMPAL
+MsgID 		= MSG_ID_DPS_CCCH_GPRS_NONSIG_FT_REQ    // will be defined in appropriate header file
+
+
+/* Data Structure accomnying the above primitive
+typedef struct
+{
+   kal_uint8   ref_count;
+   kal_uint16  msg_len;
+   kal_uint8   bands;
+   ARFCN       arfcnSpec;
+   ARFCN       arfcnPDTCh1;
+   ARFCN       arfcnPDTCh2;
+   ARFCN       arfcnPDTCh3;
+   ARFCN       arfcnPDTCh4;
+   kal_int8    tsc;
+   kal_int8    syncTimeslotPDTCh;
+   kal_int8    constellationPDTCh;
+   kal_int16   startPM1;
+   kal_int16   endPM1;
+   kal_int16   startPM2;
+   kal_int16   endPM2;
+   kal_int16   repeat_second;
+}dps_ccch_gprs_nonsig_ft_req_struct;
+*/
+
+{Parameters}
+
+// The variable and the corresponding label showen on GUI
+[bands] "Bands used for power scan"
+// The following is the constrained range for the input of this value.
+// Some combination of the following bit-fields may be suported
+// The parameter range can be changed to support combinations of different bands
+PGSM900            1
+EGSM900            2
+DCS1800            8
+PCS1900            16
+PGSM900_DCS1800    9
+EGSM900_DCS1800    10
+PGSM900_PCS1900    17
+EGSM900_PCS1900    18
+
+
+[repeat_second] "Repeat Period (sec)"
+1 ~ 8888888
+
+[arfcnSpec] "BCCH ARFCN"
+-1~124
+975~1023
+512~885
+
+[arfcnPDTCh1] "PDTCH ARFCN1"
+-1~124
+975~1023
+512~885
+
+[arfcnPDTCh2] "PDTCH ARFCN2"
+-1~124
+975~1023
+512~885
+
+[arfcnPDTCh3] "PDTCH ARFCN3"
+-1~124
+975~1023
+512~885
+
+[arfcnPDTCh4] "PDTCH ARFCN4"
+-1~124
+975~1023
+512~885
+
+[tsc] "TSC of PDTCH"
+-2~7
+
+[syncTimeslotPDTCh] "Sync TS of PDTCH"
+0~7
+
+[constellationPDTCh] "Constellation of PDTCH"
+1~15

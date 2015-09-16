@@ -1,0 +1,42 @@
+VARS tst_statistics_struct "tst_lost_statistics_g." 
+{
+{count_on}                             COUNT_ON;
+
+{count_log[0]}                         CNT_PR;
+{count_log[1]}                         CNT_TR;
+{count_log[2]}                         CNT_EM;
+
+{count_lost[0]}                        LOST_PR;
+{count_lost[1]}                        LOST_TR;
+{count_lost[2]}                        LOST_EM;
+
+{count_lost_full_queue[0]}             LOST_PR_QUEUE;
+{count_lost_full_queue[1]}             LOST_TR_QUEUE;
+{count_lost_full_queue[2]}             LOST_EM_QUEUE;
+
+{count_lost_no_buffer[0][0]}           LOST_PR_BUF_IDX0;
+{count_lost_no_buffer[0][1]}           LOST_PR_BUF_IDX1;
+{count_lost_no_buffer[0][2]}           LOST_PR_BUF_IDX2;
+{count_lost_no_buffer[0][3]}           LOST_PR_BUF_IDX3;
+{count_lost_no_buffer[0][4]}           LOST_PR_BUF_IDX4;
+{count_lost_no_buffer[0][5]}           LOST_PR_BUF_IDX5;
+{count_lost_no_buffer[0][6]}           LOST_PR_BUF_IDX6;
+
+{count_lost_no_buffer[1][0]}           LOST_TR_BUF_IDX0;
+{count_lost_no_buffer[1][1]}           LOST_TR_BUF_IDX1;
+{count_lost_no_buffer[1][2]}           LOST_TR_BUF_IDX2;
+{count_lost_no_buffer[1][3]}           LOST_TR_BUF_IDX3;
+{count_lost_no_buffer[1][4]}           LOST_TR_BUF_IDX4;
+{count_lost_no_buffer[1][5]}           LOST_TR_BUF_IDX5;
+{count_lost_no_buffer[1][6]}           LOST_TR_BUF_IDX6;
+
+{count_lost_no_buffer[2][0]}           LOST_EM_BUF_IDX0;
+{count_lost_no_buffer[2][1]}           LOST_EM_BUF_IDX1;
+{count_lost_no_buffer[2][2]}           LOST_EM_BUF_IDX2;
+{count_lost_no_buffer[2][3]}           LOST_EM_BUF_IDX3;
+{count_lost_no_buffer[2][4]}           LOST_EM_BUF_IDX4;
+{count_lost_no_buffer[2][5]}           LOST_EM_BUF_IDX5;
+{count_lost_no_buffer[2][6]}           LOST_EM_BUF_IDX6;
+
+};-""
+

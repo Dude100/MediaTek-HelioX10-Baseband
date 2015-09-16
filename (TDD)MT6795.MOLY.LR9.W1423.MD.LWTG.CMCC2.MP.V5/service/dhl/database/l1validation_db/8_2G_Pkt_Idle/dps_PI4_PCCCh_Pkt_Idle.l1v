@@ -1,0 +1,48 @@
+{ Validation }
+Title 		= "[8_2G_Pkt_Idle]PI4: Packet Idle on PCCCh"
+ModuleID 	= MOD_DUMMYMPAL
+MsgID 		= MSG_ID_DPS_PCCCH_PACKET_IDLE_REQ		// will be defined in appropriate header file
+
+/* Data Structure accomnying the above primitive
+typedef struct
+{
+       kal_uint8  ref_count;
+       kal_uint16  msg_len;
+       kal_uint8  bands;
+       ARFCN arfcnSpec;
+       kal_uint8 split_page_cycle;
+       kal_uint16 imsi1_mod_1000;
+}dps_pccch_packet_idle_req_struct; 
+*/
+
+{Parameters}
+
+// The variable and the corresponding label showen on GUI
+[bands] "Bands used for power scan"
+// The following is the constrained range for the input of this value.
+// Some combination of the following bit-fields may be suported
+// The parameter range can be changed to support combinations of different bands
+@PGSM900            1
+EGSM900            2
+DCS1800            8
+PCS1900            16
+GSM850             128
+PGSM900_DCS1800    9
+EGSM900_DCS1800    10
+PGSM900_PCS1900    17  
+EGSM900_PCS1900    18
+GSM850_DCS1800     136
+GSM850_DCS1900     144
+
+[arfcnSpec] "ARFCN to camp on"
+0~124
+975~1023
+512~885
+128~251
+@20
+[split_page_cycle] "Split Page Cycle value"
+1~255
+@32
+[imsi1_mod_1000] "IMSI mod 1000"
+0~999
+@789

@@ -1,0 +1,58 @@
+ENTRY &OPT_RESET
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; CA7_connect.cmm
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+AREA.reset
+winpos 0% 0% 30% 53%
+AREA
+&NR_CPUS=4
+
+SYStem.reset
+IF "&OPT_RESET"=="RESET"
+(
+    SYStem.OPTION ENRESET ON
+)
+ELSE
+(
+    SYStem.OPTION ENRESET OFF
+)
+SYStem.Option ResBreak OFF
+SYStem.Option WaitReset OFF
+SYStem.JtagClock 10.MHz
+if &NR_CPUS==1
+(
+	SYStem.CPU CortexA7MPCore
+)
+else
+(
+    SYStem.CPU CortexA7MPCore
+)
+
+if &NR_CPUS==1
+(
+
+    ;Setting Core debug register access
+    SYStem.CONFIG CORENUMBER 1;
+    SYStem.MULTICORE COREBASE 0x80070000
+)
+else
+(
+
+	;Setting Core debug register access
+	;SYStem.CONFIG CORENUMBER 2;
+	;core.assign 1 2 
+    ;SYStem.MULTICORE COREBASE 0x80070000 0x80072000;
+    SYStem.CONFIG CORENUMBER 4;
+    SYStem.CONFIG COREBASE 0x80070000 0x80072000 0x80074000 0x80076000;
+
+)
+
+SYStem.Up
+
+;; Set base addresses
+&OPT_MD_START_ADDRESS=0x80000000
+&AP_APB_BASE=0x10000000
+&MD1_WDT_BASE=0x20050000
+&MD2_WDT_BASE=0x30050000

@@ -1,0 +1,117 @@
+{ Validation }
+Title 		= "[3_3G_CSD_Request]I5: PCH_reading_on_STTD_Cell"
+ModuleID 	= MOD_DUMMYURR
+MsgID 		= MSG_ID_UDPS_PCH_READING_ON_STTD_CELL		
+
+/******************************************************************************
+* Data Structure accomnying the above primitive
+typedef struct
+{
+    kal_uint8       ref_count;
+    kal_uint16      msg_len;
+    
+    kal_uint16       uarfcn_bts1;
+    kal_uint16       psc_bts1;
+    //for STTD cell, no 2nd BTS
+
+    kal_bool        read_BCH_only; // for BSC1(CSD) only
+	
+    //for PCH on S-CCPCH
+    kal_uint8       Ts_ccpch;          
+    kal_uint16       OVSFs_ccpch;        
+    kal_uint16       OVSFpich;   
+    //kal_uint16       SFs_ccpch;   //for Slot Format
+    kal_bool        pilot_exit; //for Slot Format
+    kal_bool        tfci_exit; //for Slot Format	
+    
+    kal_int8	    cpich_tx_power;     	
+    kal_int8        pich_power_off;     
+    kal_uint8       DRX_cycle_length;   
+    kal_uint8       PI_num;             
+    kal_uint8       page_occa;          
+    kal_uint32      DRX_index;          
+    kal_uint16     count_blks; // for Self BLER cal.
+
+    kal_int16        freq_offset;//I3, I5 add I/F for CSD's freq. offset requirement.	    
+    kal_uint16       offline_rake_test_count;  // for I3, I5, I6
+} udps_pch_reading_on_sttd_cell_struct;
+*
+*******************************************************************************/
+
+
+{Parameters}
+/******************************************************************************
+* 1. The following is the constrained range for the input of this value.
+* 2. Some combination of the following bit-fields may be suported
+* 3. The parameter range can be changed to support combinations of different bands
+*******************************************************************************/
+
+/* [Variable Name] "corresponding label showen on GUI" */
+[uarfcn_bts1] "UARFCN of Serving Cell"
+10562~10838
+9662~9938
+4357~4458
+@10600
+
+[psc_bts1] "PSC of Serving Cell"
+0~511
+@10
+
+
+[read_BCH_only] "(CSD) Conti. Read BCH on this STTD Cell?"
+@KAL_FALSE
+
+[count_blks] "(CSD)Wanted total BCH Blocks number?"
+@2000
+
+[Ts_ccpch] "Timing offset between S-CCPCH and CPICH [x256 chips]"
+0~149
+@0
+
+[OVSFs_ccpch] "The OVSF code number of the S-CCPCH (0~SF-1)"
+0~63
+@7
+
+[OVSFpich] "The OVSF code number of the PICH"
+0~255
+@100
+
+[pilot_exit] "Pilot Exit for Slot Format of the S-CCPCH"
+@KAL_TRUE
+
+[tfci_exit] "TFCI Exit for Slot Format of the S-CCPCH"
+@KAL_TRUE
+    
+[cpich_tx_power] "CPICH TX power [dBm]"
+-10~50
+@0
+
+[pich_power_off] "PICH power offset from CPICH [dB]"
+-10~5
+@-5
+
+[DRX_cycle_length] "DRX cycle length for PICH, (6~9)"
+@DRX6  6
+DRX7  7
+DRX8  8
+DRX9  9
+
+[PI_num] "Number of paging indicators per frame (Np)"
+@PI18  18
+PI36  36
+PI72  72
+PI144 144
+
+[page_occa] "Paging occassion when IMSI mod DRX, n=0"
+0~511
+@0
+
+[DRX_index] "DRX_index defined in 25.304 (IMSI/8192)"
+0~122070312499
+@0
+
+[freq_offset] "(CSD) Offline Rake Test's freq. offset:"
+@0
+
+[offline_rake_test_count] "offline RAKE test count"
+@1000

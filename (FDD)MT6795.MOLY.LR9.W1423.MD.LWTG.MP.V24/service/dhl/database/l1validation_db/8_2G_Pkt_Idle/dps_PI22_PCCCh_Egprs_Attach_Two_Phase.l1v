@@ -1,0 +1,54 @@
+{ Validation }
+Title 		= "[8_2G_Pkt_Idle]PI21~22, PT11~15(P): EGPRS Attach on PCCCh + Two Phase Access"
+ModuleID 	= MOD_DUMMYMPAL
+MsgID 		= MSG_ID_DPS_PCCCH_EGPRS_ATTACH_TWO_PHASE_REQ    // will be defined in appropriate header file
+
+
+{Parameters}
+
+// The variable and the corresponding label showen on GUI
+
+[bands] "Bands used for power scan"
+// The following is the constrained range for the input of this value.
+// Some combination of the following bit-fields may be suported
+// The parameter range can be changed to support combinations of different bands
+PGSM900            1
+EGSM900            2
+DCS1800            8
+PCS1900            16
+GSM850             128
+PGSM900_DCS1800    9
+EGSM900_DCS1800    10
+PGSM900_PCS1900    17  
+EGSM900_PCS1900    18
+GSM850_DCS1800     136
+GSM850_DCS1900     144
+
+[arfcnSpec] "Bcch (C0) ARFCN"
+0~124
+975~1023
+512~885
+128~251
+
+[InfiniteTBF] "End TBF from MS side"
+FALSE 1
+TRUE  0
+
+[NumTestPdu] "End after how many blocks"
+500~32000 
+
+[split_page_cycle] "Split Page Cycle"
+1~255
+
+[egprsPCR]  "EGPRS PCR exists?"
+TRUE  1
+FALSE 0
+
+[psModeA] "puncturingScheme(A)"
+PS1   1
+PS2   2
+PS3   3
+
+[isIRon] "IR"
+TRUE  1
+FALSE 0

@@ -1,0 +1,30 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Cortex-R_MPU_View.men
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ADD
+TOOLBAR
+(
+  SEPARATOR 
+  TOOLITEM "Memory Attibute Viewer " "DO &MDONLY_PPD_PATH\Cortex-R_MPU_View.cmm"
+[
+
+
+RRRRR      RRRRR
+RRRRRR    RRRRRR
+RRRRRRR  RRRRRRR
+RRR RRRRRRRR RRR
+RRR  RRRRRR  RRR
+RRR   RRRR   RRR
+RRR          RRR
+RRR          RRR
+RRR          RRR
+RRR          RRR
+RRR          RRR
+RRR          RRR
+
+
+]
+
+  
+  SEPARATOR
+)

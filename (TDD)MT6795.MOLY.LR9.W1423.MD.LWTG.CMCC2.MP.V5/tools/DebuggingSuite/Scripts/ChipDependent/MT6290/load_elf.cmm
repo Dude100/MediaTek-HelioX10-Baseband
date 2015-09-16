@@ -1,0 +1,100 @@
+; Copyright Statement:
+; --------------------
+; This software is protected by Copyright and the information contained
+; herein is confidential. The software may not be copied and the information
+; contained herein may not be used or disclosed except with the written
+; permission of MediaTek Inc. (C) 2005
+; 
+; BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+; THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+; RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
+; AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+; EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+; MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+; NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+; SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+; SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
+; THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
+; NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
+; SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
+; 
+; BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
+; LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+; AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+; OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
+; MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+; 
+; THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
+; WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
+; LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
+; RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
+; THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
+
+; CMMAutoGen m0.22 by Qmei Yang
+
+; CPU_info_command
+SYStem.RESet
+SYStem.CPU CortexR4
+System.Option Cflush on                    ; flush the cache to avoid data consistency
+SYStem.JtagClock 10MHz                      ; For DAP-lite Jtag connection
+System.Multicore SWDP on
+System.Multicore COREBASE 0x80210000
+System.Option ResBreak off                 ; Turn off ResBreak option to avoid connect to target before it is ready
+System.Option EnReset on
+SYStem.Up
+
+setup.IMASKHLL ON
+setup.IMASKASM ON
+
+; disable_watchdog
+D.S SD:0xBF820100 %LE %LONG 0x55000000
+
+; bypass_CTIRQ1_precision_check
+; Avoiding assert at CTIRQ1/2
+D.S SD:0xF1070008 %LE %WORD 0xABCD
+D.S SD:0xF1070010 %LE %WORD 0x0003     ; bit0: disable CTIRQ1/2 timing check
+
+; specify_load_elf
+D.LOAD.ELF ../bin/MT6290_LTE_PCB01_MT6290_S00.elf /RELPATH /PATH "../../../.." 
+; add_utility_for_debugging
+GLOBAL &DBGSUITE_PATH
+&DBGSUITE_PATH="..\..\..\..\tools\DebuggingSuite"
+
+if version.build()==0x100000 
+(
+    task.config &DBGSUITE_PATH\Misc\NUCLEUS
+)
+else
+(
+    if y.exist(TCT_Schedule)
+    (
+        task.config &DBGSUITE_PATH\Misc\NUCLEUS
+        menu.reprogram &DBGSUITE_PATH\Misc\NUCLEUS
+    )
+    else
+    (
+        task.config &DBGSUITE_PATH\Misc\NUCLEUS_V2
+        menu.reprogram &DBGSUITE_PATH\Misc\NUCLEUS_V2
+    )
+)
+
+;The InTargetReset is not supported in MT6290 EVB
+;menu.reprogram InTargetReset
+menu.reprogram l1assertbypass
+
+
+
+; setting attribute of breakpoints
+Break.Select Program OnChip
+Break.Select Hll OnChip
+Break.Select Spot OnChip
+Break.Select Read OnChip
+Break.Select Write OnChip
+
+; clean_win
+winclear
+
+; endup
+d.l
+enddo
+

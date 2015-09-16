@@ -1,0 +1,171 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; File:         MT6752_MD2_MultiCore_MD.cmm
+;
+; Description:  For MT6752 MD2 reset and go/attach
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+ENTRY &OPT_RESET &OPT_MD_SEL &OPT_ELF_PATH &OPT_SRC_PATH
+
+AREA.reset
+winpos 0% 50% 50% 50%
+AREA
+print "== MT6752_MultiCore_MD.cmm =="
+print "OPT_MD_SEL   = &OPT_MD_SEL"
+print "OPT_RESET    = &OPT_RESET"
+print "OPT_ELF_PATH = &OPT_ELF_PATH"
+print "OPT_SRC_PATH = &OPT_SRC_PATH"
+print "============================="
+
+EDIT MT6752_MultiCore_MD.cmm
+
+IF &OPT_MD_ELF_AUTO_LOAD==0
+(
+    print "[Step 3] Press any key to select elf file..."
+    inkey &nop
+    Dialog.file *.elf
+    ENTRY &OPT_ELF_PATH
+)
+ELSE
+(
+    print "[Step 3] Press any key to load elf file..."
+    inkey &nop
+)
+
+if OS.FILE("&OPT_ELF_PATH")
+(
+    ; load MD symbols
+    print "Loading Modem symbols..."
+    print "&OPT_ELF_PATH"
+    D.LOAD.ELF &OPT_ELF_PATH /RELPATH /PATH &OPT_SRC_PATH /nocode
+    wait 100.ms
+)
+else
+(
+    print "can't find &OPT_ELF_PATH"
+)
+
+; Wait AP CCCI load modem
+print "wait 10s..."
+wait 10.s
+
+IF &OPT_MD_SEL!=2
+(
+    print "Connection to MD1 (CR4) ... "
+    SYSTEM.Reset
+    SYSTEM.CPU CortexR4
+    System.JtagClock 5.MHz
+    ;; NOTE: CR4 Corebase address
+    ;; AHB-AP -> 0x20093000
+    ;; APB-AP -> 0x90123000 (Default)
+    ;; In case connection fail or operation abnormal, try the other address
+    SYSTEM.MULTICORE COREBASE EAPB:0x90123000 ; CR4 Corebase
+)
+ELSE IF &OPT_MD_SEL!=1
+(
+    SYSTEM.CPU ARM926EJ
+    SYSTEM.JtagClock 5.MHz
+    SYSTEM.MULTICORE JTAGACCESSPORT 2
+    SYSTEM.MULTICORE COREJTAGPORT 0
+)
+
+
+SYSTEM.OPTION ENRESET Off
+SYStem.Option ResBreak OFF
+SYStem.Option WaitReset OFF
+SYSTEM.OPTION TRST OFF
+
+print "System up"
+SYStem.Up
+
+; Setting attribute of breakpoints
+; Setting HW breakpoint by default
+Break.Select Program OnChip
+Break.Select Hll OnChip
+Break.Select Read OnChip
+Break.Select Write OnChip
+
+; Disable WDT
+print "Disable modem WDT"
+print "[0x80050000] <- 0x2200"
+D.S SD:0x80050000 %LE %WORD 0x2200
+; bypass_CTIRQ1_precision_check
+; Avoiding assert at CTIRQ1/2
+print "L1 Assert Bypass" 
+print "[0x83070008] <- 0xABCD"
+D.S SD:0x83070008 %LE %WORD 0xABCD
+print "[0x83070010] <- 0x0003"
+D.S SD:0x83070010 %LE %WORD 0x0003     ; bit0: disable CTIRQ1/2 timing check
+
+
+winclear
+winpos 0% 0% 50% 50%
+d.l
+
+winpos 0% 50% 50% 20%
+sYmbol.Browse
+
+winpos 0% 70% 50% 30%
+Break.List
+
+winpos 50% 0% 50% 50%
+Register
+
+winpos 50% 50% 50% 50%
+Var.Frame /l /c
+
+
+menu.reprogram Bring-up_Magic
+
+IF &OPT_MD_SEL==1
+(
+    menu.reprogram Cortex-R_MPU_View
+)
+
+;; workaournd for burst read issue
+MemMap.MemRange 0xA0000000--0xAFFFFFFF ReadWrite W32
+
+; Nucleus Debugging Tool
+GLOBAL &DBGSUITE_PATH
+&DBGSUITE_PATH="&OPT_MD_SRC_PATH\tools\DebuggingSuite"
+
+if version.build()==0x100000 
+(
+	task.config &DBGSUITE_PATH\Misc\NUCLEUS
+)
+else
+(
+	if y.exist(TCT_Schedule)
+	(
+		task.config &DBGSUITE_PATH\Misc\NUCLEUS
+		menu.reprogram &DBGSUITE_PATH\Misc\NUCLEUS
+	)
+	else
+	(
+		task.config &DBGSUITE_PATH\Misc\NUCLEUS_V2
+		menu.reprogram &DBGSUITE_PATH\Misc\NUCLEUS_V2
+	)
+)
+
+
+if "&OPT_RESET"=="ATTACH"
+(
+    print "Modem is attached! you can break and start debugging now!"
+)
+else
+(
+    ; Ungate MD
+    print "Ungate modem... Please set breakpoint and GO!"
+    ;*0x8019379C = 0x3567C766
+    ;*0x80190000 = 0
+    ;*0x80195488 = 0xA3B66175
+    D.S a:0x8019379C %LE %LONG 0x3567C766
+    D.S a:0x80190000 %LE %LONG INT_Initialize
+    D.S a:0x80195488 %LE %LONG 0xA3B66175
+        
+    inkey
+)
+
+go

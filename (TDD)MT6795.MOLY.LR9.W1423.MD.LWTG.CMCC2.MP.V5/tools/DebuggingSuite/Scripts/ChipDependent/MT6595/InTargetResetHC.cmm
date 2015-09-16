@@ -1,0 +1,108 @@
+; Copyright Statement:
+; --------------------
+; This software is protected by Copyright and the information contained
+; herein is confidential. The software may not be copied and the information
+; contained herein may not be used or disclosed except with the written
+; permission of MediaTek Inc. (C) 2005
+; 
+; BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+; THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+; RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
+; AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+; EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+; MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+; NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+; SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+; SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
+; THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
+; NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
+; SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
+; 
+; BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
+; LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+; AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+; OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
+; MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+; 
+; THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
+; WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
+; LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
+; RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
+; THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
+
+; CMMAutoGen m0.33 by Qmei Yang
+
+; InTargetReset.cmm
+; Perform reset action
+
+&MD_RGU_BASE=(0x80050000)
+&ACCESS_TYPE="AXI"
+
+SYStem.Option Cflush on                    ; flush the cache to avoid data consistency
+SYStem.Multicore SWDP OFF
+
+; Connect AP First
+SYStem.RESet
+SYStem.CPU CortexA7MPCore
+SYStem.CONFIG CORENUMBER 4
+SYStem.CONFIG COREBASE 0x80070000 0x80072000 0x80074000 0x80076000
+SYStem.JtagClock 8MHz                     ; For DAP-lite Jtag connection
+SYStem.Option EnReset ON                   ; Reset target core when connect to target system if this option set on.
+SYStem.Option ResBreak OFF                 ; Turn off ResBreak option to avoid connect to target before it is ready
+SYStem.Option WaitReset OFF                ; After connect to core, execute code for given time
+
+setup.IMASKHLL ON
+setup.IMASKASM ON
+
+SYStem.Up
+
+; disable WDT
+Data.Set SD:0x10007000 %LE %LONG 0x22000064
+
+;; Enable EAHB memory class access
+Data.Set a:0x1011A040 %LE %LONG 0x1
+
+PRINT "Set modem debug mode"
+Data.Set A:1011A010 %LE %LONG DATA.LONG(A:1011A010)|(0x1)
+;WAIT 100.ms
+GO
+SYStem.Down
+
+SYStem.Down
+;WAIT AP load MD image
+WinCloseAll
+MULtiCore.AXIACCESSPORT 0
+sys.mode prepare
+WAIT (DATA.LONG(&ACCESS_TYPE:0x1011A010)&(0x1))==0x0
+;Data.Set &ACCESS_TYPE:0x1011A010 %LE %LONG DATA.LONG(&ACCESS_TYPE:0x1011A010)|(0x1)
+SYStem.Down
+LoadLastWindow
+; Connect CR4
+SYStem.Down
+SYStem.Option EnReset OFF                   ; Reset target core when connect to target system if this option set on.
+SYStem.CPU CortexR4
+SYStem.CONFIG COREBASE APB:0x90223000    ; For CoreSight
+SYStem.MultiCore DEBUGACCESSPORT 1         ; Specify which port of DAP is used for access ARM Debug Registers (0~255)
+SYStem.MultiCore MEMORYACCESSPORT 0        ; Specify which port of DAP is used for access Memory (0~255)
+DEBUG.ResponsTimeOut 20.s
+SYStem.Up
+
+; disable_watchdog
+D.S SD:&MD_RGU_BASE %LE %WORD (0xf00|(DATA.LONG(SD:&MD_RGU_BASE)&(~0x1)))
+
+PRINT "Ungate modem... Please set breakpoint and GO!"
+Data.Set a:0x8019379C %LE %LONG 0x3567C766
+Data.Set a:0x80190000 %LE %LONG INT_Initialize
+Data.Set a:0x80195488 %LE %LONG 0xA3B66175
+;Data.Set &ACCESS_TYPE:0xA011A010 %LE %LONG DATA.LONG(&ACCESS_TYPE:0xA011A010)|(0x1)
+PRINT "CR4 PC = " r(pc)
+
+B.S lte_ccci_init_handshake_phase1 /hard
+GO Application_Initialize
+WAIT !run()
+;StepOut
+
+; endup
+;d.l
+enddo
+

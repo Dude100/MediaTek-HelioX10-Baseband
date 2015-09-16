@@ -1,0 +1,55 @@
+;winclear
+
+
+system.reset
+SYSTEM.OPTION ENRESET ON
+SYStem.Option ResBreak OFF
+SYStem.Option WaitReset OFF
+SYStem.JtagClock 10.MHz
+
+SYStem.CPU CORTEXA53; 
+;Setting Core debug register access
+SYStem.CONFIG CORENUMBER 1;
+SYStem.CONFIG COREBASE 0x80810000;
+SYStem.CONFIG CTIBASE 0x80820000;
+
+
+SYStem.Up
+SETUP.IMASKHLL ON
+SETUP.IMASKASM ON
+
+;enable MP0 L2C 256KB
+;d.s c:0x10200000 %le %long 0x100
+;d.s c:0x10200000 %le %long 0x1100
+
+;enable MP1 L2C 256KB
+;d.s c:0x10200200 %le %long 0x100
+;d.s c:0x10200200 %le %long 0x1100
+
+;enable MP1 L2C 512KB
+;d.s c:0x10200200 %le %long 0x300
+;d.s c:0x10200200 %le %long 0x1300
+
+
+; disable WDT
+d.s c:0x10007000 %le %long 0x22000000
+
+;core.select 0
+;r.s pc 0x4e004000
+
+;y.spath.reset
+;y.spath.srd ../inc
+;y.spath.srd ../inc/Denali
+;y.spath.srd ../core/src
+;y.spath.srd ../arch/inc
+;y.spath.srd ../arch/src/Denali
+;y.spath.srd ../arch/inc/Denali
+;y.spath.srd ../drivers/apdma
+;y.spath.srd ../drivers/apdma/src/Denali
+;y.spath.srd ../testsuites/fpga/ts_ca7
+;y.spath.srd ../testsuites/fpga/ts_apdma
+;y.spath.srd ../testsuites/fpga/ts_dnt
+;y.spath.srd ../testsuites/fpga/ts_emi
+;y.spath.srd ../testsuites/fpga/ts_cci400
+
+d.l

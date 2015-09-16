@@ -1,0 +1,331 @@
+/*****************************************************************************
+*  Copyright Statement:
+*  --------------------
+*  This software is protected by Copyright and the information contained
+*  herein is confidential. The software may not be copied and the information
+*  contained herein may not be used or disclosed except with the written
+*  permission of MediaTek Inc. (C) 2005
+*
+*  BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+*  THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+*  RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
+*  AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+*  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+*  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+*  NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+*  SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+*  SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
+*  THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
+*  NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
+*  SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
+*
+*  BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
+*  LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+*  AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+*  OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
+*  MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+*
+*  THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
+*  WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
+*  LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
+*  RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
+*  THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
+*
+*****************************************************************************/
+/*****************************************************************************
+ *
+ * Filename:
+ * ---------
+ *   l1audio.tmd
+ *
+ * Project:
+ * --------
+ *   Maui_Software
+ *
+ * Description:
+ * ------------
+ *   Trace messages of L1audio
+ *
+ * Author:
+ * -------
+ *   Phil Hsieh (mtk00209)
+ *
+ *============================================================================
+ *             HISTORY
+ * Below this line, this part is controlled by PVCS VM. DO NOT MODIFY!!
+ *------------------------------------------------------------------------------
+ * $Revision:   1.12  $
+ * $Modtime:   Jun 26 2005 23:25:38  $
+ * $Log:   //mtkvs01/vmdata/Maui_sw/archives/mcu/l1audio/l1audio_trace.tmd-arc  $
+ *
+ * 07 29 2011 thomas.chen
+ * [MAUI_02990872] [MT6256E2]Merge back to 11B/MAUI
+ * .
+ *
+ * 12 12 2010 jy.huang
+ * [MAUI_02845385] [WWFT][MT6276][UK-London][Orange] Local user can't hear remote side voice
+ * .
+ *
+ * 12 01 2010 jy.huang
+ * [MAUI_02843435] [WWFT][MT6276][UK-London][orange][1] DSP Error - Assert fail: h\SpeechScheduler\src\sch_Err.c 109 (0x3, 0x30, 0x0) - SFP
+ * .
+ *
+ * 11 22 2010 jy.huang
+ * [MAUI_02825315] Create audio HAL folder and file
+ * .
+ *
+ * Nov 30 2009 mtk01352
+ * [MAUI_02000534] Check in Two mic NR sloution of ForteMedia
+ * 
+ *
+ * Nov 10 2008 mtk01352
+ * [MAUI_01271861] [WW FT] [Germany-Berlin][T-Mobile] sp_3g ASSERT
+ * 
+ *
+ * Nov 3 2008 mtk01352
+ * [MAUI_01267656] Check in Block filter control
+ * 
+ *
+ * Oct 8 2008 mtk01352
+ * [MAUI_01252381] InterRAT handover modification
+ * 
+ *
+ * Aug 27 2008 mtk01352
+ * [MAUI_01228956] Check in new network info to VM log and L1SP_TCH_Notify
+ * 
+ *
+ * Sep 8 2007 mtk01352
+ * [MAUI_00544761] Merge 3G speech back to MAUI
+ * 
+ *
+ * Aug 22 2007 MTK01728
+ * [MAUI_00534693] Add VoIP AMR recording code
+ * Add new feature : VoIP AMR Recording
+ *
+ * Jun 10 2006 mtk00561
+ * [MAUI_00201501] Remove SP_STATE_SND_EFFECT from am.speech_state
+ * 
+ *
+ * Mar 9 2006 mtk00561
+ * [MAUI_00178092] AM code rearrangement
+ * Add trace for AM IO switch and speech feature on/off 
+ *
+ * Feb 27 2006 mtk01075
+ * [MAUI_00176052] Revise l1audio_trace.tmd
+ * Revise l1audio_trace.tmd
+ *
+ * Feb 20 2006 mtk00561
+ * [MAUI_00174403] Set L1Audio L1 trace from default off to default on
+ * 
+*
+*   Rev 1.12   Jun 26 2005 23:26:42   BM
+*Karlos:
+*add disclaimer and copyright
+*
+*   Rev 1.11   Mar 10 2005 17:25:46   mtk00209
+*Add traces for gain/speaker tracking
+*
+*   Rev 1.10   Jul 30 2004 15:26:16   mtk00209
+*Remove l1audio trace that use l1 trace facility but run under other tasks context
+*Resolution for 6921: Remove l1audio trace that use l1 trace facility but run under other tasks context
+*
+*   Rev 1.9   Mar 18 2004 21:40:20   mtk00209
+*Turn off all default switches
+*Resolution for 82: MMI- Melody play error
+*
+*   Rev 1.8   Jan 02 2004 16:17:38   mtk00561
+*Add trace code to monitor AFE power condition
+*Resolution for 3317: [l1audio][add feature] Add trace code to monitor gain setting.
+*
+*   Rev 1.7   Dec 24 2003 17:40:50   mtk00209
+*Add trace for MT6218B
+*Resolution for 553: Audio : ringing tone結束後會有奇怪的聲音
+*
+*   Rev 1.6   Nov 19 2003 15:26:10   mtk00209
+*Fix a VM bug which would lock the system in HISR and cause fatal error
+*Resolution for 1527: Fatal Error:msg_send_ext_queue (SZ,China)
+*
+*   Rev 1.5   Nov 12 2003 21:45:30   mtk00561
+*Add trace code to monitor gain setting.
+*Resolution for 3317: [l1audio][add feature] Add trace code to monitor gain setting.
+*
+*   Rev 1.4   Nov 05 2003 15:11:16   mtk00209
+*Add Reverb effect to iMelody playback
+*Resolution for 3289: [l1audio][new feature]Add Reverb effect to iMelody playback
+*
+*   Rev 1.3   Oct 23 2003 15:23:48   mtk00209
+*Fix Chicago2003 SCR 91 assertion fail
+*Resolution for 91: Assert Fail : 1<10  midisyn.c 976 -AUD
+*
+*   Rev 1.2   Oct 22 2003 17:36:30   mtk00209
+*Disable volume transform
+*Resolution for 1145: Assert: 1< 10 tone2.c 398
+*
+*   Rev 1.1   Oct 03 2003 13:43:38   mtk00209
+*Add SMF message
+*Resolution for 2988: [l1audio][add feature]Add trace definition file
+*
+*   Rev 1.0   Sep 29 2003 12:47:50   admin
+*Initial revision.
+ *------------------------------------------------------------------------------
+ * Upper this line, this part is controlled by PVCS VM. DO NOT MODIFY!!
+ *============================================================================
+ ****************************************************************************/
+
+[Default]
+	L1Audio
+	ON
+
+[MODEM_TYPE]
+	L1_AUDIO
+
+[Class]
+        AFE_Inf_H            on
+        AM_Inf_H             on
+
+[String]
+        L1AUDIO_Str_Bool
+	      {
+                "false",
+                "true"
+	      }
+
+        L1AUDIO_Str_onoff
+	      {
+                "off",
+                "on"
+	      }
+
+        L1AUDIO_Func_Name
+	      {
+                "Keytone",
+                "Tone",
+                "Speech",
+                "SND Effect",
+                "Audio",
+                "Voice",
+                "DAI",
+                "FM Radio"
+	      }
+
+        AFE_Switch_Name
+	      {
+                "8K interrupt",
+                "DAI",
+                "audio curcuit loopback",
+                "echo suppressor",
+                "AFE bias"
+	      }
+
+        AM_Switch_Name
+	      {
+                "Keytone",
+                "Tone",
+                "PCM8K Playback",
+                "PCM16K Playback",
+                "PCM8K Record",
+                "Speech",
+                "VM Record",
+                "VM Playback",
+                "PCM_HI Playback",
+                "SND Effect",
+					 "VOIP AMR Record"                
+         }
+
+        AM_IO_Name
+	      {
+                "NORMALE_MODE",
+                "DAI_MODE",
+                "BT_CORDLESS_MODE",
+                "BT_EARPHONE_MODE"
+         }
+
+        AM_Speech_Feature_Name
+         {                
+                "VM Record",
+                "PCM8K Record",
+                "PCM4WAY"
+         }
+         
+         L1Audio_Speech_State
+         {                
+                "Idle",
+                "2G speech on",
+                "3G speech on",
+                "3G324M speech on", 
+                "2G speech closing", 
+                "3G speech closing", 
+                "3G speech closed"  
+         }
+         
+         L1SP_Speech_Codec_Mode
+         {                
+                "FR",
+                "HR",
+                "EFR",
+                "AMR4.75",
+                "AMR5.15",
+                "AMR5.9",
+                "AMR6.7",
+                "AMR7.4",
+                "AMR7.95",
+                "AMR10.2",
+                "AMR12.2",
+                "AMR-WB6.60",
+                "AMR-WB8.85",
+                "AMR-WB12.65",
+                "AMR-WB14.25",
+                "AMR-WB15.85",
+                "AMR-WB18.25",
+                "AMR-WB19.85",
+                "AMR-WB23.05",
+                "AMR-WB23.85"
+         }
+         L1SP_Speech_TX_Type
+         {                
+                "NO DATA",
+                "SID FIRST",
+                "SPEECH",
+                "SID UPDATE"
+         }
+         L1SP_Speech_RX_Type
+         {                
+                "SPEECH_GOOD",
+                "SPEECH_DEGRADED",
+                "SPEECH_BAD",
+                "SID_FIRST",
+                "SID_UPDATE",
+                "SID_BAD",
+                "ONSET",
+                "NO_DATA",
+                "Non-AMR SPEECH_GOOD",
+                "Non-AMR SPEECH_GOOD, BFI",
+                "Non-AMR SID_probability",
+                "Non-AMR SID_probability, BFI",
+                "Non-AMR SID",
+                "Non-AMR SID, BFI"
+         }
+                  
+[Message]
+        info    L1Audio_Msg_AFE_Switch      AFE_Inf_H            "AFE Turn %s %s"
+        info    L1Audio_Msg_AFE_TurnSpk     AFE_Inf_H            "AFE Turn %s %s speaker"
+        info    L1Audio_Msg_AFE_TurnMIC     AFE_Inf_H            "AFE Turn %s %s microphone"
+        info    L1Audio_Msg_AFE_SpkSelect   AFE_Inf_H            "AFE SpkSelect v_lowest:%d, a_lowest:%d, fir:%d, mic:%d, mic_vol:%d"
+        info    L1Audio_Msg_AM_Switch       AM_Inf_H             "AM %s %s"
+        info    L1Audio_Msg_AM_Handover     AM_Inf_H             "AM handover occurs, speech mode=%b"
+        info    L1Audio_Msg_AM_IO_Switch    AM_Inf_H             "AM IO Switch to %s"
+        info    L1Audio_Msg_AM_SetSpeech    AM_Inf_H             "AM Speech-Feature %s %s"
+        info    L1Audio_Msg_Speech_State    AM_Inf_H             "AM Speech State Change : %s"
+        info    L1Audio_Msg_DSP_INT         AM_Inf_H             "DSP INT %xd"
+        info    L1Audio_Msg_AM_DELAY_TABLE  AM_Inf_H             "AM Speech PCM Delay Table ID %d"
+        info    L1Audio_Msg_SPEECH_FRAME    AM_Inf_H             "Speech Frame Tx %s, Rx %s, BER = %ub"
+        info    L1Audio_Msg_SPEECH_CODEC    AM_Inf_H             "Speech Codec Mode Tx %s, Rx %s"
+        info    L1Audio_Msg_VM_DEBUG        AM_Inf_H             "VM debug info %xd, %xd, %xd"
+        info    L1Audio_Msg_VBI_RESET       AM_Inf_H             "VBI Reset"
+        info    L1Audio_Msg_TCH_NOTIFY      AM_Inf_H             "AM TCH %s notify L1Audio, Speech State : %s"
+        info    L1Audio_Msg_INTERRAT_W2G    AM_Inf_H             "AM InterRAT W2G"
+        info    L1Audio_Msg_INTERRAT_G2W    AM_Inf_H             "AM InterRAT G2W"
+        info    L1Audio_Msg_SWITCH_FILT     AM_Inf_H             "AM switch to previous block filter %d %xd"
+
+        info    L1Audio_Msg_AM_SRC1          AM_Inf_H           "AM SRCCtrl_1=%xd codec=%xd speech_mode=%xd"
+        info    L1Audio_Msg_AM_SRC2          AM_Inf_H           "AM SRCCtrl_2=%xd codec=%xd speech_mode=%xd"

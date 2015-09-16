@@ -1,0 +1,4 @@
+ENTRY &CMMName &Function
+
+DODECRYPT "SystemService" &CMMName.cmm &Function
+//DO &CMMName.cmm &Function

@@ -1,0 +1,34 @@
+{ Validation }
+Title 		= "[0_3G_Single_Channel][1_Idle]I1: Initial Cell Search"
+ModuleID 	= MOD_DUMMYURR
+MsgID 		= MSG_ID_UDPS_INITIAL_CELL_SEARCH		
+
+/******************************************************************************
+* Data Structure accomnying the above primitive
+typedef struct
+{
+    kal_uint8       ref_count;
+    kal_uint16      msg_len;
+    
+    kal_uint16          uarfcn_bts1;
+    kal_uint16          uarfcn_bts2;    
+} udps_initial_cell_search_struct;   
+*
+*******************************************************************************/
+
+
+{Parameters}
+/******************************************************************************
+* 1. The following is the constrained range for the input of this value.
+* 2. Some combination of the following bit-fields may be suported
+* 3. The parameter range can be changed to support combinations of different bands
+*******************************************************************************/
+
+/* [Variable Name] "corresponding label showen on GUI" */
+[uarfcn_bts1] "UARFCN of lower frequency BTS"
+10587~10640
+@10600
+
+[uarfcn_bts2] "UARFCN of higher frequency BTS"
+10670~10814
+@10700

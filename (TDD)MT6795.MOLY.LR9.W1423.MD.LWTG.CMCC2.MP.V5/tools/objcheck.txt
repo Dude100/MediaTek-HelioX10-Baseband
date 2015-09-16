@@ -1,0 +1,298 @@
+#----------------------------------------------------
+# This is a setting file for objcheck.pl
+#
+# Usage:
+#
+# <info mcuPath="\\serverName\driveName\mcu"/>	(mcu path, only used on local dir)
+# <info prjName="projectName"/>									(project name, only used on local dir)
+#
+# <objcheck>
+# 	<info filename="xxx"/>			(target file name, e.g. ScrMemMgr.h)
+# 	<info path="aaa\bbb\ccc"/>	(target file path, e.g. plutommi\mmi\inc)
+#		<info parsingInc="0"/>			(parse all included files or not)
+#		<info type="macro"/>				("obj" for union/struct type, "macro" for #define type, default to "obj".
+#																 you may use ',' to concatenate more cmds, e.g. "obj,macro")
+#
+# 	<addModuleInc>
+# 	add *.inc here for module include path
+# 	</addModuleInc>
+#
+# 	<addIncPath> 
+# 	add additional include path here
+# 	</addIncPath>
+# 
+# 	<addIncFiles>
+# 	add additional include files here
+#	 	</addIncFiles>
+#
+# 	<addLines> 
+# 	add additional lines here (will be added to the beginning of checking file)
+#		</addLines>
+#
+#		<addPostLines>
+#		add post additional lines (will be added at the end)
+#		</addPostLines>
+#
+# 	<addFeaturesToWatch> 
+# 	add additional features to watch
+#		</addFeaturesToWatch>
+# </objcheck>
+#
+#----------------------------------------------------
+
+# global setting info (do not edit this unless necessary)
+<info removeTmpFile="1"/>
+<info alsoProcessDisabledFeatures="1"/>
+
+#----------------------------------------------------
+# med_mem.h
+#----------------------------------------------------
+<objcheck>
+		<info filename="med_mem.h"/>
+		<info path="media\common\include"/>
+		<info parsingInc="0"/>
+		<info type="obj,macro"/>
+		
+		<addIncFiles>
+		MMI_features.h
+		</addIncFiles>		
+</objcheck>
+
+#----------------------------------------------------
+# app_mem_config.h
+#----------------------------------------------------
+<objcheck>
+		<info filename="app_mem_config.h"/>
+		<info path="applib\mem\include"/>
+		<info parsingInc="0"/>
+		<info type="obj,macro"/>
+
+		<addModuleInc>
+		plutommi
+		venus
+		kal
+		applib
+		venusmmi
+		</addModuleInc>
+			
+		<addIncFiles>
+		MMI_features.h
+		kal_release.h
+		MMIDataType.h
+		app_mem.h
+		</addIncFiles>
+		
+        <addIncPath> 
+		plutommi\Customer\CustomerInc
+		venusmmi\app\Cosmos\interface\app
+        </addIncPath>
+		
+		<addLines>
+		#define APP_MEM_C			// define this since app_mem_config.h can only used in app_mem.c
+		</addLines>
+
+		<addLines type="obj_expand">
+		#define __MMI_RP_APP_DATA_H__	    // define this for not expand mmi_rp_app_data.h
+		#define __MMI_RP_APP_MEM_CONFIG_H__	// define this for not expand mmi_rp_app_mem_config.h
+		</addLines>
+
+		<addLines type="macro">
+		#define __SKIP_MACRO_EXPANSION__
+		</addLines>
+</objcheck>
+
+#----------------------------------------------------
+# mmi_rp_app_mem_config.h
+#----------------------------------------------------
+<objcheck>
+		<info filename="mmi_rp_app_mem_config.h"/>
+		<info path="plutommi\Customer\CustomerInc"/>
+		<info parsingInc="0"/>
+		<info type="obj2"/>
+
+		<addModuleInc>
+		plutommi
+		venus
+		kal
+		applib
+		venusmmi
+		</addModuleInc>
+			
+		<addIncFiles>
+		MMI_features.h
+		kal_release.h
+		MMIDataType.h
+		app_mem.h
+        app_mem_config.h
+		</addIncFiles>
+		
+        <addIncPath> 
+		plutommi\Customer\CustomerInc
+		venusmmi\app\Cosmos\interface\app
+        </addIncPath>
+		
+		<addLines>
+		#define APP_MEM_C			// define this since app_mem_config.h can only used in app_mem.c
+		</addLines>
+</objcheck>
+
+#----------------------------------------------------
+# mmi_rp_app_data.h
+#----------------------------------------------------
+<objcheck>
+		<info filename="mmi_rp_app_data.h"/>
+		<info path="plutommi\Customer\CustomerInc"/>
+		<info parsingInc="0"/>
+		<info type="macro"/>
+
+		<addModuleInc>
+		plutommi
+		venus
+		venusmmi
+		</addModuleInc>
+			
+		<addIncFiles>
+		</addIncFiles>
+		
+        <addIncPath> 
+		plutommi\Customer\CustomerInc
+		venusmmi\app\Cosmos\interface\app		
+        </addIncPath>		
+		
+		<addLines>
+		#define __SKIP_MACRO_EXPANSION__
+		</addLines>
+</objcheck>
+
+#----------------------------------------------------
+# ScrMemMgr.h
+#----------------------------------------------------
+<objcheck>
+		<info filename="ScrMemMgr.h"/>
+		<info path="plutommi\MMI\Inc"/>
+		<info parsingInc="0"/>
+		<info type="obj,macro"/>
+
+		<addModuleInc>
+		plutommi
+		venus
+		kal
+		venusmmi
+		</addModuleInc>
+
+		<addIncFiles>
+		MMI_features.h
+		kal_release.h
+		MMIDataType.h
+	  wgui_fixed_menuitems.h
+	  wgui_fixed_menus.h		
+		</addIncFiles>
+			
+        <addIncPath> 
+		venusmmi\app\Cosmos\interface\app		
+        </addIncPath>		
+			
+		<addPostLines>
+		#undef assert		// some files define 'assert' to 'ASSERT', will cause error
+		</addPostLines>			
+</objcheck>
+
+#----------------------------------------------------
+# hal_custom_video_if.h
+#----------------------------------------------------
+<objcheck>
+    <info filename="hal_custom_video_if.h"/>
+    <info path="custom\video"/>
+    <info parsingInc="0"/>
+    <info type="macro"/>
+</objcheck>
+
+#----------------------------------------------------
+# hw_video_encode_custom.h
+#----------------------------------------------------
+<objcheck>
+    <info filename="hw_video_encode_custom.h"/>
+    <info path="hal\video\custom"/>
+    <info parsingInc="0"/>
+    <info type="macro"/>
+</objcheck>
+
+#----------------------------------------------------
+# sw_video_encode_custom.h
+#----------------------------------------------------
+<objcheck>
+    <info filename="sw_video_encode_custom.h"/>
+    <info path="hal\video\custom"/>
+    <info parsingInc="0"/>
+    <info type="macro"/>
+</objcheck>
+
+#----------------------------------------------------
+# hw_video_decode_custom.h
+#----------------------------------------------------
+<objcheck>
+    <info filename="hw_video_decode_custom.h"/>
+    <info path="hal\video\custom"/>
+    <info parsingInc="0"/>
+    <info type="macro"/>
+</objcheck>
+
+#----------------------------------------------------
+# sw_video_decode_custom.h
+#----------------------------------------------------
+<objcheck>
+    <info filename="sw_video_decode_custom.h"/>
+    <info path="hal\video\custom"/>
+    <info parsingInc="0"/>
+    <info type="macro"/>
+</objcheck>
+
+#----------------------------------------------------
+# video_codec_mem_custom_v2.h
+#----------------------------------------------------
+<objcheck>
+    <info filename="video_codec_mem_custom_v2.h"/>
+    <info path="hal\video\custom"/>
+    <info parsingInc="0"/>
+    <info type="macro"/>
+</objcheck>
+
+#----------------------------------------------------
+# video_codec_mem_v2.h
+#----------------------------------------------------
+<objcheck>
+    <info filename="video_codec_mem_v2.h"/>
+    <info path="hal\video\custom"/>
+    <info parsingInc="0"/>
+    <info type="macro"/>
+</objcheck>
+
+#----------------------------------------------------
+# video_memory_usage_v2.h
+#----------------------------------------------------
+<objcheck>
+    <info filename="video_memory_usage_v2.h"/>
+    <info path="interface\hal\video"/>
+    <info parsingInc="0"/>
+    <info type="macro"/>
+</objcheck>
+
+#----------------------------------------------------
+# media_provider_mem_usage.h
+#----------------------------------------------------
+<objcheck>
+    <info filename="media_provider_mem_usage.h"/>
+    <info path="interface\hal\video"/>
+    <info parsingInc="0"/>
+    <info type="macro"/>
+</objcheck>
+
+#----------------------------------------------------
+# cal_mem_def.h
+#----------------------------------------------------
+<objcheck>
+    <info filename="cal_mem_def.h"/>
+    <info path="interface\hal\camera"/>
+    <info parsingInc="0"/>
+    <info type="obj,macro"/>
+</objcheck>

@@ -1,0 +1,277 @@
+; MT6589_Modem_Only.cmm
+
+ENTRY &Run_Mode
+
+GLOBAL &AP_SETTING
+GLOBAL &OPT_CHECK_CPU_ID
+GLOBAL &OPT_RAMFS_MODE
+GLOBAL &OPT_RAMFS_FILENAME
+
+GLOBAL &OPT_RAMFS_START_ADDRESS   ;; RamFS Address (Need linker symbol)
+GLOBAL &OPT_RAMFS_LEN
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  Settings
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; ## AP tiny BL mode
+;; 0: Tiny bootloader downloaded by CVD
+;; 1: Tiny bootloader already downloaded by SP FlashTool
+;; 2: DummyAP download by Flashtool
+&AP_SETTING=1
+
+;; ## Modem Boot Mode
+;; 0: Normal
+;; 1: Meta
+&OPT_MD_BOOT_MODE=0
+
+;; ## RamFS
+;; Auto load RamFS on reset
+;; 0: Don't load RamFS on Reset
+;; 1: Load RamFS on Reset
+&OPT_LOAD_RAMFS=0
+
+;; RamFS Backup/Restore Mode
+;; 0: Fast Mode, always backup/restore to the same file name
+;; 1: User Specify backup/restore file name
+&OPT_RAMFS_MODE=0
+
+;; ## RamFS file name for fast mode
+&OPT_RAMFS_FILENAME="RamFS\RamFS_Backup.bin"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+GLOBAL &Run_Mode
+;; Run Mode:
+;; 0 => Normal Start-up
+;; 1 => Full Reset
+;; 2 => Bus hang recovery
+IF "&Run_Mode"==""
+    &Run_Mode=0
+
+
+;; Menu Reprogram
+;; 0: Do not generate toolbar buttons
+;; 1: Generate toolbar buttons
+&OPT_MENU_REPROGRAM=1
+
+;; Re-load MD elf
+;; 0: Do not re-load MD elf
+;; 1: Re-load MD elf
+&MD_LOAD_ELF=1
+
+;; Load ELF
+;; 0: Do not load ELF
+;; 1: Load ELF Symbol Only
+&OPT_LOAD_ELF=1
+
+;; Configure TCM
+;; 0: Do not configure TCM in CMM
+;; 1: Configure TCM in CMM
+&OPT_CFG_TCM=0
+
+;; 0: Do not enable MMU
+;; 1: Enable MMU in CMM
+&OPT_CFG_MMU=0
+
+;; Check CPU ID after connect
+&OPT_CHECK_CPU_ID=0
+
+;; Dual Rank EMI
+;; NOTE: We only got dual rank cmm from WCP2
+&DUAL_RANK=1
+
+;; Wait Before Connection
+;; 0: Automatically Connect AP and then try to connect Modem
+;; 1: Wait user input before connection, for checking cmm options
+&OPT_WAIT_BEFORE_CONN=0
+
+;; MD ELF/Src/BIN Path
+GLOBAL &OPT_MD_ELF_PATH
+GLOBAL &OPT_MD_SRC_PATH
+GLOBAL &OPT_MD_BIN_PATH
+GLOBAL &OPT_MD_START_ADDRESS
+GLOBAL &AP_APB_BASE
+GLOBAL &MD1_WDT_BASE
+GLOBAL &MD2_WDT_BASE
+
+do MT6589_MD_Info.cmm
+
+IF &OPT_MD_SEL==1
+(
+    &OPT_MD_ELF_PATH="&OPT_MD1_ELF_PATH"
+    &OPT_MD_SRC_PATH="&OPT_MD1_SRC_PATH"
+    &OPT_MD_BIN_PATH="&OPT_MD1_BIN_PATH"
+)
+IF &OPT_MD_SEL==2
+(
+    &OPT_MD_ELF_PATH="&OPT_MD2_ELF_PATH"
+    &OPT_MD_SRC_PATH="&OPT_MD2_SRC_PATH"
+    &OPT_MD_BIN_PATH="&OPT_MD2_BIN_PATH"
+)
+IF &OPT_MD_SEL==3
+(
+    print "[Error] OPT_MD_SEL=3 is not supported!!"
+)
+
+;; Belows are for button trigger cmm flow
+IF &Run_Mode==1
+(
+;; Full Reset Button
+    &OPT_WAIT_BEFORE_CONN=0
+    &OPT_MENU_REPROGRAM=0
+    print "User Trigger Full Reset"
+)
+IF &Run_Mode==2
+(
+
+;; System Hang Recovery
+    &OPT_WAIT_BEFORE_CONN=0
+    &OPT_MENU_REPROGRAM=0
+    if y.exist(INT_Initialize)
+    (
+        ; It means, we have load ELF before
+        &OPT_LOAD_ELF=0
+    )
+    else
+    (
+        ; otherwise, we load ELF for symbol only
+        &OPT_LOAD_ELF=1
+    )
+    &OPT_CFG_TCM=1
+    ;; For MD2 Configure MMU
+    &OPT_CFG_MMU=1
+    print "System Hang Revocery"
+)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;     Information Window                                     ;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;winclear
+AREA.reset
+winpos 0% 0% 30% 53%
+AREA
+
+print "====================================="
+print "==      MT6589 Modem CMM Suite     =="
+print "====================================="
+print "[Option List]"
+print "OPT_MD_SEL           = &OPT_MD_SEL"
+print "AP_SETTING           = &AP_SETTING"
+print "OPT_MD_BOOT_MODE     = &OPT_MD_BOOT_MODE"
+print "OPT_LOAD_RAMFS       = &OPT_LOAD_RAMFS"
+print "OPT_RAMFS_MODE       = &OPT_RAMFS_MODE"
+print "OPT_RAMFS_FILENAME   = &OPT_RAMFS_FILENAME"
+print "OPT_MD_ELF_PATH      = &OPT_MD_ELF_PATH"
+print "OPT_MD_SRC_PATH      = &OPT_MD_SRC_PATH"
+print "OPT_MD_BIN_PATH      = &OPT_MD_BIN_PATH"
+print "======================================"
+
+IF &OPT_WAIT_BEFORE_CONN==1
+(
+    print "Press Any Key to Continue ..."
+    inkey
+)
+
+IF &AP_SETTING==0
+(
+    ;; CA7 initialization
+    do MT6589_MDOnly_AP.cmm
+)
+
+; Downoad MD binary
+IF &Run_Mode!=2
+(
+    IF &AP_SETTING!=2
+    (
+        ;; CA7(AP) Connection
+        do CA7_connect.cmm ATTACH
+
+        ; Load MD binary by CA7
+        print "MD binary download..."
+        print "Filename: &OPT_MD_BIN_PATH"
+        data.load.binary &OPT_MD_BIN_PATH &OPT_MD_START_ADDRESS
+        print "Done."
+    )
+)
+
+; Load MD ELF
+MD_LOAD_ELF:
+IF &OPT_LOAD_ELF==1
+(
+    print "Load MD ELF(Symbol Only)..."
+    D.LOAD.ELF &OPT_MD_ELF_PATH /RELPATH /PATH &OPT_MD_SRC_PATH /nocode
+)
+
+;; TCM Address (For CR4, this will be set to BTCM and ATCM)
+&OPT_ITCM_ADDR=0x70000000
+&OPT_DTCM_ADDR=0x70020000
+ 
+IF &OPT_MD_SEL==1
+(
+    do MT6589_MDOnly_MD1.cmm
+)
+
+IF &OPT_MD_SEL==2
+(
+    do MT6589_MDOnly_MD2.cmm
+)
+
+
+; Nucleus Debugging Tool
+GLOBAL &DBGSUITE_PATH
+&DBGSUITE_PATH="&OPT_MD_SRC_PATH\tools\DebuggingSuite"
+
+if version.build()==0x100000 
+(
+	task.config &DBGSUITE_PATH\Misc\NUCLEUS
+)
+else
+(
+	if y.exist(TCT_Schedule)
+	(
+		task.config &DBGSUITE_PATH\Misc\NUCLEUS
+		menu.reprogram &DBGSUITE_PATH\Misc\NUCLEUS
+	)
+	else
+	(
+		task.config &DBGSUITE_PATH\Misc\NUCLEUS_V2
+		menu.reprogram &DBGSUITE_PATH\Misc\NUCLEUS_V2
+	)
+)
+
+IF &OPT_MENU_REPROGRAM==1
+(
+	menu.reprogram Bring-up_Magic
+    IF &OPT_MD_SEL==1
+    (
+    	menu.reprogram Cortex-R_MPU_View
+    )
+)
+
+; setting attribute of breakpoints
+Break.Select Program OnChip
+Break.Select Hll OnChip
+Break.Select Read OnChip
+Break.Select Write OnChip
+
+;; Default Breakpoint Setting Goes to HERE
+
+IF &AP_SETTING!=2
+(
+    R.S PC INT_Initialize
+)
+
+;; Window Layout, change to anything you like...
+if 0==0
+(
+	winpos 30% 0% 70% 100%
+	d.l
+	winpos 0% 50% 30% 50%
+	var.frame
+)
+print "Modem is Now Online, boot!!"
+
+END

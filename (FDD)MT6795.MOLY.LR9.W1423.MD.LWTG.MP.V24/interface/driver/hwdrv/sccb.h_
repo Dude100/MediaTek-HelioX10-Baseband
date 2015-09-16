@@ -1,0 +1,678 @@
+/*****************************************************************************
+*  Copyright Statement:
+*  --------------------
+*  This software is protected by Copyright and the information contained
+*  herein is confidential. The software may not be copied and the information
+*  contained herein may not be used or disclosed except with the written
+*  permission of MediaTek Inc. (C) 2005
+*
+*  BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+*  THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+*  RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
+*  AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+*  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+*  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+*  NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+*  SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+*  SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
+*  THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
+*  NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
+*  SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
+*
+*  BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
+*  LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+*  AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+*  OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
+*  MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+*
+*  THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
+*  WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
+*  LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
+*  RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
+*  THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
+*
+*****************************************************************************/
+
+/*****************************************************************************
+ *
+ * Filename:
+ * ---------
+ *   sccb.h
+ *
+ * Project:
+ * --------
+ *   MT6219
+ *
+ * Description:
+ * ------------
+ *   SCCB interface
+ *
+ * Author:
+ * -------
+ *		PC Huang (mtk00548)
+ *
+ *============================================================================
+ *             HISTORY
+ * Below this line, this part is controlled by PVCS VM. DO NOT MODIFY!!
+ *------------------------------------------------------------------------------
+ * $Revision:   1.6  $
+ * $Modtime:   Aug 08 2005 13:03:16  $
+ * $Log:   //mtkvs01/vmdata/Maui_sw/archives/mcu/interface/hwdrv/sccb.h-arc  $
+ *
+ * 04 24 2012 wcpuser_integrator
+ * [MAUI_03155806] [MSBB2] Global Revise Clear and Uniform Legacy Header File Inclusion Requested by JI Huang
+ * .
+ *
+ * 11 30 2010 guoxin.hong
+ * [MAUI_02841708] [Drv] MAUI HAL Peripheral Create
+ * .
+ *
+ * 11 17 2010 shuang.han
+ * [MAUI_02641139] [Drv][I2C] MT6253D compile option removel
+ * .
+ *
+ * 10 27 2010 shuang.han
+ * [MAUI_02638863] [I2C][6253E] fix 6253E i2c pin gpio mode
+ * .
+ *
+ * 10 18 2010 shuang.han
+ * [MAUI_02637814] [RHR][MAUIW1038OF_RHR] Integration to W10.43
+ * .
+ *
+ * 09 09 2010 vincent.liu
+ * [MAUI_02603694] [MT6253EL] [Camere] Check in code for 6253E/L
+ * modify gpio scl/sda pin define for 6253E serial sensor
+ *
+ * 08 29 2010 wy.chuang
+ * [MAUI_02397396] I2C V1 phase out
+ * .
+ *
+ * 08 17 2010 jason.chang
+ * [MAUI_02603694] [MT6253EL] [Camere] Check in code for 6253E/L
+ * .
+ *
+ * 08 16 2010 bin.han
+ * [MAUI_02631832] [I2C]Fix build error
+ * .
+ *
+ * 08 16 2010 bin.han
+ * [MAUI_02631832] [I2C]Fix build error
+ * .
+ *
+ * Jun 25 2010 mtk01973
+ * [MAUI_02563774] [6276 HQA] Check in MAUI
+ * 
+ *
+ * Jun 5 2010 mtk01973
+ * [MAUI_02542177] [MT6255_DVT] The plan for merging to MAUI (For 55 MM HQA!)
+ * 
+ *
+ * Apr 21 2010 mtk02787
+ * [MAUI_02399508] patch I2C CLK/DATA pin for MT6253
+ * 
+ *
+ * Apr 15 2010 mtk01283
+ * [MAUI_02396917] [MT6253][GPIO] Fix GPIO_MODE11 register default value setting
+ * 
+ *
+ * Feb 23 2010 mtk01845
+ * [MAUI_02360180] [Drv][I2C] I2C driver revision for new DMA architecture from MT6276
+ * 
+ *
+ * Feb 20 2010 mtk01845
+ * [MAUI_02360180] [Drv][I2C] I2C driver revision for new DMA architecture from MT6276
+ *
+ *
+ * Dec 12 2009 mtk01845
+ * [MAUI_01975292] [Drv] Klockwork error fix
+ * Add MT6253D option
+ *
+ * Dec 12 2009 mtk01845
+ * [MAUI_01975292] [Drv] Klockwork error fix
+ *
+ *
+ * Oct 5 2009 mtk01845
+ * [MAUI_01963866] [Drv][I2C] sccb.h define I2C pins
+ *
+ *
+ * Jun 17 2009 syu
+ * [MAUI_01869884] [CAMERA][Driver]<S5K5BAFX>  DAGIO_WISE_6235_DEMO_GPRS CAMERA driver check-in
+ *  #define SCCB_SERIAL_CLK_PIN	gpio_sccb_serial_clk_pin
+ *    #define SCCB_SERIAL_DATA_PIN	gpio_sccb_serial_data_pin
+ *
+ * So we can change codegen to match Adagio sch
+ *
+ * Jan 12 2009 mtk01845
+ * [MAUI_01307296] MT6235 charger constant current CC6 and CC7 change to internal use
+ *
+ *
+ * Nov 6 2008 mtk01845
+ * [MAUI_01269587] [Drv] MT6253T merge back to MAUI
+ *
+ *
+ * Jul 31 2008 mtk01845
+ * [MAUI_00813620] [Drv][MoDIS] Dummay APIs modification for MoDIS
+ *
+ *
+ * Jul 18 2008 mtk01845
+ * [MAUI_00786000] [Drv][General] Lint modification
+ *
+ *
+ * Jun 23 2008 mtk01283
+ * [MAUI_00761183] [Drv][GPIO] Correct GPIO usage when using driver customization tool
+ *
+ *
+ * Jun 18 2008 mtk01283
+ * [MAUI_00789872] [Drv][SCCB] Patch SCCB GPIO definition to pass the GPIO error checking
+ *
+ *
+ * Jun 12 2008 mtk01283
+ * [MAUI_00761183] [Drv][GPIO] Correct GPIO usage when using driver customization tool
+ *
+ *
+ * Jun 11 2008 mtk01283
+ * [MAUI_00761183] [Drv][GPIO] Correct GPIO usage when using driver customization tool
+ *
+ *
+ * Jun 4 2008 mtk01283
+ * [MAUI_00781398] [Drv][SCCB] Patch the sccb variable name definitioin
+ *
+ *
+ * Jun 2 2008 mtk01283
+ * [MAUI_00761183] [Drv][GPIO] Correct GPIO usage when using driver customization tool
+ *
+ *
+ * May 30 2008 mtk01283
+ * [MAUI_00761183] [Drv][GPIO] Correct GPIO usage when using driver customization tool
+ *
+ *
+ * Apr 30 2008 mtk01845
+ * [MAUI_00765087] [Drv][MISC] MT6239 compile option support
+ *
+ *
+ * Apr 10 2008 mtk01845
+ * [MAUI_00742324] Build warning fix
+ *
+ *
+ * Mar 18 2008 MTK01845
+ * [MAUI_00734333] Patch for wrong SCCB pin variable with GPIO magic number
+ *
+ *
+ * Mar 13 2008 MTK01845
+ * [MAUI_00620676] [Drv][SCCB] Add SCCB related code for MT6223P platforms
+ * Support custom tool configuration
+ *
+ * Feb 19 2008 MTK01845
+ * [MAUI_00620676] [Drv][SCCB] Add SCCB related code for MT6223P platforms
+ *
+ *
+ * Nov 9 2007 mtk01283
+ * [MAUI_00573819] [Drv][Compile option] Check in MT6235 compile option to Maui
+ *
+ *
+ * Sep 1 2007 mtk01283
+ * [MAUI_00541110] [Drv][Compile option] Check in MT6238 compile option to MainTrunk
+ *
+ *
+ * May 17 2007 mtk01454
+ * [MAUI_00393840] [camera] 6226D compiler option check in
+ *
+ *
+ * Mar 22 2007 mtk01454
+ * [MAUI_00358749] [camera]6227D DVT compiler option check in
+ *
+ *
+ * Dec 5 2006 mtk01283
+ * [MAUI_00348513] [Drv][Feature Option]Apply driver customization tool on Crystal25_Demo project
+ *
+ *
+ * Nov 2 2006 mtk01051
+ * [MAUI_00340010] [SCCB] MT6230 first check in for 06A
+ *
+ *
+ * Oct 5 2006 mtk01235
+ * [MAUI_00324378] [6225 DVT] First Check IN
+ *
+ *
+ * Sep 18 2006 mtk01051
+ * [MAUI_00329410] [1]Assert fail:0m12110.c 1136-REASM
+ * Modify gpio read/write command when __CUST_NEW__
+ *
+ * May 12 2006 mtk01051
+ * [MAUI_00193192] [Drv][Feature]check in codes modified for compile option __CUST_NEW__
+ *
+ *
+ * Apr 24 2006 mtk01051
+ * [MAUI_00188852] [Drv][New Feature] add compile option __CUST_NEW__ for new driver customization meth
+ * Add __CUST_NEW__ complier option
+ *
+ * Jan 3 2006 mtk01051
+ * [MAUI_00165680] [SCCB] Add MT6226M complier option
+ * First check in for MT6226M
+ *
+ *    Rev 1.6   Aug 08 2005 13:03:30   mtk01051
+ * Add NACK_BIT Define
+ *
+ *    Rev 1.5   Aug 01 2005 18:56:34   mtk01051
+ * Modify HW SCCB Interface
+ *
+ *    Rev 1.4   Jul 20 2005 18:30:32   mtk01051
+ * Modify MT6228 SCCB interface pin assignment
+ *
+ *    Rev 1.3   Jun 05 2005 17:20:04   mtk00747
+ * MT6228 first version
+ *
+ *    Rev 1.2   May 17 2005 00:29:16   BM_Trunk
+ * Karlos:
+ * add copyright and disclaimer statement
+ *
+ *    Rev 1.1   Jan 18 2005 00:34:28   BM
+ * append new line in W05.04
+ *
+ *    Rev 1.0   May 28 2004 20:09:38   BM
+ * Initial revision.
+ *
+ *------------------------------------------------------------------------------
+ * Upper this line, this part is controlled by PVCS VM. DO NOT MODIFY!!
+ *============================================================================
+ ****************************************************************************/
+
+
+#ifndef __SCCB_H__
+#define __SCCB_H__
+
+#if (defined(MT6219)||defined(MT6228)||defined(MT6226)||defined(MT6226M)||defined(MT6226D)||defined(MT6227)||defined(MT6227D)||defined(MT6229)||defined(MT6230))
+#define __SCCB_MODULE_V1__
+#endif // #if (defined(MT6219)||defined(MT6228)||defined(MT6226)||defined(MT6226M)||defined(MT6226D)||defined(MT6227)||defined(MT6227D)||defined(MT6229)||defined(MT6230))
+
+#if ( defined(MT6219)||defined(MT6228)||defined(MT6226)||defined(MT6226M)||defined(MT6226D)||defined(MT6227)||defined(MT6227D)||defined(MT6229)||defined(MT6230)\
+      ||defined(MT6225)||defined(MT6223)||defined(MT6223P)||defined(MT6235)||defined(MT6235B)||defined(MT6238)||defined(MT6239)||defined(MT6268A)\
+      ||defined(MT6239)||defined(MT6253T)||defined(MT6253)||defined(MT6236)||defined(MT6236B) )
+#define __SUPPORT_SCCB_XXX_API__
+#endif // SCCB_XXX API supported platforms list
+
+#if defined(__SCCB_MODULE_V1__)
+/* defination of MT6219 SCCB interface */
+
+//MSBB remove #include "kal_non_specific_general_types.h"
+
+//#define DVT_TEST
+#if (!defined(MT6219))
+#define SCCB_I2C_base                 (0x800A0000)   /* SCCB Interface */
+#endif // #if (!defined(MT6219))
+
+/* HW SCCB Define */
+#define SCCB_READ_COMPLETE			0x01
+#define SCCB_WRITE_COMPLETE		0x02
+
+#define SCCB_CTRL_REG					(SCCB_I2C_base+0x00)
+#define SCCB_DATA_LENGTH_REG			(SCCB_I2C_base+0x08)
+#define SCCB_BUFFER_TIME_REG			(SCCB_I2C_base+0x0C)
+#define SCCB_START_HOLD_TIME_REG		(SCCB_I2C_base+0x10)
+#define SCCB_DATA_HOLD_TIME_REG		(SCCB_I2C_base+0x14)
+#define SCCB_CLOCK_LOW_PERIOD_REG	(SCCB_I2C_base+0x18)
+#define SCCB_CLOCK_HIGH_PERIOD_REG	(SCCB_I2C_base+0x1C)
+#define SCCB_DATA_REG					(SCCB_I2C_base+0x20)
+#define SCCB_START_SETUP_TIME_REG	(SCCB_I2C_base+0x24)
+#define SCCB_STOP_SETUP_TIME_REG		(SCCB_I2C_base+0x28)
+#define SCCB_MODE_REG					(SCCB_I2C_base+0x38)
+#define SCCB_BUFFER_CLEAR_REG			(SCCB_I2C_base+0x3C)
+#define SCCB_STATUS_REG					(SCCB_I2C_base+0x40)
+#define SCCB_READ_DATA_REG				(SCCB_I2C_base+0x44)
+#define REG_SCCB_CTRL					*((volatile unsigned short *) (SCCB_I2C_base+0x00))
+#define REG_SCCB_DATA_LENGTH			*((volatile unsigned short *) (SCCB_I2C_base+0x08))
+#define REG_SCCB_BUFFER_TIME			*((volatile unsigned short *) (SCCB_I2C_base+0x0C))
+#define REG_SCCB_START_HOLD_TIME		*((volatile unsigned short *) (SCCB_I2C_base+0x10))
+#define REG_SCCB_DATA_HOLD_TIME		*((volatile unsigned short *) (SCCB_I2C_base+0x14))
+#define REG_SCCB_CLOCK_LOW_PERIOD	*((volatile unsigned short *) (SCCB_I2C_base+0x18))
+#define REG_SCCB_CLOCK_HIGH_PERIOD	*((volatile unsigned short *) (SCCB_I2C_base+0x1C))
+#define REG_SCCB_DATA					*((volatile unsigned short *) (SCCB_I2C_base+0x20))
+#define REG_SCCB_START_SETUP_TIME	*((volatile unsigned short *) (SCCB_I2C_base+0x24))
+#define REG_SCCB_STOP_SETUP_TIME		*((volatile unsigned short *) (SCCB_I2C_base+0x28))
+#define REG_SCCB_MODE					*((volatile unsigned short *) (SCCB_I2C_base+0x38))
+#define REG_SCCB_BUFFER_CLEAR			*((volatile unsigned short *) (SCCB_I2C_base+0x3C))
+#define REG_SCCB_STATUS					*((volatile unsigned short *) (SCCB_I2C_base+0x40))
+#define REG_SCCB_READ_DATA				*((volatile unsigned short *) (SCCB_I2C_base+0x44))
+#if (defined(MT6226)||defined(MT6226M)||defined(MT6226D)||defined(MT6227)||defined(MT6227D)||defined(MT6229)||defined(MT6230)||defined(MT6223)||defined(MT6223P))
+#define REG_SCCB_READ_DATA_L			*((volatile unsigned short *) (SCCB_base+0x48)) //MT6227 New
+#endif // #if (defined(MT6226)||defined(MT6226M)||defined(MT6226D)||defined(MT6227)||defined(MT6227D)||defined(MT6229)||defined(MT6230)||defined(MT6223)||defined(MT6223P))
+#define SCCB_DATA_REG_ID_ADDRESS		0x100
+
+#define ENABLE_SCCB							REG_SCCB_CTRL = 0x01;
+#define DISABLE_SCCB							REG_SCCB_CTRL = 0x00;
+#define SET_SCCB_DATA_LENGTH(n)			REG_SCCB_DATA_LENGTH = (n-1);
+#define SET_SCCB_BUFFER_TIMER(n)			REG_SCCB_BUFFER_TIME = (n-1);
+#define SET_SCCB_START_HOLD_TIME(n)		REG_SCCB_START_HOLD_TIME =(n-1);
+#define SET_SCCB_DATA_HOLD_TIME(n)		REG_SCCB_DATA_HOLD_TIME = (n-1);
+#define SET_SCCB_CLK_LOW_PERIOD(n)		REG_SCCB_CLOCK_LOW_PERIOD = (n-1);
+#define SET_SCCB_CLK_HIGH_PERIOD(n)		REG_SCCB_CLOCK_HIGH_PERIOD = (n-1);
+#define SET_SCCB_START_SETUP_TIME(n)	REG_SCCB_START_SETUP_TIME =(n-1);
+#define SET_SCCB_STOP_SETUP_TIME(n)		REG_SCCB_STOP_SETUP_TIME = (n-1);
+#define CLEAR_SCCB_BUFFER					REG_SCCB_BUFFER_CLEAR =1;
+#define SET_SCCB_MASTER_MODE				REG_SCCB_MODE=1;
+#define SCCB_IS_READING						(!(REG_SCCB_STATUS & 0x01))
+#define SCCB_IS_WRITTING					(!(REG_SCCB_STATUS & 0x02))
+
+#endif // #if defined(__SCCB_MODULE_V1__)
+
+#ifdef __CUST_NEW__
+/* SW SCCB Define */
+#define SCCB_SERIAL_SW_CLK_PIN		(SCCB_SERIAL_CLK_PIN&~GPIO_MAGIC_NUM)
+#define SCCB_SERIAL_SW_DATA_PIN		(SCCB_SERIAL_DATA_PIN&~GPIO_MAGIC_NUM)
+#define SET_SCCB_CLK_OUTPUT		GPIO_InitIO_FAST(OUTPUT,SCCB_SERIAL_SW_CLK_PIN);
+#define SET_SCCB_DATA_OUTPUT		GPIO_InitIO_FAST(OUTPUT,SCCB_SERIAL_SW_DATA_PIN);
+#define SET_SCCB_DATA_INPUT		GPIO_InitIO_FAST(INPUT,SCCB_SERIAL_SW_DATA_PIN);
+#define SET_SCCB_CLK_HIGH			GPIO_WriteIO_FAST(1,SCCB_SERIAL_SW_CLK_PIN);
+#define SET_SCCB_CLK_LOW			GPIO_WriteIO_FAST(0,SCCB_SERIAL_SW_CLK_PIN);
+#define SET_SCCB_DATA_HIGH			GPIO_WriteIO_FAST(1,SCCB_SERIAL_SW_DATA_PIN);
+#define SET_SCCB_DATA_LOW			GPIO_WriteIO_FAST(0,SCCB_SERIAL_SW_DATA_PIN);
+#define GET_SCCB_DATA_BIT			GPIO_ReadIO_FAST(SCCB_SERIAL_SW_DATA_PIN)
+#else // #ifdef __CUST_NEW__
+/* SW SCCB Define */
+#define SET_SCCB_CLK_OUTPUT		GPIO_InitIO(OUTPUT,SCCB_SERIAL_CLK_PIN);
+#define SET_SCCB_DATA_OUTPUT		GPIO_InitIO(OUTPUT,SCCB_SERIAL_DATA_PIN);
+#define SET_SCCB_DATA_INPUT		GPIO_InitIO(INPUT,SCCB_SERIAL_DATA_PIN);
+#define SET_SCCB_CLK_HIGH			GPIO_WriteIO(1,SCCB_SERIAL_CLK_PIN);
+#define SET_SCCB_CLK_LOW			GPIO_WriteIO(0,SCCB_SERIAL_CLK_PIN);
+#define SET_SCCB_DATA_HIGH			GPIO_WriteIO(1,SCCB_SERIAL_DATA_PIN);
+#define SET_SCCB_DATA_LOW			GPIO_WriteIO(0,SCCB_SERIAL_DATA_PIN);
+#define GET_SCCB_DATA_BIT			GPIO_ReadIO(SCCB_SERIAL_DATA_PIN)
+#endif // #ifdef __CUST_NEW__
+
+#define ACK_BIT \
+{\
+	kal_uint32 i;\
+	SET_SCCB_CLK_LOW; \
+	for (i=0; i<SCCB_DELAY; i++); \
+	SET_SCCB_DATA_OUTPUT; \
+	SET_SCCB_DATA_LOW; \
+	for (i=0; i<SCCB_DELAY; i++); \
+	SET_SCCB_CLK_HIGH; \
+	for (i=0; i<SCCB_DELAY; i++); \
+	SET_SCCB_CLK_LOW; \
+	for (i=0;i<SCCB_DELAY;i++);\
+}
+
+#define NACK_BIT \
+{\
+	kal_uint32 z;\
+	for (z=0; z<SCCB_DELAY; z++); \
+	SET_SCCB_DATA_OUTPUT; \
+	for (z=0; z<SCCB_DELAY; z++); \
+	SET_SCCB_DATA_HIGH; \
+	for (z=0; z<SCCB_DELAY; z++); \
+	SET_SCCB_CLK_HIGH; \
+	for (z=0; z<SCCB_DELAY; z++); \
+	SET_SCCB_CLK_LOW; \
+	for (z=0;z<SCCB_DELAY;z++);\
+}
+
+#define SCCB_START_TRANSMISSION	\
+{\
+	kal_uint32 z;\
+	SET_SCCB_DATA_OUTPUT;\
+   SET_SCCB_DATA_LOW;\
+   for (z=0;z<SCCB_DELAY;z++);\
+	SET_SCCB_CLK_LOW;\
+	for (z=0;z<SCCB_DELAY;z++);\
+}
+
+#define SCCB_STOP_TRANSMISSION	\
+{\
+	kal_uint32 z;\
+	SET_SCCB_DATA_OUTPUT;\
+	SET_SCCB_DATA_LOW;\
+	for (z=0;z<SCCB_DELAY;z++);\
+   SET_SCCB_CLK_HIGH;\
+   for (z=0;z<SCCB_DELAY;z++);\
+	SET_SCCB_DATA_HIGH;\
+	for (z=0;z<SCCB_DELAY;z++);\
+}
+
+
+/* Interface */
+typedef enum
+{
+   SCCB_SW_8BIT=1,
+   SCCB_SW_16BIT,
+   SCCB_HW_8BIT,
+   SCCB_HW_16BIT
+} SCCB_MODE_ENUM;
+
+typedef struct{
+	kal_uint8 TBUF;
+	kal_uint8 THDSTA;
+	kal_uint8 THDDTA;
+	kal_uint8 TLOW;
+	kal_uint8 THIGH;
+	//kal_uint8 TSUSTA;
+	kal_uint8 TSUSTO;
+} SCCB_FREQ_STRUCT;
+
+
+
+// SCCB PINS definition
+
+
+#ifdef __CUST_NEW__
+#include "gpio_sw.h"
+extern const char gpio_sccb_serial_clk_pin;
+extern const char gpio_sccb_serial_data_pin;
+#endif // #ifdef __CUST_NEW__
+
+#if (defined(MT6276))
+   #ifdef __CUST_NEW__
+   #define SCCB_SERIAL_CLK_PIN           (76|GPIO_MAGIC_NUM)
+   #define SCCB_SERIAL_DATA_PIN          (77|GPIO_MAGIC_NUM)
+   #else /* __CUST_NEW__ */
+   #define SCCB_SERIAL_CLK_PIN           76
+   #define SCCB_SERIAL_DATA_PIN          77
+   #endif /* __CUST_NEW__ */
+   #define SCCB_GPIO_SCL_MODE            1
+   #define SCCB_GPIO_SDA_MODE            1
+#elif (defined(MT6255)||defined(MT6256))
+   #ifdef __CUST_NEW__
+   #define SCCB_SERIAL_CLK_PIN           (54|GPIO_MAGIC_NUM)
+   #define SCCB_SERIAL_DATA_PIN          (55|GPIO_MAGIC_NUM)
+   #else /* __CUST_NEW__ */
+   #define SCCB_SERIAL_CLK_PIN           54
+   #define SCCB_SERIAL_DATA_PIN          55
+   #endif /* __CUST_NEW__ */
+   #define SCCB_GPIO_SCL_MODE            1
+   #define SCCB_GPIO_SDA_MODE            1
+#endif
+
+#if (defined(MT6219)||defined(MT6226)||defined(MT6226M)||defined(MT6226D)||defined(MT6227)||defined(MT6227D))
+  #ifdef __CUST_NEW__
+    #define SCCB_SERIAL_CLK_PIN          (8|GPIO_MAGIC_NUM)
+    #define SCCB_SERIAL_DATA_PIN         (9|GPIO_MAGIC_NUM)
+  #else // #ifdef __CUST_NEW__
+    #define SCCB_SERIAL_CLK_PIN          8
+    #define SCCB_SERIAL_DATA_PIN         9
+  #endif // #ifdef __CUST_NEW__
+#endif // #if (defined(MT6219)||defined(MT6226)||defined(MT6226M)||defined(MT6226D)||defined(MT6227)||defined(MT6227D))
+
+#if (defined(MT6228)||defined(MT6229)||defined(MT6230))
+  #ifdef __CUST_NEW__
+    #if (defined(DVT_TEST))
+    #define SCCB_SERIAL_CLK_PIN          (8|GPIO_MAGIC_NUM)
+    #define SCCB_SERIAL_DATA_PIN         (9|GPIO_MAGIC_NUM)
+    #else // #if (defined(DVT_TEST))
+    #define SCCB_SERIAL_CLK_PIN          (2|GPIO_MAGIC_NUM)
+    #define SCCB_SERIAL_DATA_PIN         (3|GPIO_MAGIC_NUM)
+    #endif // #if (defined(DVT_TEST))
+  #else // #ifdef __CUST_NEW__
+    #if (defined(DVT_TEST))
+    #define SCCB_SERIAL_CLK_PIN          8
+    #define SCCB_SERIAL_DATA_PIN         9
+    #else // #if (defined(DVT_TEST))
+    #define SCCB_SERIAL_CLK_PIN          2
+    #define SCCB_SERIAL_DATA_PIN         3
+    #endif // #if (defined(DVT_TEST))
+  #endif // #ifdef __CUST_NEW__
+#endif // #if (defined(MT6228)||defined(MT6229)||defined(MT6230))
+
+
+#if (defined(DRV_GPIO_REG_AS_6223))
+  #ifdef __CUST_NEW__
+    #define SCCB_SERIAL_CLK_PIN          gpio_sccb_serial_clk_pin
+    #define SCCB_SERIAL_DATA_PIN         gpio_sccb_serial_data_pin
+  #else // #ifdef __CUST_NEW__
+    #define SCCB_SERIAL_CLK_PIN          15
+    #define SCCB_SERIAL_DATA_PIN         19
+  #endif // #ifdef __CUST_NEW__
+  #define SCCB_GPIO_SCL_MODE             3
+  #define SCCB_GPIO_SDA_MODE             3
+#endif // #if (defined(DRV_GPIO_REG_AS_6223))
+
+
+#if (defined(DRV_GPIO_REG_AS_6225))
+   #ifdef __CUST_NEW__
+   #define SCCB_SERIAL_CLK_PIN		(8|GPIO_MAGIC_NUM)
+   #define SCCB_SERIAL_DATA_PIN		(9|GPIO_MAGIC_NUM)
+   #else /* __CUST_NEW__ */
+   #define SCCB_SERIAL_CLK_PIN		8
+   #define SCCB_SERIAL_DATA_PIN		9
+   #endif /* __CUST_NEW__ */
+  #define SCCB_GPIO_SCL_MODE             1
+  #define SCCB_GPIO_SDA_MODE             1
+#endif // #if (defined(DRV_GPIO_REG_AS_6225))
+
+#if (defined(DRV_GPIO_REG_AS_6238))
+   #ifdef __CUST_NEW__
+   #define SCCB_SERIAL_CLK_PIN		(5|GPIO_MAGIC_NUM)
+   #define SCCB_SERIAL_DATA_PIN		(6|GPIO_MAGIC_NUM)
+   #else /* __CUST_NEW__ */
+   #define SCCB_SERIAL_CLK_PIN		5
+   #define SCCB_SERIAL_DATA_PIN		6
+   #endif /* __CUST_NEW__ */
+#endif // #if (defined(DRV_GPIO_6238_SERIES))
+
+
+#if (defined(DRV_GPIO_REG_AS_6235))
+   #ifdef __CUST_NEW__
+     #if defined(EMPTY_MMI)
+       #define SCCB_SERIAL_CLK_PIN		(15|GPIO_MAGIC_NUM)
+       #define SCCB_SERIAL_DATA_PIN		(16|GPIO_MAGIC_NUM)
+     #else // #if defined(EMPTY_MMI)
+	   #define SCCB_SERIAL_CLK_PIN		gpio_sccb_serial_clk_pin
+       #define SCCB_SERIAL_DATA_PIN		gpio_sccb_serial_data_pin
+      #endif // #if defined(EMPTY_MMI)
+   #else /* __CUST_NEW__ */
+   #define SCCB_SERIAL_CLK_PIN		15
+   #define SCCB_SERIAL_DATA_PIN		16
+   #endif /* __CUST_NEW__ */
+#endif // #if (defined(DRV_GPIO_6235_SERIES))
+
+#if (defined(DRV_GPIO_REG_AS_6268A))
+   #ifdef __CUST_NEW__
+   #define SCCB_SERIAL_CLK_PIN		(36|GPIO_MAGIC_NUM)
+   #define SCCB_SERIAL_DATA_PIN		(37|GPIO_MAGIC_NUM)
+   #else /* __CUST_NEW__ */
+   #define SCCB_SERIAL_CLK_PIN		36
+   #define SCCB_SERIAL_DATA_PIN		37
+   #endif /* __CUST_NEW__ */
+#endif // #if (defined(DRV_GPIO_REG_AS_6268A))
+
+#if(defined(DRV_GPIO_REG_AS_6268))
+   #ifdef __CUST_NEW__
+   #define SCCB_SERIAL_CLK_PIN           (33|GPIO_MAGIC_NUM)
+   #define SCCB_SERIAL_DATA_PIN          (34|GPIO_MAGIC_NUM)
+   #else // #ifdef __CUST_NEW__
+   #define SCCB_SERIAL_CLK_PIN           33
+   #define SCCB_SERIAL_DATA_PIN          34
+   #endif // #ifdef __CUST_NEW__
+   #define SCCB_GPIO_SCL_MODE            1
+   #define SCCB_GPIO_SDA_MODE            1
+#endif // #if(defined(DRV_GPIO_REG_AS_6268))
+
+#if (defined(DRV_GPIO_REG_AS_6253T))
+   #ifdef __CUST_NEW__
+   #define SCCB_SERIAL_CLK_PIN		(24|GPIO_MAGIC_NUM)
+   #define SCCB_SERIAL_DATA_PIN		(25|GPIO_MAGIC_NUM)
+   #else /* __CUST_NEW__ */
+   #define SCCB_SERIAL_CLK_PIN		24
+   #define SCCB_SERIAL_DATA_PIN		25
+   #endif /* __CUST_NEW__ */
+   #define SCCB_GPIO_SCL_MODE            2
+   #define SCCB_GPIO_SDA_MODE            2
+#endif // #if (defined(DRV_GPIO_REG_AS_6253T))
+
+
+#if (defined(DRV_GPIO_REG_AS_6253E)&&defined(MT6253E)&&defined(__SERIAL_SENSOR_V1_SUPPORT__))
+   #ifdef __CUST_NEW__
+   #define SCCB_SERIAL_CLK_PIN		(24|GPIO_MAGIC_NUM)
+   #define SCCB_SERIAL_DATA_PIN		(25|GPIO_MAGIC_NUM)
+   #else /* __CUST_NEW__ */
+   #define SCCB_SERIAL_CLK_PIN		24
+   #define SCCB_SERIAL_DATA_PIN		25
+   #endif /* __CUST_NEW__ */
+   #define SCCB_GPIO_SCL_MODE            2
+   #define SCCB_GPIO_SDA_MODE            2
+#elif (defined(DRV_GPIO_REG_AS_6253E)&&defined(MT6253E))
+   #ifdef __CUST_NEW__
+   #define SCCB_SERIAL_CLK_PIN		(22|GPIO_MAGIC_NUM)
+   #define SCCB_SERIAL_DATA_PIN		(23|GPIO_MAGIC_NUM)
+   #else /* __CUST_NEW__ */
+   #define SCCB_SERIAL_CLK_PIN		22
+   #define SCCB_SERIAL_DATA_PIN		23
+   #endif /* __CUST_NEW__ */
+   #define SCCB_GPIO_SCL_MODE            3
+   #define SCCB_GPIO_SDA_MODE            3
+#endif 
+
+#if (defined(DRV_GPIO_REG_AS_6253E)&&defined(MT6253L))
+   #ifdef __CUST_NEW__
+   #define SCCB_SERIAL_CLK_PIN		(24|GPIO_MAGIC_NUM)
+   #define SCCB_SERIAL_DATA_PIN		(25|GPIO_MAGIC_NUM)
+   #else /* __CUST_NEW__ */
+   #define SCCB_SERIAL_CLK_PIN		24
+   #define SCCB_SERIAL_DATA_PIN		25
+   #endif /* __CUST_NEW__ */
+   #define SCCB_GPIO_SCL_MODE            2
+   #define SCCB_GPIO_SDA_MODE            2
+#endif 
+
+#if (defined(DRV_GPIO_REG_AS_6236))
+   #ifdef __CUST_NEW__
+   #define SCCB_SERIAL_CLK_PIN           (29|GPIO_MAGIC_NUM)
+   #define SCCB_SERIAL_DATA_PIN          (30|GPIO_MAGIC_NUM)
+   #else /* __CUST_NEW__ */
+   #define SCCB_SERIAL_CLK_PIN      29
+   #define SCCB_SERIAL_DATA_PIN     30
+#endif /*__CUST_NEW__*/
+   #define SCCB_GPIO_SCL_MODE            1
+   #define SCCB_GPIO_SDA_MODE            1
+#endif // #if (defined(DRV_GPIO_REG_AS_6236))
+
+
+///Bin: added to patch build error
+#ifndef SCCB_SERIAL_CLK_PIN
+   #define SCCB_SERIAL_CLK_PIN		gpio_sccb_serial_clk_pin
+#endif
+
+#ifndef SCCB_SERIAL_DATA_PIN
+   #define SCCB_SERIAL_DATA_PIN		gpio_sccb_serial_data_pin
+#endif
+
+/* Extern Global Variable */
+void init_sccb(void);
+// MoDIS parser skip start
+// The following APIs are implemented in other dummy API files
+kal_uint8 sccb_config(kal_uint8 mode, kal_uint8 wid, kal_uint8 rid, SCCB_FREQ_STRUCT *freq);
+// MoDIS parser skip end
+kal_uint8 sccb_getMode(void);
+void sccb_setDelay(kal_uint32 delay);
+
+#if defined(__SCCB_MODULE_V1__)
+void sccb_write(kal_uint32 cmd, kal_uint32 param);
+void sccb_multi_write(kal_uint32 cmd, kal_uint32 *param, kal_uint8 num);
+void sccb_cont_write(kal_uint32 cmd, kal_uint32 spec_cmd, kal_uint32 param);
+kal_uint32 sccb_read (kal_uint32 cmd);
+kal_uint32 sccb_phase3_read (kal_uint32 cmd);
+kal_uint32 sccb_cont_read (kal_uint32 cmd, kal_uint32 spec_cmd);
+kal_uint8 sccb_multi_read (kal_uint32 cmd, kal_uint32 *param, kal_uint8 num);
+#endif // #if defined(__SCCB_MODULE_V1__)
+
+#endif // #ifndef __SCCB_H__
+

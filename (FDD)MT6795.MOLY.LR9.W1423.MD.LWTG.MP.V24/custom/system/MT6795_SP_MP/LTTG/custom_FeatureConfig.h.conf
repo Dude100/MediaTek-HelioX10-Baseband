@@ -1,0 +1,471 @@
+/*****************************************************************************
+*  Copyright Statement:
+*  --------------------
+*  This software is protected by Copyright and the information contained
+*  herein is confidential. The software may not be copied and the information
+*  contained herein may not be used or disclosed except with the written
+*  permission of MediaTek Inc. (C) 2008
+*
+*  BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+*  THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+*  RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
+*  AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+*  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+*  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+*  NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+*  SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+*  SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
+*  THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
+*  NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
+*  SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
+*
+*  BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
+*  LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+*  AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+*  OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
+*  MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+*
+*  THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
+*  WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
+*  LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
+*  RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
+*  THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
+*
+*****************************************************************************/
+
+/*****************************************************************************
+ *
+ * Filename:
+ * ---------
+ *   custom_FeatureConfig.h
+ *
+ * Project:
+ * --------
+ *   Maui_Software
+ *
+ * Description:
+ * ------------
+ *   This Module defines feature-related configurations.
+ *
+ * Author:
+ * -------
+ *  mcu\custom\System\BB_Folder Configuration Template
+ *
+ *============================================================================
+ *             HISTORY
+ * Below this line, this part is controlled by PVCS VM. DO NOT MODIFY!!
+ *------------------------------------------------------------------------------
+ * $Revision$
+ * $Modtime$
+ * $Log$
+ *
+ * 09 13 2013 peiwen.qing
+ * [MOLY00036826] 6290 backup SDS assert
+ * 	.
+ *
+ * 04 26 2013 way.chen
+ * [MOLY00013477] [MT6290 Bring-up] Update ASIC Code
+ * Change custom folder files, DEFAULT is NAND solution.
+ *
+ * 04 09 2013 tina.chen
+ * [MOLY00013738] [MT6290 Bring-up] MT6290 MULTI_MODE Flaover NAND Supporting
+ * .
+ *
+ * 03 07 2013 jerry.chang
+ * [MOLY00011525] [MOLY] MT6290 custom folder re-org
+ * .
+ *
+ * 11 01 2012 xenia.tsou
+ * [MOLY00005322] TATAKA merge to MOLY
+ * .
+ * 
+ * 09 18 2012 money.kang
+ * NULL
+ * .
+ * 
+ * 08 13 2012 qmei.yang
+ * [MOLY00001790] [SystemService][Auto-Gen][Internal Refinement] Remove unnecessary included header in custom_FeatureConfig.h
+ * .
+ * 
+ * 07 26 2012 larry.hsu
+ * [MOLY00001208] [SDS] sds default size use the result from autogen
+ * .
+ *
+ * 01 19 2012 vanessa.tsai
+ * [MAUI_03117785] [Create New Project][PMA used]01/16~01/31
+ * .
+ *
+ * 01 09 2012 vanessa.tsai
+ * [MAUI_03108533] [Create New Project][PMA used]01/02~01/14
+ * .
+ *
+ * 11 03 2011 ken.lin
+ * [MAUI_03054612] [TST][USB] Bootup trace with USB
+ * [MAUI_03054612] [TST][USB] Bootup trace with USB
+ * .
+ *
+ * 10 21 2011 claudia.lo
+ * [MAUI_03059031] [SystemService][custom][Internal Refinement] Refine custom_FeatureConfig.h MAX_SIZE and SDS comments to add more restrictions
+ * .
+ *
+ * 09 02 2011 claudia.lo
+ * [MAUI_03018782] [SystemService][Auto-Gen][CFG Gen][Scatter Gen][Sys Gen][Request for New Feature] Move memory-independent feature configurations to custom_FeatureConfig.h
+ * .
+ *
+ *
+ *
+ *------------------------------------------------------------------------------
+ * Upper this line, this part is controlled by PVCS VM. DO NOT MODIFY!!
+ *============================================================================
+ ****************************************************************************/
+
+#ifndef __CUSTOM_FEATURECONFIG_H__
+#define __CUSTOM_FEATURECONFIG_H__
+
+/*
+ ****************************************************************************
+ [README , VERY IMPORTANT NOTICE]
+ --------------------------------
+ After user configured this C header file, not only C compiler compile it but
+ also auto-gen tool parse user's configure setting.
+ Here are recommend configure convention to make both work fine.
+
+ 1. All configurations in this file form as #define MACRO_NAME MACRO_VALUE format.
+    Note the #define must be the first non-space character of a line
+
+ 2. To disable the optional configurable item. Please use // before #define,
+    for example: //#define MEMORY_DEVICE_TYPE
+
+ 3. Please don't use #if , #elif , #else , #endif conditional macro key word here.
+    Such usage might cause compile result conflict with auto-gen tool parsing result.
+    Auto-Gen tool will show error and stop.
+    3.1.  any conditional keyword such as #if , #ifdef , #ifndef , #elif , #else detected.
+          execpt this #ifndef __CUSTOM_FEATURECONFIG_H__
+    3.2.  any duplicated MACRO_NAME parsed. For example auto-gen tool got 
+          2nd MEMORY_DEVICE_TYPE macro value.
+ ****************************************************************************
+*/
+
+
+/*
+ ****************************************************************************
+ Part 1: Following definitions are used to configure the ZIMAGE size
+ 
+         [Makefile option] ZIMAGE_SUPPORT = TRUE
+         
+         [Document] ZIMAGE Support Manual_0.4.docx
+                    http://dms.mediatek.inc:80/webtop/drl/objectId/0900006f800a8b31
+         
+         [Configurations]
+         CONFIG_ZIMAGE_DECOMPRESSED_SIZE - defines the external ram size allocated
+                                           for the decompressed ZIMAGE binary
+         CONFIG_ZIMAGE_MAX_COMPRESSED_SIZE - defines the maximum ROM space allocated
+                                             for ZIMAGE compressed binary
+
+         [VERY IMPORTANT NOTICE]
+         =======================
+         If ZIMAGE_AUTO_CONFIG = TRUE and the setting is invalid. A auto mechanism 
+         will try to calculate valid values and replace the settings.
+         If ZIMAGE_AUTO_CONFIG = FALSE and the setting is invalid. A mechanism will
+         try to calculate valid values and display it on the screen. User can update
+         the field by the new values.
+
+   Low
+   +------------------+
+   |      ROM         |
+   |                  |
+   +------------------+   <-----  
+   |     ZIMAGE       |           CONFIG_ZIMAGE_MAX_COMPRESSED_SIZE
+   |                  |      
+   +------------------+   <-----  FS_BASE_ADDRESS
+   |       FS         |
+   |                  |
+   +------------------+
+   High
+   
+ ****************************************************************************
+*/
+#define CONFIG_ZIMAGE_DECOMPRESSED_SIZE    0x19B800
+#define CONFIG_ZIMAGE_MAX_COMPRESSED_SIZE  0x100000
+
+
+/*
+ ****************************************************************************
+ Part 2: The following definitions are used to configure flash memory arrangement
+         for FOTA enabled image.
+         
+         [Makefile option] FOTA_ENABLE = FOTA_DM
+         
+         [Document] FOTA customization document.doc
+         			http://dms.mediatek.inc:80/webtop/drl/objectId/0900006f80126799
+         
+         [Configurations]
+         CONFIG_FOTA_UE_FLASH_SPACE - the maximum available flash memory size
+                                      for update engine image
+         CONFIG_FOTA_NAND_MAP_TABLE_SIZE - the maximum mapping table size for update engine
+                                           to manage NAND flash image.
+         CONFIG_FOTA_PACKAGE_BLOCK_NUMBER - the size of NOR flash area 
+                                            for update package and update state record
+         CONFIG_FOTA_PACKAGE_AREA_SIZE - the size of NAND flash area
+                                         for update package and update state record
+
+         [VERY IMPORTANT NOTICE]
+         =======================
+         CONFIG_FOTA_UE_FLASH_SPACE is used to configure flash memory arrangement 
+         for FOTA update agent image. It must be the same as that specified in FUE scatter file. 
+         Otherwise, error may occur during update agent image linking process. Besides, 
+         these values would be transfered into a block aligned setting, FOTA_UE_FLASH_SPACE_SIZE, 
+         in custom_img_config.h
+         
+         CONFIG_FOTA_PACKAGE_BLOCK_NUMBER and CONFIG_FOTA_PACKAGE_AREA_SIZE are used to 
+         configure the reserved flash area for update purpose. Without enhanced single bank support, 
+         the reserved flash space would share the same bank with FAT. Moreover, 
+         the blocks within the reserved area must have the same size.
+         
+         [REMINDER]
+         =======================
+         The reserved block space is not equal to the available space for update package storage, 
+         since some flash space is used for management and update status record purpose.
+         
+         NOR flash vailable update package storage space:
+         ( CONFIG_FOTA_PACKAGE_BLOCK_NUMBER - 2 ) x ( block size - 4KB )
+         
+         NAND flash vailable update package storage space:
+         ( (CONFIG_FOTA_PACKAGE_AREA_SIZE/block_size) - 2 ) x ( block size - 4KB )
+
+ ****************************************************************************
+*/
+#define CONFIG_FOTA_UE_FLASH_SPACE        0x60000
+#define CONFIG_FOTA_NAND_MAP_TABLE_SIZE   0x800
+#define CONFIG_FOTA_PACKAGE_BLOCK_NUMBER  4
+#define CONFIG_FOTA_PACKAGE_AREA_SIZE     0x200000
+
+
+/*
+ ****************************************************************************
+ Part 3: The following definitions are used to configure flash memory arrangement 
+         for SDS secure data storage region.
+ 
+         [Makefile option] SDS_SUPPORT = TRUE
+         
+         [Document] Secure_Data_Storage_Introduction_Customer.pptx
+                    http://dms.mediatek.inc:80/webtop/drl/objectId/0900006f801671f5
+         
+         [Configurations]
+         SDS_MAX_SIZE - The the total size of the secure storage.
+                        The secure data storage region will be placed behind the file system 
+                        so that it will not be erased unexpectedly. This max size specifies 
+                        the size of flash memory that secure storage can occupy.
+                        The total size must be multiple of block size.
+                        In NAND case, the SDS_MAX_SIZE should be specified by 
+                        (the size of flash memory that secure storage can occupy + 
+                         SDS_RESERVED_SIZE_FOR_BBM)
+         SDS_RGN_NUM - The number of sub-regions in secure storage region.
+         SDS_RESERVED_SIZE_FOR_BBM - The size of reserved blocks used for bad block management 
+                                     in NAND flash. It should be set as 0 for other types 
+                                     of flash devices (NOR/S-F/eMMC)
+   
+ ****************************************************************************
+*/
+#define SDS_MAX_SIZE  	           0x80000
+#define SDS_RGN_NUM 	           2
+#define SDS_RESERVED_SIZE_FOR_BBM  0x80000
+
+
+/*
+ ****************************************************************************
+ Part 4: The following definitions are used to enable Root Key Management feature on secure chip.
+ 
+         [Makefile option] N/A
+         
+         [Document] N/A
+         
+         [Configurations]
+         ROOT_KEY_MANAGEMENT_ENABLE - Uncomment this configuration to enable Root Key Management.
+
+         [VERY IMPORTANT NOTICE]
+         =======================
+         It can only be enabled on SV5 secure chip project.
+   
+ ****************************************************************************
+*/
+//#define ROOT_KEY_MANAGEMENT_ENABLE
+
+
+/*
+ ****************************************************************************
+ Part 5: This is an optional step specially for Internal Project ONLY!
+         By default, Scatter File will bound CODE BINARY as FS BASE ADDRESS.
+         And bound the RAM Limit as Memory Density.
+         For specific purpose, users are able to manually configure a smaller
+         EXPECTED RAM LIMIT and EXPECTED CODE LIMIT here.
+ 
+         [Makefile option] N/A
+         
+         [Document] N/A
+         
+         [Configurations]
+         PROJECT_EXPECTED_RAM_LIMIT - Specify expected RAM limit when the physical RAM boundary 
+                                      is larger than expected.
+         PROJECT_EXPECTED_CODE_LIMIT - Specify expected CODE/ROM limit when 
+                                       the expected ROM boundary is smaller than FS BASE.
+         PROJECT_EXPECTED_RAM_LIMIT_NFB - Specify the expected RAM limit when 
+                                          the physical RAM boundary is larger than expected 
+                                          on NAND_FLASH_BOOTINIG/EMMC_BOOTING projects.
+   
+         [VERY IMPORTANT NOTICE]
+         =======================
+         Recommend to comment out these configurations and use the default setting.
+         
+         PROJECT_EXPECTED_RAM_LIMIT and PROJECT_EXPECTED_CODE_LIMIT are only for 
+         Generic NOR-XIP configuration.
+         For NAND+DRAM case, please set PROJECT_EXPECTED_RAM_LIMIT_NFB as RAM boundary.
+         
+         Please note that the manually configured value cannot exceeded physical density 
+         and cannot overlap with FAT.
+         DO NOT set PROJECT_EXPECTED_CODE_LIMIT if the expected CODE/ROM limit is 
+         the same as FS BASE!!
+
+ ****************************************************************************
+*/
+//#define PROJECT_EXPECTED_RAM_LIMIT      
+//#define PROJECT_EXPECTED_CODE_LIMIT     
+//#define PROJECT_EXPECTED_RAM_LIMIT_NFB  
+
+
+/*
+ ****************************************************************************
+ Part 6: The following definitions define the upper limit of each binary.
+ 
+         [Makefile option] NAND_FLASH_BOOTING = ONDEMAND or
+                           EMMC_BOOTING = ONDEMAND or
+                           FOTA_ENABLE = FOTA_DM or
+                           MULTIPLE_BINARY_FILES = TRUE
+         
+         [Document] Demand_Paging_User_Guide_V1.2.doc
+                    http://dms.mediatek.inc:80/webtop/drl/objectId/0900006f80183188
+                    FOTA customization document.doc
+         			http://dms.mediatek.inc:80/webtop/drl/objectId/0900006f80126799
+         			Multiple Bin Architecture (MBA) Standard Operating Procedure.doc
+         			http://dms.mediatek.inc:80/webtop/drl/objectId/0900006f8019993e
+         
+         [Configurations]
+         MAX_ROM_SIZE - Specify the binary size upper limit of ROM for 
+                        FOTA/Multi-Bin partial update.
+         MAX_SECONDARY_ROM_SIZE - Specify the binary size upper limit of SECONDARY_ROM for 
+                                  FOTA/Multi-Bin partial update.
+         MAX_DEMAND_PAGING_ROM0_SIZE - Specify Demand Paging binary size upper limit.
+                                       This value, if defined, will be used as 
+                                       the upper bound of DEMAND_PAGING_ROM0 region
+                                       when NAND_FLASH_BOOTING = ONDEMAND or 
+                                       EMMC_BOOTING = ONDEMAND.
+                                       This value will also be used as partial update 
+                                       reserved size for FOTA and Multi-Bin.
+         MAX_LANG_PACK_ROM_SIZE - Specify the binary size upper limit of LANG_PACK_ROM
+                                  for Multi-Bin partial update.
+         MAX_CUSTPACK_ROM_SIZE - Specify the binary size upper limit of CUSTPACK_ROM
+                                 for Multi-Bin partial update.
+
+         [VERY IMPORTANT NOTICE]
+         =======================
+         Please note that MAX_DEMAND_PAGING_ROM0_SIZE, MAX_LANG_PACK_ROM_SIZE, 
+         and MAX_CUSTPACK_ROM_SIZE should be multiples of MB when 
+         NAND_FLASH_BOOTING/EMMC_BOOTING = ONDEMAND.
+         This is for page table setting.
+   
+ ****************************************************************************
+*/
+//#define MAX_ROM_SIZE                 
+//#define MAX_SECONDARY_ROM_SIZE       
+//#define MAX_DEMAND_PAGING_ROM0_SIZE  
+//#define MAX_LANG_PACK_ROM_SIZE       
+//#define MAX_CUSTPACK_ROM_SIZE        
+
+
+/*
+ ****************************************************************************
+ Part 7: The following definitions define Demand Paging related configurations.
+ 
+         [Makefile option] NAND_FLASH_BOOTING = ONDEMAND or
+                           EMMC_BOOTING = ONDEMAND
+         
+         [Document] Demand_Paging_User_Guide_V1.2.doc
+                    http://dms.mediatek.inc:80/webtop/drl/objectId/0900006f80183188
+         
+         [Configurations]
+         DEMAND_PAGING_POOL_SIZE - Specify the size of Demand Paging pool.
+   
+ ****************************************************************************
+*/
+//#define CONFIG_DEMAND_PAGE_SHARE_POOL_SIZE  
+
+
+/*
+ ****************************************************************************
+ Part 8: Define USB-Download related configurations
+ 
+         [Makefile option] USB_DOWNLOAD_IN_BL != NONE
+         
+         [Document] N/A
+         
+         [Configurations]
+         USBDL_KEY_POSITION - USB Download Key Configure. The key ID is defined in kbd_table.h
+                              To disable USBDL by key press, set it as NO_USBDL_KEY.
+         USBDL_AUTO_TIMEOUT - USB Download Auto Mode Configure (ms).
+                              To disable USBDL by key press, set it NO_USBDL_AUTO_TIMEOUT.
+                              Maximum value is 65535.
+         USBDL_HOLDING_MODE - USB Download Holding mode Configure. When holding mode is enabled, 
+                              Bootloader will wait for USB connection forever 
+                              once USBDL is triggered. Do not enable this option 
+                              when USBDL_AUTO_TIMEOUT is not NO_USBDL_AUTO_TIMEOUT.
+   
+ ****************************************************************************
+*/
+//#define USBDL_KEY_POSITION  
+//#define USBDL_AUTO_TIMEOUT  
+//#define USBDL_HOLDING_MODE  
+
+
+/*
+ ****************************************************************************
+ Part 9: Define configurations for KAL_RECORD_BOOTUP_LOG & KEYPAD_DEBUG_TRACE
+            & all time memory dump
+ 
+         [Makefile option] KAL_RECORD_BOOTUP_LOG = TRUE
+                           or KEYPAD_DEBUG_TRACE = TRUE
+         
+         [Document] MAUI Init Debugging Trace.ppt
+                    http://dms.mediatek.inc:80/webtop/drl/objectId/0900006f80038f69
+         
+         [Configurations]
+         DEBUG_PORT - Define the port of boot-up trace and all time memory dump.
+         DEBUG_BAUDRATE - Baudrate of boot-up trace and all time memory dump.
+   
+ ****************************************************************************
+*/
+//#define DEBUG_PORT      
+//#define DEBUG_BAUDRATE  
+
+
+/*
+ ****************************************************************************
+ Part 10: Define Bootloader and Fast META related configurations
+ 
+         [Makefile option] N/A
+         
+         [Document] N/A
+         
+         [Configurations]
+         BOOTLOADER_DEBUG_LEVEL - Define what kinds of BL debugging messages can be dumped to UART.
+         FAST_META_KEY_POSITION - Define USB Fast Meta key. When pressing Fast Meta Key, 
+                                  Bootloader will not try to open USB COM port but switch to 
+                                  USB Meta mode directly in order to speed up 
+                                  the readiness of Meta mode.
+   
+ ****************************************************************************
+*/
+//#define BOOTLOADER_DEBUG_LEVEL  
+//#define FAST_META_KEY_POSITION  
+
+
+#endif /* __CUSTOM_FEATURECONFIG_H__ */

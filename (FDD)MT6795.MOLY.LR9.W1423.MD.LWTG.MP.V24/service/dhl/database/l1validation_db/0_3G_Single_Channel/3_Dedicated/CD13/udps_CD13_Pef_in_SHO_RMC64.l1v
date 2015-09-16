@@ -1,0 +1,107 @@
+{ Validation }
+Title 		= "[0_3G_Single_Channel][3_Dedicated][CD13]CD13: Demodulation of DCH in Inter-Cell Soft Handover(RMC64)"
+ModuleID 	= MOD_DUMMYURR
+MsgID 		= MSG_ID_UDPS_PEF_IN_SHO		
+
+/******************************************************************************
+* Data Structure accomnying the above primitive
+typedef struct
+{
+    kal_uint8       ref_count;
+    kal_uint16      msg_len;
+    
+    kal_uint16          uarfcn_bts1;
+    kal_uint16         psc_bts1;
+    kal_uint16          uarfcn_bts2;
+    kal_uint16         psc_bts2;
+    kal_int8        max_tx_power;
+    kal_int8	    cpich_tx_power;     	
+    kal_bool        sttd_ind;
+    udps_RMC_type_struct udps_RMC_type;
+    kal_uint32          ul_sc;              
+    kal_uint16      DOFF_bts1;   
+    kal_uint8       Tdpch_rl1;          
+    kal_uint16       OVSFdpch_rl1;  
+    kal_uint16      DOFF_bts2;  // for SHO pef, at the same time    
+    kal_uint8       Tdpch_rl2;  // for SHO pef
+    kal_uint16       OVSFdpch_rl2;   // for SHO pef 
+} udps_pef_in_sho_struct;         
+*
+*******************************************************************************/
+
+
+{Parameters}
+/******************************************************************************
+* 1. The following is the constrained range for the input of this value.
+* 2. Some combination of the following bit-fields may be suported
+* 3. The parameter range can be changed to support combinations of different bands
+*******************************************************************************/
+
+/* [Variable Name] "corresponding label showen on GUI" */
+[uarfcn_bts1] "UARFCN of Serving Cell 1"
+10562~10838
+@10600
+
+[psc_bts1] "PSC of Serving Cell 1"
+0~511
+@10
+
+[uarfcn_bts2] "UARFCN of Serving Cell 2"
+10562~10838
+@10600
+
+[psc_bts2] "PSC of Serving Cell 2"
+0~511
+@511
+
+/******************************************
+* For RACH 
+******************************************/
+[max_tx_power] "Maximum allowed UL TX power [dBm]"
+-50~33
+@24
+
+[cpich_tx_power] "CPICH TX power [dBm]"
+-10~50
+@0
+
+[sttd_ind] "Use STTD or not"
+@KAL_FALSE
+
+/******************************************
+* For DCH 
+******************************************/
+[udps_RMC_type] "Choose One of the FOUR standard RMC"
+RMC_144
+RMC_12_2
+@RMC_64
+RMC_384
+RMC_BTFD
+
+[ul_sc] "(DCH) UL Scrambling code Num."
+0~16777215
+@13
+
+[DOFF_bts1] "(DCH) Default DPCH Offset [x512 chips]"
+0~599
+@0
+
+[Tdpch_rl1] "(DCH) Timing offset between 1st DPCH and CPICH [x256 chips]"
+0~149
+@0
+
+[OVSFdpch_rl1] "(DCH) OVSF code of DL DCH: 0~SF-1"
+0~511
+@30
+
+[DOFF_bts2] "(DCH) Default DPCH Offset for BTS2 [x512 chips]"
+0~599
+@0
+
+[Tdpch_rl2] "(DCH) Timing offset between 1st DPCH and CPICH for BTS2 [x256 chips]"
+0~149
+@0
+
+[OVSFdpch_rl2] "(DCH) OVSF code of DL DCH for BTS2: 0~SF-1 "
+0~511
+@30

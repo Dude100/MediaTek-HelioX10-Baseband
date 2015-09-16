@@ -1,0 +1,93 @@
+                            [Rule]
+Functions(ROCODE) or Variables(ROData, RW, ZI) can only be wrapped 
+in the following input section name with specific conditions:
+<TCM>
+  <ATCM>
+    1. To put ROCODE into ATCM, please use INTSRAM_ROCODE
+
+  <B0TCM>
+    2. To put RODATA into B0TCM, please use INTSRAM_RODATA
+       To put RW into B0TCM, please use INTSRAM_RW
+       To put ZI into B0TCM, please use INTSRAM_ZI
+
+  <B1TCM>
+    3. To put RODATA into B1TCM, please use INTERNBLOCK2_RO
+       To put RW into B1TCM, please use INTERNBLOCK2_RW
+       To put ZI into B1TCM, please use INTERNBLOCK2_ZI
+   
+<NON CACHEABLE Region>
+4. To put RW into Non Cacheable Region, please use NONCACHEDRW
+   To put ZI into Non Cacheable Region, please use NONCACHEDZI
+   
+<DYNAMIC CACHEABLE Default NONCACHEABLE Region>
+5. To put RW into DYNAMIC CACHEABLE Default NONCACHEABLE Region, please use DYNAMICCACHEABLERW_NC
+   To put ZI into DYNAMIC CACHEABLE Default NONCACHEABLE Region, please use DYNAMICCACHEABLEZI_NC
+
+<CACHEABLE Region>
+6. To put ROCODE and RODATA into CACHEABLE region, please do not use any input section name
+   To put RW into CACHEABLE region, do not use any input section name
+   To put ZI into CACHEABLE region, do not use any input section name
+
+<DYNAMIC CACHEABLE Default CACHEABLE Region>
+7. To put RW into DYNAMIC CACHEABLE Default CACHEABLE Region, please use DYNAMICCACHEABLERW_C
+   To put ZI into DYNAMIC CACHEABLE Default CACHEABLE Region, please use DYNAMICCACHEABLEZI_C
+
+For any other requirements, please contact with linker script manager directly.
+
+
+                        [How to modify?]
+
+1. To move a function ABC into a specific region by XXX, you can use: 
+__attribute__ ((section ("XXX"))) 
+void ABC() { ... }
+
+e.g. For moving the function ABC into TCM, you can write as below:
+__attribute__ ((section ("INTSRAM_ROCODE"))) 
+void ABC() { ... }
+
+
+2. To move a RW variable ABC into a specific region by XXX, you can use: 
+__attribute__ ((section ("XXX"))) 
+int ABC = 10;
+
+e.g. For moving the RW variable ABC into NONCACHEABLE region, you can write as below:
+__attribute__ ((section ("NONCACHEDRW"))) 
+int ABC = 10;
+
+
+3. To move a ZI variable ABC into a specific region by XXX, you can use: 
+__attribute__ ((section ("XXX"))) 
+int ABC;
+
+e.g. For moving the ZI variable ABC into CACHEABLE region, you can write as below:
+just not to add anything in front of your variable:
+int ABC;
+
+                            [FAQ]
+
+1. How to designate a symbol into specific region(e.g. EX_UINIT) 
+   in Bootloader but not in MAUI?
+=> Use #if defined(__MINI_BOOTLOADER__) to wrap the symbol.
+   e.g.
+#if defined(__MINI_BOOTLOADER__)
+__attribute__ ((section ("EX_UINIT")))
+#endif
+int ABC = 10;
+
+2. How to designate a symbol into specific region(e.g. EX_UINIT) 
+   in Ext_Bootloader but not in MAUI?
+=> Use #if defined(__EXT_BOOTLOADER__) to wrap the symbol.
+   e.g.
+#if defined(__EXT_BOOTLOADER__)
+__attribute__ ((section ("EX_UINIT")))
+#endif
+int ABC = 10;
+
+3. How to designate a symbol into specific region(e.g. NONCACHEDRW)
+   in MAUI but not in Bootloader or Ext_Bootloader?
+=> Use #if !defined(__UBL__) to wrap the symbol.
+   e.g.
+#if defined(__MTK_TARGET__) && !defined(__UBL__)
+__attribute__ ((section ("NONCACHEDRW")))
+#endif
+int ABC = 10;

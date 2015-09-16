@@ -1,0 +1,136 @@
+; Copyright Statement:
+; --------------------
+; This software is protected by Copyright and the information contained
+; herein is confidential. The software may not be copied and the information
+; contained herein may not be used or disclosed except with the written
+; permission of MediaTek Inc. (C) 2014
+; 
+; BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+; THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+; RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
+; AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+; EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+; MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+; NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+; SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+; SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
+; THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
+; NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
+; SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
+; 
+; BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
+; LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+; AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+; OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
+; MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+; 
+; THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
+; WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
+; LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
+; RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
+; THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
+
+;AREA.RESet
+;AREA.Create nocode 
+;AREA.Select nocode 
+;AREA.view   nocode 
+;AREA.Clear  nocode 
+
+GLOBAL &DBGSUITE_PATH
+GLOBAL &DBGSCRIPT_PATH
+GLOBAL &BUILDCMM_ROOT_PATH
+
+&BUILDCMM_ROOT_PATH=OS.PPD()
+&MD_RGU_BASE=(0x80050000)
+
+;add here to avoid BuildInfo error
+
+; CPU_info_command
+System.Down
+System.Option EnReset OFF
+System.Option WaitReset OFF
+System.Option ResBreak ON                  ;
+System.Option TRST OFF
+System.JtagClock 10MHz                      ; For DAP-lite Jtag connection
+CPUTYPE CORTEXR4
+System.CPU CortexR4
+System.Config SWDP OFF
+System.Config COREBASE 0x90223000
+System.Up
+
+;BuildInfo needs to add the GLOBAL attribute for global variables
+DO BuildInfo.cmm
+; specify_load_elf
+D.LOAD.ELF &OPT_MD_ELF_PATH /RELPATH /PATH &OPT_MD_SRC_PATH /nocode
+
+setup.IMASKHLL ON
+setup.IMASKASM ON
+
+;; Enable EAHB memory class access
+Data.Set a:0xA011A040 %LE %LONG 0x1
+
+; disable_watchdog
+; Disable AP WDT
+Data.Set SD:(0xA0007000) %LE %LONG 0x22000000
+
+; Disable MD RGU
+PRINT "[0x&MD_RGU_BASE] <- 0xf00 + ([0x&MD_RGU_BASE]&(~0x1))"
+Data.Set SD:&MD_RGU_BASE %LE %WORD (0xf00|(DATA.LONG(SD:&MD_RGU_BASE)&(~0x1)))
+
+PRINT "Set modem debug mode"
+PRINT "[0xA011A010] <- (0x1)"
+Data.Set A:0xA011A010 %LE %WORD DATA.LONG(A:0xA011A010)|(0x1)
+
+;; workaournd for burst read issue
+MemMap.MemRange 0xA0000000--0xAFFFFFFF ReadWrite W32
+; bypass_CTIRQ1_precision_check
+; Avoiding assert at CTIRQ1/2
+;D.S SD:0x87070008 %LE %WORD 0xABCD
+;D.S SD:0x87070010 %LE %WORD 0x0003     ; bit0: disable CTIRQ1/2 timing check
+DO l1timing_check_disabled.cmm
+
+; add_utility_for_debugging
+MENU.RESET
+
+
+&DBGSUITE_PATH="..\..\..\..\tools\DebuggingSuite"
+&DBGSCRIPT_PATH="..\..\..\..\mtk_tools\cmm\system"
+
+if version.build()==0x100000 
+(
+    task.config &DBGSUITE_PATH\Misc\NUCLEUS
+)
+else
+(
+    if y.exist(TCT_Schedule)
+    (
+        task.config &DBGSUITE_PATH\Misc\NUCLEUS
+        menu.reprogram &DBGSUITE_PATH\Misc\NUCLEUS
+    )
+    else
+    (
+        task.config &DBGSUITE_PATH\Misc\NUCLEUS_V2
+        menu.reprogram &DBGSUITE_PATH\Misc\NUCLEUS_V2
+    )
+)
+
+IF OS.DIR(&DBGSCRIPT_PATH)
+(
+    DO &DBGSCRIPT_PATH\system.cmm mt6595
+)
+menu.reprogram InTargetReset
+
+; setting attribute of breakpoints
+Break.Select Program OnChip
+Break.Select Hll OnChip
+Break.Select Spot OnChip
+Break.Select Read OnChip
+Break.Select Write OnChip
+
+; clean_win
+;winclear
+
+; endup
+d.l
+enddo
+

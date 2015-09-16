@@ -1,0 +1,16 @@
+        /* Caution: PHY_EXTSRAM_ZI_HEAD_NO_INIT should be in the head of this region and kept 64KB aligned (by EXTSRAM_ZI attribute) without zero init*/
+        . = ALIGN(4);
+        PHY_EXTSRAM_ZI_HEAD_NO_INIT$$Base = .;
+        * (PHY_EXTSRAM_ZI_HEAD_NO_INIT)
+        . = ALIGN(4);
+        PHY_EXTSRAM_ZI_HEAD_NO_INIT$$Limit = .;
+        PHY_EXTSRAM_ZI_HEAD_NO_INIT$$Length = ABSOLUTE(PHY_EXTSRAM_ZI_HEAD_NO_INIT$$Limit - PHY_EXTSRAM_ZI_HEAD_NO_INIT$$Base);
+
+        . = ALIGN(4);
+        PHY_EXTSRAM_ZI$$Base = .;
+        * (PHY_EXTSRAM_ZI)
+        . = ALIGN(4);
+        PHY_EXTSRAM_ZI$$Limit = .;
+        PHY_EXTSRAM_ZI$$Length = ABSOLUTE(PHY_EXTSRAM_ZI$$Limit - PHY_EXTSRAM_ZI$$Base);
+
+        * (NONCACHEDZI)

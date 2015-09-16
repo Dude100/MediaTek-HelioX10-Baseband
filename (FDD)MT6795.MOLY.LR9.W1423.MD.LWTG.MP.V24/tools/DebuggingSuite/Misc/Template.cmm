@@ -1,0 +1,218 @@
+; Copyright Statement:
+; --------------------
+; This software is protected by Copyright and the information contained
+; herein is confidential. The software may not be copied and the information
+; contained herein may not be used or disclosed except with the written
+; permission of MediaTek Inc. (C) 2005
+; 
+; BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+; THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+; RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON
+; AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+; EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+; MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+; NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+; SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+; SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK ONLY TO SUCH
+; THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
+; NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S
+; SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
+; 
+; BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE
+; LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+; AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+; OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
+; MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+; 
+; THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
+; WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
+; LAWS PRINCIPLES.  ANY DISPUTES, CONTROVERSIES OR CLAIMS ARISING THEREOF AND
+; RELATED THERETO SHALL BE SETTLED BY ARBITRATION IN SAN FRANCISCO, CA, UNDER
+; THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
+
+[CMMGEN_VERNO]
+
+GLOBAL &BIN_PATH
+
+; /*====================================================================*/
+; /* CPU_info_command                                                   */
+; /*====================================================================*/
+SYStem.CPU [ARM]
+SYStem.Up
+
+; /*====================================================================*/
+; /* specify_load_elf                                                   */
+; /*====================================================================*/
+D.LOAD.ELF "[ELF]" /RELPATH /PATH "[PATH]" [ELFPARA]
+
+&BIN_PATH="[BIN_PATH]"
+
+; /*====================================================================*/
+; /* if the codebase support ZIMAGE,                                    */
+; /* we will copy ZIMAGE RO from elf to RAM region                      */
+; /* conserve for backward compatibility                                */
+; /*====================================================================*/
+IF y.exist(Load$$ZIMAGE$$Base)
+(
+    IF y.exist(Image$$ZIMAGE$$Length)
+    (
+        data.copy Load$$ZIMAGE$$Base--(Load$$ZIMAGE$$Base+Image$$ZIMAGE$$Length) Image$$ZIMAGE$$Base
+    )
+)
+
+; /*====================================================================*/
+; /* copy content of code regions to be checked to VM                   */
+; /*====================================================================*/
+[DATA_COPY_TO_VM]
+
+; /*====================================================================*/  
+; /* get verno info from elf before loading binary                      */
+; /*====================================================================*/
+LOCAL &ELF_VERNO_ADDR &ELF_VERNO_STR
+LOCAL &ELF_BRANCH_ADDR &ELF_BRANCH_STR
+LOCAL &ELF_BTIME_ADDR &ELF_BTIME_STR
+
+[ASSIGN_VERNO_INFO]
+&ELF_VERNO_STR=DATA.STRING(D:&ELF_VERNO_ADDR)
+&ELF_BRANCH_STR=DATA.STRING(D:&ELF_BRANCH_ADDR)
+&ELF_BTIME_STR=DATA.STRING(D:&ELF_BTIME_ADDR)
+
+[BINARY]
+
+; /*====================================================================*/    
+; /* get verno info from memory dump after loading binary               */
+; /*====================================================================*/
+LOCAL &DUMP_VERNO_ADDR &DUMP_VERNO_STR
+LOCAL &DUMP_BRANCH_ADDR &DUMP_BRANCH_STR
+LOCAL &DUMP_BTIME_ADDR &DUMP_BTIME_STR
+
+&DUMP_VERNO_ADDR=V.VALUE(&RELEASE_VERNO_RW$$Base)
+&DUMP_BRANCH_ADDR=V.VALUE(&RELEASE_BRANCH_RW$$Base)
+&DUMP_BTIME_ADDR=V.VALUE(&BUILD_TIME_RW$$Base)
+&DUMP_VERNO_STR=DATA.STRING(D:&DUMP_VERNO_ADDR)
+&DUMP_BRANCH_STR=DATA.STRING(D:&DUMP_BRANCH_ADDR)
+&DUMP_BTIME_STR=DATA.STRING(D:&DUMP_BTIME_ADDR)
+
+; /*====================================================================*/    
+; /* compare verno                                                      */
+; /*====================================================================*/
+IF STRING.SCAN("&ELF_VERNO_STR", "&DUMP_VERNO_STR", 0)<0
+(
+    GOTO WARNNING_VERNO_MISMATCH
+)
+IF STRING.SCAN("&ELF_BRANCH_STR", "&DUMP_BRANCH_STR", 0)<0
+(
+    GOTO WARNNING_VERNO_MISMATCH
+)
+IF STRING.SCAN("&ELF_BTIME_STR", "&DUMP_BTIME_STR", 0)<0
+(
+    GOTO WARNNING_VERNO_MISMATCH
+)
+
+; /*====================================================================*/    
+; /* pass code region info to the info pool (VM:0xA000_0000)            */
+; /*====================================================================*/
+LOCAL &pool_addr &command_size &command_count
+&pool_addr=0xA0000000
+&command_size=0x14
+&command_count=0
+
+; clean the pool
+DATA.SET VM:&pool_addr--VM:(&pool_addr+0xFFFFFFF) %LONG 0x0
+
+[CHECK_CODE]
+; /*====================================================================*/
+; /* add_utility_for_debugging                                          */
+; /*====================================================================*/
+GLOBAL &DBGSUITE_PATH
+&DBGSUITE_PATH="[DBGSUITE_PATH]"
+
+if version.build()==0x100000 
+(
+    task.config &DBGSUITE_PATH\Misc\NUCLEUS
+)
+else
+(
+    if y.exist(TCT_Schedule)
+    (
+        task.config &DBGSUITE_PATH\Misc\NUCLEUS
+        menu.reprogram &DBGSUITE_PATH\Misc\NUCLEUS
+    )
+    else
+    (
+        task.config &DBGSUITE_PATH\Misc\NUCLEUS_V2
+        menu.reprogram &DBGSUITE_PATH\Misc\NUCLEUS_V2
+    )
+)
+
+[DBG_BUTTON]
+
+; /*====================================================================*/
+; /* clean_win_and_endup                                                */
+; /*====================================================================*/
+winclear
+d.l
+
+; /*====================================================================*/
+; /* launch_basic_analysis                                              */
+; /*====================================================================*/
+EVAL VERSION.BUILD()
+LOCAL &v
+&v=EVAL()
+IF &v>0x4F0
+(
+    IF OS.FILE(&DBGSUITE_PATH\Misc\BasicAnalysis.cmm)
+    (
+       WINCLEAR
+       PRINT "[Offline SST] progressing"
+       DODECRYPT "SystemService" &DBGSUITE_PATH\Misc\BasicAnalysis.cmm
+    )
+    ELSE
+    (
+       DIALOG.OK "[Offline SST] Fail!" "BasicAnalysis.cmm not found!" "Please make sure that &DBGSUITE_PATH\Misc\BasicAnalysis.cmm exists!"
+       PRINT "[Offline SST] Fail ==> BasicAnalysis.cmm not found! Please make sure that &DBGSUITE_PATH\Misc\BasicAnalysis.cmm exists!"
+    )
+)
+ELSE
+(
+    DIALOG.OK "[Offline SST] Fail!" "Trace32 version mismtach" "Please upgrade to 2005/Feb or later"
+    PRINT "[Offline SST Guide] Trace32 version too old to SUPPORT!"
+)
+
+
+ENDDO
+
+; /*====================================================================*/
+; /* pop up warnning window (LOAD/ELF verno mis-match)                  */
+; /*====================================================================*/
+WARNNING_VERNO_MISMATCH:
+    WINCLEAR
+    ;-----------------------------------------------
+    ; show the verno string(s) on memory dump binary
+    ;-----------------------------------------------
+    WinPos 0. 8. 60. 11. 0. 0. COREDUMP
+    V.V "MemoryDump verno" (char*)&DUMP_VERNO_ADDR = "&DUMP_VERNO_STR" (char*)&DUMP_BRANCH_ADDR = "&DUMP_BRANCH_STR" (char*)&DUMP_BTIME_ADDR = "&DUMP_BTIME_STR"
+   
+    ;-----------------------------------------------
+    ; show the original string on the code binary
+    ;-----------------------------------------------
+    WinPos 62. 8. 60. 11. 0. 0. LOAD/ELF
+    V.V "ELF/CODE verno window" (char*)&ELF_VERNO_ADDR = "&ELF_VERNO_STR" (char*)&ELF_BRANCH_ADDR = "&ELF_BRANCH_STR" (char*)&ELF_BTIME_ADDR = "&ELF_BTIME_STR"
+
+    WINPOS  , , , , , , DIAGLOG NORMAL "ERROR!"
+    DIALOG
+    (
+        POS 0. 0. 40. 1
+        TEXT "MemoryDump verno != LOAD/ELF verno"
+        TEXT ""
+        TEXT "[Offline SST Guide] Please use proper load sync with memory dump"
+        TEXT ""
+        BUTTON "EXIT"
+        (
+            PRINT "[Offline SST Guide] Please use proper load sync with memory dump"
+            DIALOG.END
+        )
+    )
+    stop
+    dialog.end
+END

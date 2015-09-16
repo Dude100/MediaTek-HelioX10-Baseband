@@ -1,0 +1,118 @@
+{ Validation }
+Title 		= "[3_3G_CSD_Request]I6: PCH receive"
+ModuleID 	= MOD_DUMMYURR
+MsgID 		= MSG_ID_UDPS_PCH_RECEIVE		
+
+/******************************************************************************
+* Data Structure accomnying the above primitive
+typedef struct
+{
+    kal_uint8       ref_count;
+    kal_uint16      msg_len;
+    
+    kal_uint16       uarfcn_bts1;
+    kal_uint16       psc_bts1;
+    kal_uint16          uarfcn_bts2;
+    kal_uint16         psc_bts2;     
+ 
+    kal_uint8       sccpch_slot_format;   
+    kal_uint8       Ts_ccpch;          
+    kal_uint16       OVSFs_ccpch;        
+    kal_uint16       OVSFpich;       
+    
+    kal_int8	    cpich_tx_power;     	
+    kal_int8        pich_power_off;     
+    kal_uint8       DRX_cycle_length;   
+    kal_uint8       PI_num;             
+    kal_uint8       page_occa;          
+    kal_uint32      DRX_index;          
+    kal_bool        sttd_ind;    
+    
+    kal_int16        freq_offset;//I3, I5 add I/F for CSD's freq. offset requirement.	           
+    kal_uint8        offline_rake_test_mode;   // for I6
+    kal_uint16       offline_rake_test_count;  // for I3, I5, I6 
+} udps_pch_receive_struct;
+*
+*******************************************************************************/
+
+
+{Parameters}
+/******************************************************************************
+* 1. The following is the constrained range for the input of this value.
+* 2. Some combination of the following bit-fields may be suported
+* 3. The parameter range can be changed to support combinations of different bands
+*******************************************************************************/
+
+/* [Variable Name] "corresponding label showen on GUI" */
+[uarfcn_bts1] "UARFCN of Serving Cell"
+10562~10838
+@10700
+
+[psc_bts1] "PSC of Serving Cell"
+0~511
+@10
+
+[uarfcn_bts2] "UARFCN of Neighbor Cell (for Meas)"
+10670~10838
+@10700
+
+[psc_bts2] "PSC of Neighbor Cell (for Meas)"
+0~511
+@511
+
+[sccpch_slot_format] "S-CCPCH slot format"
+0~17
+@4
+
+[Ts_ccpch] "Timing offset between S-CCPCH and CPICH [x256 chips]"
+0~149
+@0
+
+[OVSFs_ccpch] "The OVSF code number of the S-CCPCH (0~SF-1)"
+0~63
+@3
+
+[OVSFpich] "The OVSF code number of the PICH"
+0~255
+@2
+    
+[cpich_tx_power] "CPICH TX power [dBm]"
+-10~50
+@0
+
+[pich_power_off] "PICH power offset from CPICH [dB]"
+-10~5
+@-5
+
+[DRX_cycle_length] "DRX cycle length for PICH, (6~9)"
+@DRX6  6
+DRX7  7
+DRX8  8
+DRX9  9
+
+[PI_num] "Number of paging indicators per frame (Np)"
+PI18  18
+PI36  36
+@PI72  72
+PI144 144
+
+[page_occa] "Paging occassion when IMSI mod DRX, n=0"
+0~511
+@0
+
+[DRX_index] "DRX_index defined in 25.304 (IMSI/8192)"
+0~122070312499
+@0
+
+[sttd_ind] "Use STTD or not"
+@KAL_FALSE
+
+[freq_offset] "(CSD) Offline Rake Test's freq. offset:"
+@0
+
+[offline_rake_test_mode] "offline RAKE test mode"
+1~3
+@1
+
+[offline_rake_test_count] "offline RAKE test count"
+@1000

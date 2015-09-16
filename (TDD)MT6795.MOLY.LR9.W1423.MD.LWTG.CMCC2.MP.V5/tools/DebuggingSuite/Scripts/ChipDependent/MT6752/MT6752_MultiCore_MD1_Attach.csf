@@ -1,0 +1,13 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; MT6752_MultiCore_MD1_Attach.csf
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+do MT6752_MD_Info.cmm
+
+MULtiCore.COUNT 3
+MULtiCore.INDEX 2
+MULtiCore.PORT 10001
+
+print "Slave: MD CR4"
+
+do MT6752_MultiCore_MD.cmm ATTACH 1 &OPT_MD1_ELF_PATH &OPT_MD1_SRC_PATH

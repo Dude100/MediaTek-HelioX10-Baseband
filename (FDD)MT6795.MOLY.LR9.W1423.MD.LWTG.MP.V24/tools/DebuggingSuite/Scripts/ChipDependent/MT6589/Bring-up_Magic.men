@@ -1,0 +1,242 @@
+ADD
+TOOLBAR
+(
+  TOOLITEM "MT6589 GO GO GO!" " "
+	[
+
+
+
+BB     BBBBBBBBB
+BBB   BBBBBBBBBB
+BBBB BBBBBBBBBBB
+BBBBBBBBB  BBB
+BBBBBBBBB  BBB
+BBB B BBB  BBB
+BBB   BBB  BBB
+BBB   BBB  BBB
+BBB   BBB  BBB
+BBB   BBB  BBB
+
+
+
+	]
+	TOOLITEM "MT6589 GO GO GO!" " "
+	[
+
+
+
+     BBBBBB
+    BBBBBBB
+   BBBBB
+   BBBBBBBB
+   BBBBBBBBB
+   BBBB  BBB
+   BBBB  BBB
+   BBBBBBBBB
+    BBBBBBB
+     BBBBB
+
+
+
+	]
+	TOOLITEM "MT6589 GO GO GO!" " "
+	[
+
+
+
+   BBBBBBBB
+   BBBBBBBB
+   BBBBBBBB
+   BBB
+   BBBBBBBBB
+   BBBBBBBBB
+         BBB
+   BBBBBBBBB
+   BBBBBBBB
+   BBBBBBB
+
+
+
+	]
+	TOOLITEM "MT6589 GO GO GO!" " "
+	[
+
+
+
+    BBBBBBB
+   BBBBBBBBB
+   BBB   BBB
+   BBBBBBBBB
+    BBBBBBB
+    BBBBBBB
+   BBBBBBBBB
+   BBB   BBB
+   BBBBBBBBB
+    BBBBBBB
+
+
+
+	]
+	TOOLITEM "MT6589 GO GO GO!" " "
+	[
+
+
+
+     BBBBB
+    BBBBBBB
+   BBBBBBBBB
+   BBB  BBBB
+   BBB  BBBB
+   BBBBBBBBB
+    BBBBBBBB
+        BBBB
+    BBBBBBB
+    BBBBBB
+
+
+
+	]
+	SEPARATOR
+	TOOLITEM "L1 Assert bypass after BREAK" "D.S SD:L1_ASSERT_BYPASS %LE %WORD 0x0003"
+	[
+RRRR       gggg
+ R RR     gg   g
+ R  R  Y  g
+ RRRR YYY g
+ R  RR Y  g  ggg
+ R   R    gg  gg
+RRRRRR     ggg g
+
+
+ ccc  ccc  c  c
+ c c  c cc c c
+ c c  c  c cc
+ cccc ccc  ccc
+ c  c c c  c c
+ c  c c  c c  c
+ cccc c  c c  c
+	]
+	
+	SEPARATOR
+
+  TOOLITEM "Full Reset" "DO MT6589_MDOnly 1"
+  [
+
+    XXX
+   XCCX
+  XCCCXXXXXXXXX
+ XCCCCCCCCCCCCX
+ XCCCCCCCCCCCCX
+  XCCCXXXXXXCCX
+   XCCX    XCCX
+    XXX    XCCX
+ XXXX      XCCX
+ XCCX      XCCX
+ XCCXXXXXXXXCCX
+ XCCCCCCCCCCCCX
+ XCCCCCCCCCCCCX
+ XXXXXXXXXXXXXX
+
+  ]
+
+  SEPARATOR
+  TOOLITEM "Back-Up RamFS to File" "DO Ramfs_backup_restore 0 1"
+  [
+
+
+       XX
+      XIIX
+     XIGGGX
+    XIGGGGGX
+   XIGGGGGGGX
+   XIGGGGGGGX
+    XXIGGGXX
+     XIGGGXxX
+   XXXIGGGXxxX
+ XXxxXIGGGXxxxX
+XxxxxXIGGGXxxxxX
+ XxxxxXXXXxxxXX
+  XxxxxxxxxXX
+   XxxxxxXX
+  ]
+
+  TOOLITEM "Restore RamFS from File" "DO Ramfs_backup_restore 1 1"
+  [
+
+
+      XXXX
+     XMMMMX
+     XMRRRX
+     XMRRRX
+     XMRRRX
+    XXMRRRXX
+   XMRRRRRRRX
+   XMRRRRRRRX
+   XXMRRRRRXxX
+ XXxxXMRRRXxxxX
+XxxxxxXMRXxxxxxX
+ XxxxxxXXxxxxXX
+  XxxxxxxxxXX
+   XxxxxxXX
+  ] 
+
+  SEPARATOR
+  TOOLITEM "MD1 Clock Monitor" "DO Frequency_Meter 0"
+  [
+
+ b   b bbb   b
+ bb bb b  b bb
+ bbbbb b  b  b
+ b b b b  b  b
+ b   b bbb  bbb
+
+xxxxxxxxxxxxxxxx
+xxGGGGGxxxGGGGGx
+xxGxxxGxxxGxxxGx
+xxGxxxGxxxGxxxGx
+xxGxxxGxxxGxxxGx
+xxGxxxGxxxGxxxGx
+GGGxxxGGGGGxxxGG
+xxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxx
+  ]
+  TOOLITEM "MD2 Clock Monitor" "DO Frequency_Meter 1"
+  [
+
+ b   b bbb  bbb
+ bb bb b  b   b
+ bbbbb b  b bbb
+ b b b b  b b
+ b   b bbb  bbb
+
+xxxxxxxxxxxxxxxx
+xxGGGGGxxxGGGGGx
+xxGxxxGxxxGxxxGx
+xxGxxxGxxxGxxxGx
+xxGxxxGxxxGxxxGx
+xxGxxxGxxxGxxxGx
+GGGxxxGGGGGxxxGG
+xxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxx
+  ]
+  SEPARATOR
+  TOOLITEM "System hang Recovery" "DO MT6589_MDOnly 2"
+  [
+
+
+  WWWWWWWWWWWW
+  WWWWWWWWWWWW
+  WWWWWRRWWWWW
+  WWWWWRRWWWWW
+  WWWWWRRWWWWW
+  WWRRRRRRRRWW
+  WWRRRRRRRRWW
+  WWWWWRRWWWWW
+  WWWWWRRWWWWW
+  WWWWWRRWWWWW
+  WWWWWWWWWWWW
+  WWWWWWWWWWWW
+
+
+  ]
+)

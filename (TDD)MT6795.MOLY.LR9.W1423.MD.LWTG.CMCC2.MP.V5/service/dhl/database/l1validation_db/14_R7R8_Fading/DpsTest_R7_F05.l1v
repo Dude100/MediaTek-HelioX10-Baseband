@@ -1,0 +1,132 @@
+{ Validation }
+Title 		= "[14_R7R8_Fading]R7_F05: HS-SCCH Detection Performance with Diversity under Fading Channel"
+ModuleID 	= MOD_DUMMYURR
+MsgID 		= MSG_ID_UDPS_R7_F05		
+
+/******************************************************************************
+* Data Structure accomnying the above primitive
+typedef struct
+{
+    kal_uint8       ref_count;
+    kal_uint16      msg_len;
+    
+    kal_uint16          uarfcn_bts1;
+    kal_uint16         psc_bts1;
+    kal_int8        max_tx_power;
+    kal_int8	    cpich_tx_power;     	
+    kal_bool        sttd_ind;
+
+    udps_RMC_type_struct udps_RMC_type;
+    kal_uint32          ul_sc;              
+    kal_uint8       ul_dch_FBI_bit; // for CD9
+    kal_uint16      DOFF_bts1;               
+    kal_uint8       Tdpch_rl1;          
+    kal_uint16       OVSFdpch_rl1;     
+    kal_bool        self_cal_BLER; // for CD09 only (Tx Divirsity)    
+    kal_uint16     count_blks; // for CD09 only (Tx Divirsity)
+    kal_bool        vaild_slot_format;   //indicate whether "dl_dch_sf, dl_dch_tfci, dl_dch_pilot" is valid.
+    kal_uint16     dl_dch_sf;          // SF. 4,8,16,32,64,128,256,512
+    kal_bool        dl_dch_tfci;       //If TFCI is used or NOT
+    kal_uint8       dl_dch_pilot;     //Set the number of pilot bits	
+    kal_uint8     r7_f05_par_idx;         
+    kal_uint8     iteration_num; // iteration number for turbo decoder
+} udps_r7_f05_struct;     
+*
+*******************************************************************************/
+
+
+{Parameters}
+/******************************************************************************
+* 1. The following is the constrained range for the input of this value.
+* 2. Some combination of the following bit-fields may be suported
+* 3. The parameter range can be changed to support combinations of different bands
+*******************************************************************************/
+
+/* [Variable Name] "corresponding label showen on GUI" */
+[uarfcn_bts1] "UARFCN of Serving Cell"
+10562~10838
+9662~9938
+4357~4458
+@10600
+
+[psc_bts1] "PSC of Serving Cell"
+0~511
+@10
+
+/******************************************
+* For RACH 
+******************************************/
+[max_tx_power] "Maximum allowed UL TX power [dBm]"
+-50~33
+@24
+
+[cpich_tx_power] "CPICH TX power [dBm]"
+-10~50
+@0
+
+[sttd_ind] "Use STTD or not"
+@KAL_FALSE
+
+/******************************************
+* For DCH 
+******************************************/
+
+
+[udps_RMC_type] "Choose One of the FOUR standard RMC"
+RMC_144
+@RMC_12_2
+RMC_64
+RMC_384
+RMC_BTFD
+
+[ul_sc] "(DCH) UL Scrambling code Num."
+0~16777215
+@13
+
+[ul_dch_FBI_bit] "Number of FBI bits"
+0~2
+@1
+
+[DOFF_bts1] "(DCH) Default DPCH Offset [x512 chips]"
+0~599
+@0
+
+[Tdpch_rl1] "(DCH) Timing offset between 1st DPCH and CPICH [x256 chips]"
+0~149
+@0
+
+[OVSFdpch_rl1] "(DCH) OVSF code of DL DCH: 0~SF-1"
+0~511
+@15
+
+
+[self_cal_BLER] "Use UDPS to count BLER?"
+@KAL_FALSE
+
+[count_blks] "Wanted Blocks number?"
+@2000
+
+[vaild_slot_format] "(DCH) Valid slot format setting?"
+@KAL_FALSE
+
+[dl_dch_sf] "(DCH) Slot Format - SF"
+4~512
+@128
+
+[dl_dch_tfci] "(DCH) Slot Format - TFCI exist?"
+@KAL_TRUE
+
+[dl_dch_pilot] "(DCH) Slot Format - Pilot bits?"
+2~16
+@8
+
+/******************************************
+* For HSDPA 
+******************************************/
+[r7_f05_par_idx] "HSDPA parameters 1~3"
+1~3
+@1
+
+[iteration_num] "iteration number for turbo decoder"
+1~10
+@8

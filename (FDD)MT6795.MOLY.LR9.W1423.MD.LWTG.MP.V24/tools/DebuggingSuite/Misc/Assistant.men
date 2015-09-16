@@ -1,0 +1,153 @@
+
+add
+menu
+(
+  popup "&Debug"
+  (
+     menuitem "&Save Current State"  "DO Assistant stack_assistant Save_CurWinReg"
+     separator
+     menuitem "&[Assist for Stack Corruption]" ";"
+     menuitem "&SP Step Down"        "DO Assistant stack_assistant SpStepDown"  
+     menuitem "&SP Step Up"          "DO Assistant stack_assistant SpStepUp"   
+     menuitem "&Auto SP Down Try"    "DO Assistant stack_assistant AutoSpDownTry"  
+     menuitem "&Auto SP Up Try"      "DO Assistant stack_assistant AutoSpUpTry"
+     separator
+     menuitem "&[Thread Information]" ";"
+     menuitem "&Display specific task's CallStack"      "DO Assistant thread_callstack_display task"
+     menuitem "&Display specific hisr's CallStack"      "DO Assistant thread_callstack_display hisr"
+     separator
+     menuitem "&[Queue Information]" ";"
+     menuitem "&Display specific task's external queue"      "DO Assistant retrieve_task_q 0"
+     menuitem "&Display specific task's internal queue"      "DO Assistant retrieve_task_q 1"
+     separator
+     menuitem "&[Module_ID Information]" ";"
+     menuitem "&Translate MOD_ID into Task Name"      "DO Assistant task_mod_remap"
+  )
+ )
+ 
+  
+ ;BITMAPEDIT  16*16
+ADD
+TOOLBAR
+(
+
+//TOOLITEM "test" "CD.PEDIT retrieve_task_q 0"
+//[
+//
+//
+// RRRRRRRRR
+//   R  R    RR RR
+//   R  RRRR  RRR
+//   R  R      R
+//   R  RRRR
+//
+//      RRRRRRRRR
+//      R     R
+//      RRRR  R
+//         R  R
+//      RRRR  R
+//
+//
+//
+//]
+
+TOOLITEM "Save Current State" "DO Assistant stack_assistant Save_CurWinReg"
+[
+@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@
+@@@          @@@
+@@@@@@@@@@@@@@@@
+@@@          @@@
+@@@@@@@@@@@@@@@@
+@@@          @@@
+@@@          @@@
+@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@
+@@@          @@@
+@@@ @@       @@@
+@@@ @@       @@@
+@@@          @@@
+@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@
+]
+
+
+
+TOOLITEM "SP Step Down" "DO Assistant stack_assistant SpStepDown"
+[
+
+
+
+  @@@@@@@@@@@@
+  @@@@@@@@@@@@
+   @@@@@@@@@@
+    @@@@@@@@ 
+     @@@@@@
+      @@@@
+       @@
+  @@@@@@@@@@@@
+  @@@@@@@@@@@@
+  @@@@@@@@@@@@
+
+
+
+]
+
+TOOLITEM "SP Step Up" "DO Assistant stack_assistant SpStepUp"
+[
+
+
+
+  @@@@@@@@@@@@
+  @@@@@@@@@@@@
+  @@@@@@@@@@@@
+       @@  
+      @@@@   
+     @@@@@@    
+    @@@@@@@@   
+   @@@@@@@@@@             
+  @@@@@@@@@@@@
+  @@@@@@@@@@@@
+
+
+
+]
+
+TOOLITEM "Auto SP Down Try" "DO Assistant stack_assistant AutoSpDownTry"
+[
+
+ 
+  @@@@@@@@@@@@
+   @@@@@@@@@@
+    @@@@@@@@ 
+     @@@@@@
+      @@@@
+       @@
+  @@@@@@@@@@@@
+   @@@@@@@@@@
+    @@@@@@@@ 
+     @@@@@@
+      @@@@
+       @@
+
+]
+TOOLITEM "Auto SP Up Try" "DO Assistant stack_assistant AutoSpUpTry"
+[
+
+
+       @@
+      @@@@
+     @@@@@@
+    @@@@@@@@
+   @@@@@@@@@@
+  @@@@@@@@@@@@
+       @@
+      @@@@
+     @@@@@@
+    @@@@@@@@
+   @@@@@@@@@@
+  @@@@@@@@@@@@
+ 
+]
+)
+

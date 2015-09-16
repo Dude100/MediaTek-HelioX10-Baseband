@@ -1,0 +1,178 @@
+; MT6795_MDOnly_main.cmm
+
+;; MD ELF/Src/BIN Path
+GLOBAL &OPT_MD_ELF_PATH
+GLOBAL &OPT_MD_SRC_PATH
+GLOBAL &OPT_MD_BIN_PATH
+GLOBAL &OPT_DSP_BIN_PATH
+GLOBAL &OPT_MD_START_ADDRESS
+GLOBAL &AP_APB_BASE
+GLOBAL &MD_WDT_BASE
+
+DO MT6795_MD_Info.cmm ;; Set MD elf/src/bin path
+
+;; For dummy AP case, Load ELF symbol only
+IF &AP_SETTING==3
+(
+    &OPT_LOAD_ELF=1
+)
+
+;; Belows are for button trigger cmm flow
+IF &Run_Mode==1
+(
+    ;; Full Reset Button
+    &OPT_WAIT_BEFORE_CONN=0
+    PRINT "User Trigger Full Reset"
+)
+IF &Run_Mode==2
+(
+    ;; System Hang Recovery
+    &OPT_WAIT_BEFORE_CONN=0
+    IF y.exist(INT_Initialize)
+    (
+        ; It means, we have load ELF before
+        &OPT_LOAD_ELF=0
+    )
+    ELSE
+    (
+        ; Otherwise, we load ELF for symbol only
+        &OPT_LOAD_ELF=1
+    )
+    &OPT_CFG_TCM=1
+    &OPT_CFG_CACHE=1
+    &OPT_CFG_MPU=1
+    &OPT_CFG_PLL=1
+
+    PRINT "System Hang Revocery"
+)
+
+LOCAL &OPT_AP_NR_CPUS           ; AP Core Nr
+LOCAL &OPT_AP_COREBASE          ; AP Corebase
+LOCAL &OPT_TINY_BOOTLOADER_ELF  ; Tiny Bootloader elf image
+IF "&OPT_HW_PROFILE"=="MT6595_EVB_E2"
+(
+    ;Notes that since we may not have cmm?
+    &OPT_AP_NR_CPUS=4
+    &OPT_AP_COREBASE="0x80070000 0x80072000 0x80074000 0x80076000"
+    &OPT_TINY_BOOTLOADER_ELF="../../../../service/bootloader_bin/MT6595_TinyBL_EVB.elf"
+    &OPT_CFG_GPIO=0
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;     Information Window                                     ;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+WINCLEAR
+AREA.RESET
+WINPOS 0% 0% 30% 53%
+AREA
+
+PRINT "====================================="
+PRINT "==      MT6795 Modem CMM Suite     =="
+PRINT "====================================="
+PRINT "[Option List]"
+PRINT "AP_SETTING           = &AP_SETTING"
+PRINT "OPT_MD_BOOT_MODE     = &OPT_MD_BOOT_MODE"
+PRINT "OPT_LOAD_RAMFS       = &OPT_LOAD_RAMFS"
+PRINT "OPT_RAMFS_MODE       = &OPT_RAMFS_MODE"
+PRINT "OPT_RAMFS_FILENAME   = &OPT_RAMFS_FILENAME"
+PRINT "OPT_MD_ELF_PATH      = &OPT_MD_ELF_PATH"
+PRINT "OPT_MD_SRC_PATH      = &OPT_MD_SRC_PATH"
+PRINT "OPT_MD_BIN_PATH      = &OPT_MD_BIN_PATH"
+PRINT "OPT_DSP_BIN_PATH     = &OPT_DSP_BIN_PATH"
+PRINT "======================================"
+
+IF &OPT_WAIT_BEFORE_CONN==1
+(
+    PRINT "Press Any Key to Continue ..."
+    INKEY
+)
+
+&MD_RESET="RESET"
+IF &AP_SETTING<2
+(
+    ;; CA7 initialization
+    DO MT6795_MDOnly_AP.cmm
+    &MD_RESET=""
+)
+ELSE IF &AP_SETTING==4
+(
+    &MD_RESET=""
+)
+
+; Downoad MD binary
+DO MT6795_MDOnly_MD.cmm &MD_RESET
+
+; Add SPM setting to avoid assert
+D.S 0xA0006000 %LONG %LE 0x0B160001
+D.S 0xA0006014 %LONG %LE data.long(sd:0xA0006014)|(1.<<21.)
+
+; Nucleus Debugging Tool
+GLOBAL &DBGSUITE_PATH
+&DBGSUITE_PATH="&OPT_MD_SRC_PATH\tools\DebuggingSuite"
+
+IF version.build()==0x100000 
+(
+    TASK.CONFIG &DBGSUITE_PATH\Misc\NUCLEUS
+)
+ELSE
+(
+    IF y.exist(TCT_Schedule)
+    (
+        TASK.CONFIG &DBGSUITE_PATH\Misc\NUCLEUS
+        MENU.REPROGRAM &DBGSUITE_PATH\Misc\NUCLEUS
+    )
+    ELSE
+    (
+        TASK.CONFIG &DBGSUITE_PATH\Misc\NUCLEUS_V2
+        MENU.REPROGRAM &DBGSUITE_PATH\Misc\NUCLEUS_V2
+    )
+)
+
+&DBGSCRIPT_PATH="..\..\..\..\mtk_tools\cmm\system"
+MENU.RESET
+MENU.REPROGRAM Bring-up_Magic
+IF OS.DIR(&DBGSCRIPT_PATH)
+(
+    DO &DBGSCRIPT_PATH\system.cmm mt6795
+    PRINT "Do system.cmm"
+)
+ELSE
+(
+    PRINT "&DBGSCRIPT_PATH is not exist"
+)
+
+; setting attribute of breakpoints
+BREAK.SELECT Program OnChip
+BREAK.SELECT Hll OnChip
+BREAK.SELECT Read OnChip
+BREAK.SELECT Write OnChip
+
+;; Default Breakpoint Setting Goes to HERE
+
+IF &AP_SETTING!=3
+(
+    R.S PC INT_Initialize
+
+    ; bypass_CTIRQ1_precision_check
+    ; Avoiding assert at CTIRQ1/2
+    IF &OPT_L1_ASSERT_BYPASS==1
+    (
+        B.S INC_Initialize /hard
+        go
+        wait !run()
+        B.D INC_Initialize
+        PRINT "L1 Assert Bypass"
+        DO l1timing_check_disabled.cmm
+    )
+)
+
+;; Window Layout, change to anything you like...
+IF 0==0
+(
+    WINPOS 30% 0% 70% 100%
+    D.L
+    WINPOS 0% 50% 30% 50%
+    VAR.FRAME
+)
+PRINT "Modem is Now Online, boot!!"
+END

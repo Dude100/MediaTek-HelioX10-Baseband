@@ -1,0 +1,154 @@
+{ Validation }
+Title 		= "[2_3G_Dual_Mode]GM3: GSM measurements in 3G FACH State."
+ModuleID 	= MOD_DUMMYURR
+MsgID 		= MSG_ID_UDPS_GSM_MEAS_IN_FACH		
+
+/******************************************************************************
+* Data Structure accomnying the above primitive
+typedef struct
+{
+    kal_uint8       ref_count;
+    kal_uint16      msg_len;
+    
+    kal_uint16          uarfcn_bts1;
+    kal_uint16         psc_bts1;
+    //kal_uint8      bands; // Do NOT need PS 
+    kal_int16       arfcn_bts2; // ARFCN of GSM neighbor cell
+    kal_int8        bsic_bts2;  // BSIC of GSM neighbor cell
+ 
+    
+    kal_int8        max_tx_power;
+    kal_int8        UL_interference;    //range: -110~-70 dBm
+    kal_uint8      available_SF;
+    kal_uint8       preamble_sc;
+    kal_uint16      sig_index;
+    kal_uint8       RACH_TTI; 
+    kal_int8        const_value; 
+    kal_uint8       pwr_ramp_size;  
+    kal_uint8       preamble_reTx_max; 
+    kal_uint8       Mmax; 
+    kal_uint8       NBO1min;     
+    kal_uint8       NBO1max; 
+    kal_uint8       OVSFaich;
+    kal_int8        aich_pwr_off; 
+    kal_uint8       aich_timing;
+
+    kal_int8	    cpich_tx_power;     	
+    kal_bool        sttd_ind;
+
+} udps_gsm_meas_in_fach_struct;    
+*
+*******************************************************************************/
+
+
+{Parameters}
+/******************************************************************************
+* 1. The following is the constrained range for the input of this value.
+* 2. Some combination of the following bit-fields may be suported
+* 3. The parameter range can be changed to support combinations of different bands
+*******************************************************************************/
+
+/* [Variable Name] "corresponding label showen on GUI" */
+[uarfcn_bts1] "UARFCN of Serving Cell"
+10562~10640
+@10600
+
+[psc_bts1] "PSC of Serving Cell"
+0~511
+@10
+
+[uarfcn_bts2] "UARFCN of Neighbor Cell (for Meas)"
+10670~10838
+@10700
+
+[psc_bts2] "PSC of Neighbor Cell (for Meas)"
+0~511
+@511
+
+[arfcn_bts2] "Bcch (C0) ARFCN"
+0~124
+975~1023
+512~885
+128~251
+@20
+
+[bsic_bts2] "6bit BSIC(3bit NCC + 3bitBCC)"
+0~63
+@13
+
+[max_tx_power] "Maximum allowed UL TX power [dBm]"
+-50~33
+@24
+
+[UL_interference] "UL_interference [dBm]"
+-110~-70
+@-92
+
+/******************************************
+* For RACH 
+******************************************/
+[available_SF] "(RACH)Min allowed SF for"
+@SF32  32
+SF64  64
+SF128 128
+SF256 256
+
+[preamble_sc] "(RACH) Preamble scrambling code"
+0~15
+@5
+
+[sig_index] "(RACH) Available signature. Bit string (16)"
+0~65535
+@65535
+
+[sub_CH_index] "(RACH) Available sub-channel. Bit string (12)"
+0~4095
+@4095
+
+[RACH_TTI] "(RACH) TTI. [Number of frames]"
+@TTI10 1
+TTI20 2
+
+[const_value] "(RACH) Constant Value [dB]"
+-35~-10
+@-10
+
+[pwr_ramp_size] "(RACH) Preamble Power Ramping Step [dB]"
+1~8
+@3
+
+[preamble_reTx_max] "(RACH) Max preamble retransmission"
+1~64
+@12
+
+[Mmax] "(RACH) Max. of ramping cycle"
+1~32
+@2
+
+[NBO1min] "(RACH) Lower bound for random back-off"
+0~50
+@0
+
+[NBO1max] "(RACH) Upper bound for random back-off"
+0~50
+@0
+
+[OVSFaich] "(RACH) OVSF code of AICH"
+0~255
+@150
+
+[aich_pwr_off] "(RACH) AICH's Power offset to CPICH [dB]"
+-22~5
+@-7
+
+[aich_timing] "(RACH) AICH Tx timing, i.e. Tau_p_a"
+@slots_3  0
+slots_5  1
+   
+[cpich_tx_power] "CPICH TX power [dBm]"
+-10~50
+@0
+
+[sttd_ind] "Use STTD or not"
+@KAL_FALSE
+

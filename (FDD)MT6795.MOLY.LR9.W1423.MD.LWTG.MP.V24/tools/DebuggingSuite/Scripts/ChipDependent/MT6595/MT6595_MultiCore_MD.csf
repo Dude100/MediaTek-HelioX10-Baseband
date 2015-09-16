@@ -1,0 +1,31 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; MT6595_MultiCore_MD1.csf
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ENTRY &OPT_ATTACH
+
+MULtiCore.COUNT 2
+MULtiCore.INDEX 2
+MULtiCore.PORT 20001
+
+GLOBAL &QC_cpu
+GLOBAL &QC_jtag_cfg
+DEBUG.HideDebugWindow ON
+DEBUG.ResponsTimeOut 10000.ms
+
+&QC_cpu="CORTEXR4"
+&QC_jtag_cfg="chain"
+
+PRINT "CPU=&QC_cpu,JTAG=&QC_jtag_cfg"
+
+synchon
+
+MasterBreak on
+MasterGo on
+MasterStep on
+SlaveBreak on
+SlaveGo on
+SlaveStep on
+
+PRINT "Slave: MD CR4"
+
+DO MT6595_MultiCore_MD.cmm &OPT_ATTACH

@@ -1,0 +1,117 @@
+;*****************************************************************************
+;  Copyright Statement:
+;  --------------------
+;  This software is protected by Copyright and the information contained
+;  herein is confidential. The software may not be copied and the information
+;  contained herein may not be used or disclosed except with the written
+;  permission of MediaTek Inc. (C) 2001
+;
+;*****************************************************************************
+;
+;*****************************************************************************
+;
+; Filename:
+; ---------
+;   Cortex-R_MPU_Bushang_Recover.cmm (v.1.0)
+;
+; Project:
+; --------
+;   MT6572
+;
+; Description:
+; ------------
+;   This file restore Cortex-R MPU channel settings for bus hang case.
+;
+; Author:
+; -------
+;   Dot Li (mtk02439)
+;
+;============================================================================
+;             HISTORY
+; Below this line, this part is controlled by PVCS VM. DO NOT MODIFY!!
+;------------------------------------------------------------------------------
+; * $Revision$
+; * $Modtime$
+; * $Log$
+; *
+; * 02 20 2013 chia-ling.ko
+; * [MOLY00010273] [MT6572 Bring-up] 6572 bring up CMM config
+; * Update CMM setting
+; * 
+;*****************************************************************************
+
+; Set AP debug mode
+; D.S SD:0xA011A010 %LE %WORD DATA.LONG(SD:0xA011A010)|0x1
+
+AREA
+AREA.CLEAR
+
+print "!!!NOTICE!!!"
+print "Please load elf file and connect to the target before start the cmm!"
+print "Press any key to continue..."
+inkey
+
+
+; Disable MPU
+D.S C15:0x0001 %LE %LONG (DATA.LONG(C15:0x0001)&(~0x1))
+
+IF !y.exist(ARM_MPU_SETTING)
+(
+    print "MPU setting restore fail!!"
+	END
+)
+
+&DBGMODE=0
+GLOBAL &i
+&i=0
+
+&CHANNEL_NUM=0xC
+&MPU_SETTING_ADDR=ARM_MPU_SETTING
+&MPU_CHANNEL_INFO_SIZE=0xC
+print "MPU_SETTING_ADDR = &MPU_SETTING_ADDR"
+
+; Bypass magic number
+&MPU_SETTING_ADDR=&MPU_SETTING_ADDR+4
+
+WHILE &i<&CHANNEL_NUM
+(
+    ; Get region info from global variable
+    &REG_BADDR=DATA.LONG(&MPU_SETTING_ADDR)
+    &REG_SIZE_EN=DATA.LONG(&MPU_SETTING_ADDR+4)
+    &REG_AP=DATA.LONG(&MPU_SETTING_ADDR+8)
+    
+    ; cp15_mpu_set_rgn_index(i);
+    D.S C15:0x0026 %LE %WORD &i
+    
+    ; cp15_mpu_get_rbar();
+    D.S C15:0x0016 %LE %LONG &REG_BADDR
+    
+    ; cp15_mpu_get_rser();
+    D.S C15:0x0216 %LE %LONG &REG_SIZE_EN
+    
+    ; cp15_mpu_get_racr(); 
+    D.S C15:0x0416 %LE %LONG &REG_AP
+    
+    IF &DBGMODE==1 
+    (
+        print "&i"
+        print "MPU_SETTING_ADDR = &MPU_SETTING_ADDR"
+    
+        print "REG_BADDR = &REG_BADDR"
+        print "REG_SIZE_EN = &REG_SIZE_EN"
+        print "REG_AP = &REG_AP"
+    )
+    
+    &i=&i+1
+    &MPU_SETTING_ADDR=&MPU_SETTING_ADDR+&MPU_CHANNEL_INFO_SIZE
+)
+
+; Enable MPU
+D.S C15:0x0001 %LE %LONG (DATA.LONG(C15:0x0001)|0x1)
+
+IF &DBGMODE==1 
+(
+    print "End of setting MPU channels"
+)
+
+END

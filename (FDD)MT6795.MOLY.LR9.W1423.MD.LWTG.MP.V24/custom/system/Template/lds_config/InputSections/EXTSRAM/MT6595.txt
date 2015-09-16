@@ -1,0 +1,13 @@
+        * (NONCACHEDRW)
+        * (PROTECTED_RES_RW_HEAD)
+        * (PROTECTED_RES_RW)
+        * (PROTECTED_RES_RW_TAIL)
+        
+        /* continuous physical region - should be continuous with PHY_EXTSRAM_ZI! */
+        /* Caution: PHY_EXTSRAM_RW should be in the bottom of this region and kept 64 bytes aligned */
+        . = ALIGN(64);
+        PHY_EXTSRAM_RW$$Base = .;
+        * (PHY_EXTSRAM_RW)
+        . = ALIGN(4);
+        PHY_EXTSRAM_RW$$Limit = .;
+        PHY_EXTSRAM_RW$$Length = ABSOLUTE(PHY_EXTSRAM_RW$$Limit - PHY_EXTSRAM_RW$$Base);

@@ -1,0 +1,13 @@
+{ Validation }
+Title 		= "[0_3G_Single_Channel]Stop Currently Running Test"
+ModuleID 	= MOD_DUMMYMPAL
+MsgID 		= MSG_ID_DPS_TEST_STOP2_REQ   // will be defined in appropriate header file
+
+/* Data Structure accomnying the above primitive
+typedef struct {
+   kal_uint8    ref_count;
+   kal_uint16  msg_len;
+}dps_test_stop2_req_struct;
+*/
+
+{Parameters}

@@ -1,0 +1,84 @@
+                            [Rule]
+Functions(ROCODE) or Variables(ROData, RW, ZI) can only be wrapped 
+in the following input section name with specific conditions:
+
+<READ_ONLY_TAIL>
+For ROCODE/RODATA which does not have any special requirement
+
+<READ_WRITE>
+      For RW/ZI which does not have any special requirement
+
+<READ_WRITE_ZI>
+      For RW which does not have any special requirement
+
+<READ_ONLY_INT>
+      For ROCODE/RODATA to be put in ITCM or internal RAM
+
+<READ_WRITE_INT>
+      For RW to be put in DTCM or internal RAM
+
+<READ_WRITE_INT_ZI>
+      For ZI to be put in DTCM or internal RAM
+
+<EX_UI_NIT>
+      For variables that will be directly initialized by user, or whose content does not need to be initialized. It will be put in external RAM
+
+For more requirements, please contact with linker script manager directly.
+
+
+                        [How to modify?]
+
+1. To move a function-ABC into a specific region by XXX, you can use: 
+__attribute__ ((section ("XXX"))) 
+void ABC() { ... }
+
+e.g. For moving the function ABC into READ_ONLY_INT, you can write as below:
+__attribute__ ((section ("READ_ONLY_INT"))) 
+void ABC() { ... }
+
+
+2. To move a RW variable ABC into a specific region by XXX, you can use: 
+__attribute__ ((section ("XXX"))) 
+int ABC = 10;
+
+e.g. For moving the RW variable ABC into READ_WRITE region, you can write as below:
+__attribute__ ((section ("READ_WRITE"))) 
+int ABC = 10;
+
+
+3. To move a ZI variable ABC into a specific region by XXX, you can use: 
+__attribute__ ((section ("XXX"))) 
+int ABC;
+
+e.g. For moving the ZI variable ABC into EX_UINIT region, you can write as below:
+__attribute__ ((section ("EX_UINIT")))
+int ABC;
+
+                            [FAQ]
+
+1. How to designate a symbol into specific region(e.g. EX_UINIT) 
+   in Bootloader but not in MAUI?
+=> Use #if defined(__MINI_BOOTLOADER__) to wrap the symbol.
+   e.g.
+#if defined(__MINI_BOOTLOADER__)
+__attribute__ ((section ("EX_UINIT")))
+#endif
+int ABC = 10;
+
+2. How to designate a symbol into specific region(e.g. EX_UINIT) 
+   in Ext_Bootloader but not in MAUI?
+=> Use #if defined(__EXT_BOOTLOADER__) to wrap the symbol.
+   e.g.
+#if defined(__EXT_BOOTLOADER__)
+__attribute__ ((section ("EX_UINIT")))
+#endif
+int ABC = 10;
+
+3. How to designate a symbol into specific region(e.g. NONCACHEDRW)
+   in MAUI but not in Bootloader or Ext_Bootloader?
+=> Use #if !defined(__UBL__) to wrap the symbol.
+   e.g.
+#if defined(__MTK_TARGET__) && !defined(__UBL__)
+__attribute__ ((section ("NONCACHEDRW")))
+#endif
+int ABC = 10;

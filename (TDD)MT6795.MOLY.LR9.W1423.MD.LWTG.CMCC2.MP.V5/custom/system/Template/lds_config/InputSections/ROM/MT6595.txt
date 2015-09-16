@@ -1,0 +1,9 @@
+
+        * (DRAM_EX_ROCODE)  /*CODE_PROTECT*/
+        * (SNORCODE*)
+        * (SECOND_PART*)
+        * (.text*)
+        * (.rodata*)
+        * (i.*)
+        * (.ARM.extab)
+        KEEP(* (Keep_CODE))

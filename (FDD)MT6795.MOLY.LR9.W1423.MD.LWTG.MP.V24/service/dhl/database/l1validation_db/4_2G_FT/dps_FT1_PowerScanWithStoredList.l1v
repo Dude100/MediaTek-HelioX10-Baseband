@@ -1,0 +1,65 @@
+{ Validation }
+Title 		= "[4_2G_FT]FT1: Repeated Power Scan with stored list"
+ModuleID 	= MOD_DUMMYMPAL
+MsgID 		= MSG_ID_DPS_POWER_SCAN_WITH_STORED_LIST_REQ   // will be defined in appropriate header file
+
+/* Data Structure accomnying the above primitive
+typedef struct
+{
+    kal_uint8   ref_count;
+    kal_uint16  msg_len;
+    kal_uint8   bands;
+    kal_int16   PM1;
+    kal_int16   PM2;
+    kal_int16   PM3;
+    kal_int16   PM4;
+    kal_int16   PM5;
+    kal_int16   PM6;
+} dps_power_scan_with_stored_list_req_struct;
+*/
+
+{Parameters}
+
+// The variable and the corresponding label showen on GUI
+[bands] "Bands used for power scan"
+// The following is the constrained range for the input of this value.
+// Some combination of the following bit-fields may be suported
+// The parameter range can be changed to support combinations of different bands
+PGSM900            1
+EGSM900            2
+DCS1800            8
+PCS1900            16
+PGSM900_DCS1800    9
+EGSM900_DCS1800    10
+PGSM900_PCS1900    17
+EGSM900_PCS1900    18
+
+[PM1] "PM1"
+0~124
+975~1023
+512~885
+
+[PM2] "PM2"
+0~124
+975~1023
+512~885
+
+[PM3] "PM3"
+0~124
+975~1023
+512~885
+
+[PM4] "PM4"
+0~124
+975~1023
+512~885
+
+[PM5] "PM5"
+0~124
+975~1023
+512~885
+
+[PM6] "PM6"
+0~124
+975~1023
+512~885

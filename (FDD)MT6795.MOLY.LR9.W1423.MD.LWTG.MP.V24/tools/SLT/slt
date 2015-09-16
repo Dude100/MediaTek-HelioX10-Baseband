@@ -1,0 +1,808 @@
+#!/bin/sh
+
+BASE=../../../mcu
+MAKEFILE=make/"build.mak"
+OPTIONFILE=make/"Option.mak"
+ATESTMAKEFILE=make/module/driver/autotest/atest_drv.mak
+MTKREL=mtk_rel
+LABLEINI=label.ini
+PREPEND=tools/SLT/prepend_slt_gfh_file_info.pl
+MODIFY=tools/SLT/modify_slt_gfh_file_info.pl
+CONF=tools/SLT/fileinfo.conf
+SLTBL_C=service/sys_svc/bootloader_slt/inc/bl_slt_config.h
+SLT_NL_CONFIG=interface/service/config/middleWare_task_config.h
+LOADPATCHFILE=tools/SLT/config
+
+ctrl_c()
+# run if user hits control-c
+{
+	if [ -f "$MAKEFILE.bak" ]; then
+		mv $MAKEFILE.bak $MAKEFILE
+	fi
+	if [ -f "$CONF.bak" ]; then
+		mv $CONF.bak $CONF
+	fi
+	if [ -f "$PROJFILE.bak" ]; then
+		mv $PROJFILE.bak $PROJFILE
+	fi
+	if [ -f "$LABLEINI.bak" ]; then
+		mv $LABLEINI.bak $LABLEINI
+	fi
+	if [ -f "$MEMORYCONFIG.bak" ]; then
+		mv $MEMORYCONFIG.bak $MEMORYCONFIG
+	fi
+	if [ -f "$OPTIONFILE.bak" ]; then
+		mv $OPTIONFILE.bak $OPTIONFILE
+	fi	
+	if [ -f "$SLTBL_C.bak" ]; then
+		mv $SLTBL_C.bak $SLTBL_C
+	fi	
+	if [ -f "$LABLEINI.bak" ]; then
+		mv $LABLEINI.bak $LABLEINI
+	fi
+	if [ -f "$ATESTMAKEFILE.bak" ]; then
+		mv $ATESTMAKEFILE.bak $ATESTMAKEFILE
+	fi
+	if [ -f "$SLT_NL_CONFIG.bak" ]; then
+		mv $SLT_NL_CONFIG.bak $SLT_NL_CONFIG
+	fi
+	exit
+}
+
+function get_bin_path {
+	local filter=0
+	local fline=""
+	local enter=$(awk 'BEGIN{printf("\r")}')
+	echo Parsing $1
+	for line in `cat $1`
+	do
+		if [ $filter -eq 0 ]; then
+			fline=$fline$line
+		fi
+		if [ "${line:0:1}" = "#" ]; then
+			filter=1
+		fi
+		if [ "${line:${#line}-1:1}" != "$enter" ]; then
+			continue
+		fi
+		fline=${fline:0:${#fline}-1}
+		if [ "${fline%=*}" = "ORIGINAL_PROJECT_NAME" ]; then
+			ORIGINAL_PROJECT_NAME=${fline#ORIGINAL_PROJECT_NAME=}
+		fi
+		if [ "${fline%=*}" = "ORIGINAL_FLAVOR" ]; then
+			ORIGINAL_FLAVOR=${fline#ORIGINAL_FLAVOR=}
+		fi
+		if [ "${fline%=*}" = "BOARD_VER" ]; then
+			BOARD_VER=${fline#BOARD_VER=}
+		fi
+		if [ "${fline%=*}" = "CHIP_VER" ]; then
+			CHIP_VER=${fline#CHIP_VER=}
+			break
+		fi
+		fline=""
+		filter=0
+	done
+	BINPATH="build/"$ORIGINAL_PROJECT_NAME"/"$ORIGINAL_FLAVOR"/bin"
+}
+
+function parsing_project_file {
+	PROJECT=$1
+	PROJFILE=make/$PROJECT
+	get_bin_path $PROJFILE
+
+	MEMORYCONFIG="custom/system/"$BOARD_VER"/"$ORIGINAL_FLAVOR"/custom_MemoryDevice.h.conf"
+	if [ ! -f $MEMORYCONFIG ]; then
+		MEMORYCONFIG="custom/system/"$BOARD_VER"/DEFAULT/custom_MemoryDevice.h.conf"
+		if [ ! -f $MEMORYCONFIG ]; then
+			echo $MEMORYCONFIG is not exsit!	
+			ctrl_c
+			exit
+		fi
+	fi
+	FEATURECONFIG="custom/system/"$BOARD_VER"/"$ORIGINAL_FLAVOR"/custom_FeatureConfig.h.conf"
+	if [ ! -f $FEATURECONFIG ]; then
+		FEATURECONFIG="custom/system/"$BOARD_VER"/DEFAULT/custom_FeatureConfig.h.conf"
+		if [ ! -f $FEATURECONFIG ]; then
+			echo $FEATURECONFIG is not exsit!	
+			ctrl_c
+			exit
+		fi
+	fi
+
+	cp $PROJFILE $PROJFILE.bak
+	chmod +w $PROJFILE
+	cat $PROJFILE.bak \
+		| sed -e "s/^IC_TEST_TYPE\s*=.*/IC_TEST_TYPE = "$CHIP"_SLT/" \
+		> $PROJFILE	
+}
+
+function dispatch_attribute {
+	SLT_LOAD_ATTR_MD=0
+	SLT_LOAD_ATTR_HVT=0
+	SLT_LOAD_ATTR_LOAD_AP=0
+	SLT_LOAD_ATTR_AP_IDX=0
+	attribute_array=($(echo $1 | tr ',' ' ' | tr -s ' '))
+	attribute_array_num=${#attribute_array[@]}
+	SLT_LOAD_ATTR_PARAM0=${attribute_array[0]}
+	for (( attribute_i=0; attribute_i<$attribute_array_num; attribute_i++ ))
+	do
+		if [ "${attribute_array[attribute_i]}" = "MD" ]; then
+			SLT_LOAD_ATTR_MD=1
+		elif [ "${attribute_array[attribute_i]}" = "HVT" ]; then
+			SLT_LOAD_ATTR_HVT=1
+		elif [ "${attribute_array[attribute_i]:0:8}" = "LOAD_AP_" ]; then
+			SLT_LOAD_ATTR_LOAD_AP=1
+			SLT_LOAD_ATTR_AP_IDX=${attribute_array[attribute_i]#LOAD_AP_}
+		fi
+	done
+}
+
+function gen_fileinfo {
+	SLT_TEST_LOAD_IDX=""
+	SLT_LOAD_PATH=""
+	SLT_LOAD_PATH_CHANGED=0
+	SLT_LOAD_ATTRIBUTE=0
+	SLT_LOAD_ADDR=0
+	local gen_fileinfo_clean_conf=0
+	if [ ! -f "$CONF.bak" ]; then
+		cp $CONF $CONF.bak
+		chmod +w $CONF
+		gen_fileinfo_clean_conf=1
+	fi
+	for line in `cat $LOADPATCHFILE`
+	do
+		str=${line%${line#*=$1*}}
+		if [ "${str:0:1}" != "#" ] && [ "${str#*=}" = "$1" ]; then
+			SLT_TEST_LOAD_IDX=${line%=$1*}
+			str=${line#*=$1,*},
+			dispatch_attribute $str
+
+			if [ $SLT_LOAD_ATTR_MD -eq 1 ]; then
+				SLT_LOAD_ATTRIBUTE=$(awk 'BEGIN{printf("%#x",'$SLT_LOAD_ATTRIBUTE'+0x20000000)}')
+				SLT_LOAD_ADDR=0x40000000
+			fi
+			if [ $SLT_LOAD_ATTR_HVT -eq 1 ]; then
+				SLT_LOAD_ATTRIBUTE=$(awk 'BEGIN{printf("%#x",'$SLT_LOAD_ATTRIBUTE'+0x10000000)}')
+			fi
+			if [ $SLT_LOAD_ATTR_LOAD_AP -eq 1 ]; then
+				SLT_LOAD_ATTRIBUTE=$(awk 'BEGIN{printf("%#x",'$SLT_LOAD_ATTRIBUTE'+0x40000000)}')
+				SLT_LOAD_ATTRIBUTE=$(awk 'BEGIN{printf("%#x",'$SLT_LOAD_ATTRIBUTE'+('$SLT_LOAD_ATTR_AP_IDX'*0x01000000))}')
+			fi
+		fi
+	done
+
+	if [ -z $SLT_TEST_LOAD_IDX ] && [ "$SKIP_LOAD_IDX_CHK" != "TRUE" ]; then
+		echo '"'$1'"' is invalid !
+		ctrl_c
+		exit
+	fi
+	if [ "$SLT_LOAD_ADDR" != "0x40000000" ]; then
+		if [ $CHIP = "MT6290" ]; then
+			SLT_LOAD_ADDR=0x10000000
+		else
+			SLT_LOAD_ADDR=0x02000000
+		fi
+	fi
+
+	cat $CONF.bak \
+		| sed -e 's/^FILE_TYPE\s*:.*/FILE_TYPE:'$SLT_TEST_LOAD_IDX'/' \
+		| sed -e 's/^ATTRIBUTE\s*:.*/ATTRIBUTE:'$SLT_LOAD_ATTRIBUTE'/'  \
+		| sed -e 's/^LOAD_ADDR\s*:.*/LOAD_ADDR:'$SLT_LOAD_ADDR'/'  \
+		| sed -e 's/^MAX_SIZE\s*:.*/MAX_SIZE:0xFFFFFFFF/' \
+		> $CONF
+
+	for line in `cat $LOADPATCHFILE`
+	do
+		if [ "${line%=*}" = "$1" ]; then
+			SLT_LOAD_PATH=${line#$1=}
+		fi
+	done
+	if [ -z $SLT_LOAD_PATH ]; then
+		SLT_LOAD_PATH=.
+	else
+		if [ "${SLT_LOAD_PATH:1:7}" = "BINPATH" ]; then
+			SLT_LOAD_PATH=$BINPATH${SLT_LOAD_PATH#?BINPATH*}
+			SLT_LOAD_PATH_CHANGED=1
+		fi
+	fi
+	if [ $gen_fileinfo_clean_conf -eq 1 ]; then
+		mv $CONF.bak $CONF
+	fi
+	SKIP_LOAD_IDX_CHK=""
+}
+
+function gen_GFH_header {
+	cp $CONF $CONF.bak
+	chmod +w $CONF
+
+	gen_fileinfo $1
+	SLT_LOAD_PATH=$(ls $SLT_LOAD_PATH)
+	if [ $? -ne 0 ]; then
+		echo Generate $1 failed!
+		ctrl_c
+		exit
+	fi
+
+	cp -f $SLT_LOAD_PATH $SLTPATH/"$CHIP"_$1
+	if [ $SLT_LOAD_ATTR_HVT -eq 0 ]; then
+		perl $MODIFY $SLTPATH/"$CHIP"_$1 $SLTPATH/"$CHIP"_$1.gfh $CONF
+	else
+		perl $PREPEND $SLTPATH/"$CHIP"_$1 $SLTPATH/"$CHIP"_$1.gfh $CONF
+	fi
+	mv $SLTPATH/"$CHIP"_$1.gfh $SLTPATH/"$CHIP"_$1
+	mv $CONF.bak $CONF
+}
+
+function backup_compile_files {
+	BAKPATH=$SLTPATH"_ORG/"$1
+	if [ -d $BAKPATH ]; then
+		rm -fr $BAKPATH
+	fi
+	mkdir -p $BAKPATH
+	cp -f $BINPATH/*.elf $BAKPATH/.
+	cp -f $BINPATH/*.bin $BAKPATH/.
+	cp -f $BINPATH/*.cfg $BAKPATH/.
+	cp -f $BINPATH/EXT_BOOTLOADER $BAKPATH/.
+}
+
+function gen_slt_loader {
+
+	SKIP_LOAD_IDX_CHK="TRUE"
+	gen_fileinfo SLT_BL_FILE
+	if [ $SLT_LOAD_PATH_CHANGED -eq 1 ]; then
+		cat $PROJFILE.bak \
+			| sed -e 's/IC_TEST_TYPE\s*=.*/IC_TEST_TYPE = MT6290_SLT_LOADER/'\
+			> $PROJFILE
+
+		cp $OPTIONFILE $OPTIONFILE.bak
+		chmod +w $OPTIONFILE
+	
+		cat $OPTIONFILE.bak \
+			| sed -e 's/COM_DEFS += __IC_SLT__/COM_DEFS += __IC_SLT__ __IC_SLT_LOADER__/'\
+			> $OPTIONFILE
+
+		cp $MAKEFILE $MAKEFILE.bak
+		chmod +w $MAKEFILE
+	
+		cat $MAKEFILE.bak \
+			| sed -e 's/^new\s*:\s*update/#new : update/'\
+			> $MAKEFILE
+
+		local output_load_sq=""
+		for line in `cat $LOADPATCHFILE`
+		do
+			if [ "${line%=*}" = "SLT_SQ_ADD" ]; then
+				SLT_SQ_ADD=${line#SLT_SQ_ADD=}
+				output_load_sq=$output_load_sq"{"$SLT_SQ_ADD"},"
+			fi
+		done
+
+		if [ "$output_load_sq" = "" ]; then
+			echo SLT_SQ_ADD is invalid.
+			ctrl_c
+			exit
+		fi
+		if [ -z "$SLT_CHECK_EFUSE" ]; then
+			SLT_CHECK_EFUSE=0xFFFFFFFF
+		fi
+		cp $SLTBL_C $SLTBL_C.bak
+		chmod +w $SLTBL_C
+		cat $SLTBL_C.bak \
+			| sed -e 's/#define SLT_TEST_LOAD_SEQUENCE_FROM_CFG {0,0,PRIMARY_MAUI,NULL,SLT_APMCU_PDN,0}/#define SLT_TEST_LOAD_SEQUENCE_FROM_CFG '$output_load_sq'/'\
+			| sed -e 's/#define SLT_CHECK_EFUSE_FROM_CFG 0xFFFFFFFF/#define SLT_CHECK_EFUSE_FROM_CFG '$SLT_CHECK_EFUSE'/'\
+			> $SLTBL_C
+	
+		if [ -d $MTKREL ]; then
+			rm -r $MTKREL
+		fi
+	
+		./m "$PROJECT_LOADER" new
+	
+		cp -f $BINPATH/"$ORIGINAL_PROJECT_NAME"_BOOTLOADER*.bin $SLTPATH
+		if [ $? -ne 0 ]; then
+			echo Generate BOOTLOADER binary error!
+			ctrl_c
+			exit		
+		fi
+		rm $SLTPATH/"$ORIGINAL_PROJECT_NAME"_BOOTLOADER*_ext.bin
+	
+		if [ ! -f "$BINPATH/EXT_BOOTLOADER" ]; then
+			echo Generate EXT_BOOTLOADER binary error!
+			ctrl_c
+			exit
+		fi
+	
+		cp -f $BINPATH/EXT_BOOTLOADER $SLTPATH
+		backup_compile_files LOADER
+		mv $MAKEFILE.bak $MAKEFILE
+		mv $OPTIONFILE.bak $OPTIONFILE
+		mv $SLTBL_C.bak $SLTBL_C
+	else
+		SLT_LOAD_PATH=$(ls $SLT_LOAD_PATH)
+		if [ $? -ne 0 ]; then
+			echo $SLT_LOAD_PATH is not exist!
+			ctrl_c
+			exit
+		fi
+		cp -f $SLT_LOAD_PATH $SLTPATH
+
+ 		SLT_LOAD_PATH=${SLT_LOAD_PATH%/*}"/EXT_BOOTLOADER"
+		if [ -f "$SLT_LOAD_PATH" ]; then
+			cp -f $SLT_LOAD_PATH $SLTPATH
+		else
+			echo $SLT_LOAD_PATH is not exist.
+			ctrl_c
+			exit
+		fi
+	fi
+}
+
+function gen_hvt {
+	gen_GFH_header SLT_HVT_MD_LOAD
+	gen_GFH_header SLT_HVT_AP_LOAD
+}
+
+function gen_atest {
+	cp $ATESTMAKEFILE $ATESTMAKEFILE.bak
+	chmod +w $ATESTMAKEFILE
+	cp $LABLEINI $LABLEINI.bak
+	chmod +w $LABLEINI
+	cp $MEMORYCONFIG $MEMORYCONFIG.bak
+	chmod +w $MEMORYCONFIG
+
+	gen_fileinfo SLT_ATEST_LOAD
+	if [ $SLT_LOAD_PATH_CHANGED -eq 1 ]; then
+		if [ ! -z "$MOLY_LIB_PATH" ]; then
+			cat $LABLEINI.bak \
+				| sed -e "s,^LINUX_LIB_PATH_1\s*=.*,LINUX_LIB_PATH_1 = "$MOLY_LIB_PATH"," \
+				> $LABLEINI
+		fi
+
+		cat $PROJFILE.bak \
+			| sed -e "s/^IC_TEST_TYPE\s*=.*/IC_TEST_TYPE = "$CHIP"_SLT/" \
+			| sed -e "s/^SDS_SUPPORT\s*=.*/SDS_SUPPORT = FALSE/" \
+			> $PROJFILE
+	
+		cat $ATESTMAKEFILE.bak \
+			| sed -e 's/.*CUSTOM_OPTION.*+=.*ATEST_DRV_LEVEL=5\s*$/COM_DEFS += ATEST_DRV_LEVEL=0/g' \
+			| sed -e 's/.*COM_DEFS.*+=.*ATEST_SLT\s*$/COM_DEFS += ATEST_SLT/g' \
+			| sed -e 's/.*COM_DEFS.*+=.*ATEST_SLT_U3\s*$/COM_DEFS += ATEST_SLT_U3/g' \
+			> $ATESTMAKEFILE
+
+		cat $MEMORYCONFIG.bak \
+			| sed -e 's/^#define\s*CS1_PART_NUMBER.*/#define CS1_PART_NUMBER '"$NANDFLASH"'/' \
+			| sed -e 's/^#define\s*NAND_BOOTING_NAND_FS_SIZE.*/#define NAND_BOOTING_NAND_FS_SIZE 0x01B00000/' \
+			> $MEMORYCONFIG	
+
+		if [ -d $MTKREL ]; then
+			rm -r $MTKREL
+		fi
+		./m -test=ATEST_DRIVER "$PROJECT_ATEST" new
+		backup_compile_files ATEST
+	fi
+
+	gen_GFH_header SLT_ATEST_LOAD
+	
+	mv $LABLEINI.bak $LABLEINI
+	mv $ATESTMAKEFILE.bak $ATESTMAKEFILE
+	mv $MEMORYCONFIG.bak $MEMORYCONFIG
+}
+
+function gen_sdio {
+	cp $ATESTMAKEFILE $ATESTMAKEFILE.bak
+	chmod +w $ATESTMAKEFILE
+	cp $LABLEINI $LABLEINI.bak
+	chmod +w $LABLEINI
+	cp $MEMORYCONFIG $MEMORYCONFIG.bak
+	chmod +w $MEMORYCONFIG
+
+	gen_fileinfo SLT_SDIO_LOAD
+	if [ $SLT_LOAD_PATH_CHANGED -eq 1 ]; then
+		if [ $CHIP = "MT6290" ]; then
+			cat $PROJFILE.bak \
+				| sed -e "s/^SDS_SUPPORT\s*=.*/SDS_SUPPORT = FALSE/" \
+				> $PROJFILE
+
+			cat $ATESTMAKEFILE.bak \
+				| sed -e 's/.*CUSTOM_OPTION.*+=.*ATEST_DRV_LEVEL=5\s*$/COM_DEFS += ATEST_DRV_LEVEL=0/g' \
+				| sed -e 's/.*COM_DEFS.*+=.*ATEST_SLT_SDIO\s*$/COM_DEFS += ATEST_SLT_SDIO_LOAD_FOR_MSDC/g' \
+				> $ATESTMAKEFILE
+		else
+			cat $PROJFILE.bak \
+				| sed -e "s/^IC_TEST_TYPE\s*=.*/IC_TEST_TYPE = "$CHIP"_SLT/" \
+				| sed -e "s/^SDS_SUPPORT\s*=.*/SDS_SUPPORT = FALSE/" \
+				> $PROJFILE
+
+			cat $ATESTMAKEFILE.bak \
+				| sed -e 's/.*CUSTOM_OPTION.*+=.*ATEST_DRV_LEVEL=5\s*$/COM_DEFS += ATEST_DRV_LEVEL=0/g' \
+				| sed -e 's/.*COM_DEFS.*+=.*ATEST_SLT_SDIO\s*$/COM_DEFS += ATEST_SLT_SDIO/g' \
+				> $ATESTMAKEFILE
+		fi
+
+		cat $MEMORYCONFIG.bak \
+			| sed -e 's/^#define\s*CS1_PART_NUMBER.*/#define CS1_PART_NUMBER '"$NANDFLASH"'/' \
+			| sed -e 's/^#define\s*NAND_BOOTING_NAND_FS_SIZE.*/#define NAND_BOOTING_NAND_FS_SIZE 0x01B00000/' \
+			> $MEMORYCONFIG
+
+		if [ -d $MTKREL ]; then
+			rm -r $MTKREL
+		fi
+		./m -test=ATEST_DRIVER "$PROJECT_ATEST" new
+		backup_compile_files SDIO
+	fi
+	gen_GFH_header SLT_SDIO_LOAD
+
+	mv $LABLEINI.bak $LABLEINI
+	mv $ATESTMAKEFILE.bak $ATESTMAKEFILE
+	mv $MEMORYCONFIG.bak $MEMORYCONFIG
+}
+
+function gen_msdc1 {
+	gen_GFH_header SLT_MSDC1_LOAD
+}
+
+function gen_fdd {
+	gen_fileinfo SLT_FDD_LOAD
+	if [ $SLT_LOAD_PATH_CHANGED -eq 1 ]; then
+		cp $MEMORYCONFIG $MEMORYCONFIG.bak
+		chmod +w $MEMORYCONFIG
+	
+		if [ -d $MTKREL ]; then
+			rm -r $MTKREL
+		fi
+
+		cat $PROJFILE.bak \
+			| sed -e "s/^IC_TEST_TYPE\s*=.*/IC_TEST_TYPE = "$CHIP"_SLT/" \
+			| sed -e "s/^SDS_SUPPORT\s*=.*/SDS_SUPPORT = FALSE/" \
+			| sed -e "s/^HIF_USB30_SUPPORT\s*=.*/HIF_USB30_SUPPORT = FALSE/" \
+			| sed -e "s/^HIF_USB_SUPPORT\s*=.*/HIF_USB_SUPPORT = FALSE/" \
+			> $PROJFILE
+	
+		cat $MEMORYCONFIG.bak \
+			| sed -e 's/^#define\s*CS1_PART_NUMBER.*/#define CS1_PART_NUMBER '"$NANDFLASH"'/' \
+			| sed -e 's/^#define\s*NAND_BOOTING_NAND_FS_SIZE.*/#define NAND_BOOTING_NAND_FS_SIZE 0x01B00000/' \
+			> $MEMORYCONFIG
+		
+		./m "$PROJECT_FDD" new
+		
+		cp -f $BINPATH/*_DSPMOLY*.bin $SLTPATH
+		if [ $? -ne 0 ]; then
+			echo $BINPATH/*_DSPMOLY*.bin is not exist.
+			echo Generate FDD load error!
+			ctrl_c
+			exit
+		fi
+	
+		gen_GFH_header SLT_FDD_LOAD
+		cp -f $BINPATH/cmdScript.bin $SLTPATH
+		if [ $? -ne 0 ]; then
+			echo Generate FDD load error!
+			ctrl_c
+			exit
+		fi	
+		
+		backup_compile_files FDD
+		mv $MEMORYCONFIG.bak $MEMORYCONFIG
+	else
+		gen_GFH_header SLT_FDD_LOAD
+
+ 		SLT_LOAD_PATH=${SLT_LOAD_PATH%/*}"/cmdScript.bin"
+		if [ -f "$SLT_LOAD_PATH" ]; then
+			cp -f $SLT_LOAD_PATH $SLTPATH
+		else
+			echo $SLT_LOAD_PATH is not exist.
+			ctrl_c
+			exit
+		fi
+ 		SLT_LOAD_PATH=${SLT_LOAD_PATH%/*}
+		SLT_LOAD_PATH=$(ls $SLT_LOAD_PATH/*_DSPMOLY_*.bin)
+		if [ -f "$SLT_LOAD_PATH" ]; then
+			cp -f $SLT_LOAD_PATH $SLTPATH
+		else
+			echo $SLT_LOAD_PATH is not exist.
+			ctrl_c
+			exit
+		fi
+
+	fi
+}
+
+function gen_tdd {
+	gen_fileinfo SLT_TDD_LOAD
+	if [ $SLT_LOAD_PATH_CHANGED -eq 1 ]; then
+		cp $MEMORYCONFIG $MEMORYCONFIG.bak
+		chmod +w $MEMORYCONFIG
+		cp $SLT_NL_CONFIG $SLT_NL_CONFIG.bak
+		chmod +w $SLT_NL_CONFIG
+
+		if [ -d $MTKREL ]; then
+			rm -r $MTKREL
+		fi
+
+		cat $PROJFILE.bak \
+			| sed -e "s/^IC_TEST_TYPE\s*=.*/IC_TEST_TYPE = MT6290_TDSCDMA_SLT/" \
+			| sed -e "s/^SDS_SUPPORT\s*=.*/SDS_SUPPORT = FALSE/" \
+			| sed -e "s/^HIF_USB30_SUPPORT\s*=.*/HIF_USB30_SUPPORT = FALSE/" \
+			| sed -e "s/^HIF_USB_SUPPORT\s*=.*/HIF_USB_SUPPORT = FALSE/" \
+			| sed -e "s/^# Common preprocessor definitions\s*/&\nCUSTOM_OPTION += __TDDSYS_SLT_FACTORY_BOOT__ /g"\
+			> $PROJFILE
+	
+		cat $MEMORYCONFIG.bak \
+			| sed -e 's/^#define\s*CS1_PART_NUMBER.*/#define CS1_PART_NUMBER '"$NANDFLASH"'/' \
+			| sed -e 's/^#define\s*NAND_BOOTING_NAND_FS_SIZE.*/#define NAND_BOOTING_NAND_FS_SIZE 0x01B00000/' \
+			| sed -e 's/^#define\s*NAND_BOOTING_NAND_FS_BASE_ADDRESS.*/#define NAND_BOOTING_NAND_FS_BASE_ADDRESS 0x04400000/' \
+			> $MEMORYCONFIG 
+		
+		./m "$PROJECT_TDD" new
+	
+		gen_GFH_header SLT_TDD_LOAD
+		backup_compile_files TDD
+
+		mv $MEMORYCONFIG.bak $MEMORYCONFIG
+		mv $SLT_NL_CONFIG.bak $SLT_NL_CONFIG
+	else
+		gen_GFH_header SLT_TDD_LOAD
+	fi
+}
+
+function gen_cfg {
+	local CFGContent=""
+	local BLContent=""
+	local DSPContent=""
+	local load_idx=""
+	local i=0
+
+	for (( i=0; i<8; i++ ))
+	do
+		if [ $i -eq 7 ]; then
+			load_idx="PRIMARY_MAUI"
+		else
+			load_idx="SLT_TEST_LOAD_"$i
+		fi	
+		for line in `cat $LOADPATCHFILE`
+		do
+			if [ "${line%=*}" = "$load_idx" ]; then
+				SLT_LOAD_NAME=${line#$load_idx=}
+				if [ "$SLT_LOAD_NAME" != "" ]; then
+					dispatch_attribute $SLT_LOAD_NAME
+					CFGContent=$CFGContent"\n    - file: "$CHIP"_"$SLT_LOAD_ATTR_PARAM0
+				fi
+				break
+			fi
+		done
+	done
+
+	local DSPPATH=$(ls $SLTPATH/*_DSPMOLY_*.bin)
+	if [ -f "$DSPPATH" ]; then
+		DSPContent="    - file: "${DSPPATH##*/}
+	else
+		echo $SLTPATH/*_DSPMOLY_*.bin is not exist.
+		echo Generate CFG error!
+		ctrl_c
+		exit
+	fi
+	local BOOTLOADERPATH=$(ls $SLTPATH/*_BOOTLOADER_*.bin)
+	BLContent="    - file: "${BOOTLOADERPATH##*/}
+
+	
+	SKIP_LOAD_IDX_CHK="TRUE"
+	gen_fileinfo PRIMARY_MAUI
+	if [ "$SLT_LOAD_PATH" = "." ]; then
+		echo Can not ignore PRIMARY_MAUI.
+		ctrl_c
+		exit
+	fi
+
+	SKIP_LOAD_IDX_CHK="TRUE"
+	gen_fileinfo SLT_CFG_FILE
+	local val=$(egrep $BOARD_VER"_PCB01_MT6290_"$CHIP_VER"." $SLT_LOAD_PATH)
+	if [ -z "$val" ]; then
+		echo $SLT_LOAD_PATH is not match.
+		ctrl_c
+		exit
+	fi
+	cp -f $SLT_LOAD_PATH $SLTPATH/"$CHIP"_SLT.cfg
+	cat $SLTPATH/"$CHIP"_SLT.cfg \
+		| sed -e "s/.*_BOOTLOADER_.*/$BLContent/"  \
+		| sed -e "s/.*"$BOARD_VER"_PCB01_MT6290_"$CHIP_VER".*/$CFGContent/"  \
+		| sed -e "s/.*_DSPMOLY_.*/$DSPContent/"  \
+		> $SLTPATH/"$CHIP"_SLT.cfg.mod
+		
+	mv $SLTPATH/"$CHIP"_SLT.cfg.mod $SLTPATH/"$CHIP"_SLT.cfg
+	if [ $? -ne 0 ]; then
+		echo Generate CFG error!
+		echo Please build MOLY FDD or TDD SLT load first.
+		ctrl_c
+		exit		
+	fi
+	
+	if [ ! -f "$SLTPATH/cmdScript.bin" ]; then
+		SLT_LOAD_PATH=${SLT_LOAD_PATH%/*}/cmdScript.bin
+		cp -f $SLT_LOAD_PATH $SLTPATH
+		if [ $? -ne 0 ]; then
+			echo ${SLT_LOAD_PATH%/*}/cmdScript.bin is not exist.
+			echo Generate CFG error!
+			ctrl_c
+			exit
+		fi
+	fi
+	
+}
+
+function usage {
+	echo "usage:"
+	echo "	slt <chip> [module]"
+	echo "<chip>:"
+	echo "	6290"
+	echo "	6290m_[c/f]"
+	echo "[module]:"
+	echo "	loader - build SLT loader"
+	echo "	hvt - prepend GFH header for HVT binary"
+	echo "	atest - build MOLY SLT atest"
+	echo "	fdd - build MOLY SLT FDD normal load"
+	echo "	tdd - build MOLY SLT TDD normal load"
+	echo "	cfg - generate cfg for FlashTool download"
+	echo
+	echo "If not select any [module], all test load for SLT wiil be generated."
+	echo
+}
+
+if [ -z "$1" ]; then
+	usage
+	exit
+fi
+
+if [ "$1" = "6290" ] || [ "${1:0:5}" == "6290_" ]; then
+	CHIP=MT6290
+	echo $CHIP
+elif [ "$1" = "6290m" ] || [ "${1:0:6}" = "6290m_" ]; then
+	CHIP=MT6290M
+	echo $CHIP
+else
+	echo Error argument
+	exit
+fi
+
+LOADPATCHFILE=$LOADPATCHFILE'_'$1
+if [ ! -f "$LOADPATCHFILE" ]; then
+	echo $LOADPATCHFILE is not exist.
+	ctrl_c
+	exit
+fi
+for line in `cat $LOADPATCHFILE`
+do
+	if [ "${line%=*}" = "SLT_CHECK_EFUSE" ]; then
+		SLT_CHECK_EFUSE=${line#SLT_CHECK_EFUSE=}
+	fi
+	if [ "${line%=*}" = "MOLY_ATEST_LIB_PATH" ]; then
+		MOLY_LIB_PATH=${line#MOLY_ATEST_LIB_PATH=}
+	fi
+	if [ "${line%=*}" = "PROJECT_LOADER" ]; then
+		PROJECT_LOADER=${line#PROJECT_LOADER=}
+	fi
+	if [ "${line%=*}" = "PROJECT_ATEST" ]; then
+		PROJECT_ATEST=${line#PROJECT_ATEST=}
+	fi
+	if [ "${line%=*}" = "PROJECT_SDIO" ]; then
+		PROJECT_SDIO=${line#PROJECT_SDIO=}
+	fi
+	if [ "${line%=*}" = "PROJECT_FDD" ]; then
+		PROJECT_FDD=${line#PROJECT_FDD=}
+	fi
+	if [ "${line%=*}" = "PROJECT_TDD" ]; then
+		PROJECT_TDD=${line#PROJECT_TDD=}
+	fi
+	if [ "${line%=*}" = "NANDFLASH" ]; then
+		NANDFLASH=${line#NANDFLASH=}
+	fi
+done
+
+SLTPATH=build/${CHIP}_SLT
+if [ ! -z "$SLT_CHECK_EFUSE" ]; then
+	SLTPATH=$SLTPATH"_"$SLT_CHECK_EFUSE
+fi
+
+case "$2" in
+	"")
+		if [ -d $SLTPATH ]; then
+			rm -r $SLTPATH
+			mkdir -p $SLTPATH
+		else
+			mkdir -p $SLTPATH
+		fi
+		parsing_project_file $PROJECT_LOADER
+		gen_slt_loader
+		mv $PROJFILE.bak $PROJFILE
+		gen_hvt
+		parsing_project_file $PROJECT_ATEST
+		gen_atest
+		mv $PROJFILE.bak $PROJFILE
+		parsing_project_file $PROJECT_FDD
+		gen_fdd
+		mv $PROJFILE.bak $PROJFILE
+		parsing_project_file $PROJECT_TDD
+		gen_tdd
+		mv $PROJFILE.bak $PROJFILE
+		gen_cfg
+		;;
+	loader)
+		parsing_project_file $PROJECT_LOADER
+		if [ ! -d $SLTPATH ]; then
+			mkdir -p $SLTPATH
+		fi
+		echo Generate SLT Loader...
+		gen_slt_loader
+		echo Generate SLT Finished!
+		;;
+	hvt)
+		parsing_project_file $PROJECT_LOADER
+		if [ ! -d $SLTPATH ]; then
+			mkdir -p $SLTPATH
+		fi
+		echo Generate HVT...
+		gen_hvt
+		echo Generate HVT Finished!
+		;;
+	atest)
+		parsing_project_file $PROJECT_ATEST
+		if [ ! -d $SLTPATH ]; then
+			mkdir -p $SLTPATH
+		fi
+		echo Generate MOLY ATEST...
+		gen_atest
+		echo Generate MOLY Finished!
+		;;
+	fdd)
+		parsing_project_file $PROJECT_FDD
+		if [ ! -d $SLTPATH ]; then
+			mkdir -p $SLTPATH
+		fi
+		echo Generate MOLY FDD Normal Load...
+		gen_fdd			
+		echo Generate MOLY FDD Normal Finished!
+		;;
+	tdd)
+		parsing_project_file $PROJECT_TDD
+		if [ ! -d $SLTPATH ]; then
+			mkdir -p $SLTPATH
+		fi
+		echo Generate MOLY TDD Normal Load...
+		gen_tdd			
+		echo Generate MOLY TDD Normal Finished!
+		;;
+	cfg)
+		parsing_project_file $PROJECT_LOADER
+		if [ ! -d $SLTPATH ]; then
+			mkdir -p $SLTPATH
+		fi
+		echo Generate CFG File...
+		gen_cfg
+		echo Generate CFG Finished!
+		;;
+	sdio)
+		parsing_project_file $PROJECT_SDIO
+		if [ ! -d $SLTPATH ]; then
+			mkdir -p $SLTPATH
+		fi
+		echo Generate SDIO File...
+		gen_sdio
+		echo Generate SDIO Finished!
+		;;
+	msdc1)
+		parsing_project_file $PROJECT_LOADER
+		if [ ! -d $SLTPATH ]; then
+			mkdir -p $SLTPATH
+		fi
+		echo Generate MSDC1 File...
+		gen_msdc1
+		echo Generate MSDC1 Finished!
+		;;
+	*)
+		gen_GFH_header $2
+esac
+
+if [ -f "$PROJFILE.bak" ]; then
+	mv $PROJFILE.bak $PROJFILE
+fi
+	
+exit

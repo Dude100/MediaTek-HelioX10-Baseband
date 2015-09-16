@@ -1,0 +1,20 @@
+[ADC_variables]
+ADC_VBAT
+ADC_VISENSE
+ADC_VBATTMP
+ADC_VCHARGER
+ADC_ACCESSORYID
+ADC_PCBTMP
+ADC_CHR_USB
+ADC_OTG_VBUS
+ADC_RFTMP
+ADC_JACK_TYPE
+ADC_FDD_RF_PARAMS_DYNAMIC_CUSTOM_CH
+
+[adc_var.c_HEADER]
+#ifdef __CUST_NEW__
+#include "kal_public_api.h"
+#include "dcl.h"
+
+[adc_var.c_TAILER]
+#endif /* __CUST_NEW__ */

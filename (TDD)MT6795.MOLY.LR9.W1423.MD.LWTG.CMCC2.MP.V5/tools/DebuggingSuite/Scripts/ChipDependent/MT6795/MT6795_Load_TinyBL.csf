@@ -1,0 +1,29 @@
+PRINT "--------------------------------------------------------------"
+PRINT "MT6795_Load_TinyBL.csf"
+PRINT "----------------------"
+
+LOCAL &pwd
+
+&pwd=OS.PPD()
+DO CA5x_attach.cmm
+D.LOAD.ELF "../bin/MT6795_TinyBL_EVB.elf"
+PRINT "Running TinyBL, please wait 5 seconds ..."
+; must
+Register.Set T 0
+
+go
+
+wait 5.s
+break
+
+;IF OS.FILE(MT6752_MD1_Info.cmm)
+;(
+;    DO MT6752_AP_CLKCTRL.cmm "MD1"
+;)
+;ELSE
+;(
+;    PRINT "Error: MD type is not supported!!"
+;    END
+;)
+
+PRINT "TinyBL init done."

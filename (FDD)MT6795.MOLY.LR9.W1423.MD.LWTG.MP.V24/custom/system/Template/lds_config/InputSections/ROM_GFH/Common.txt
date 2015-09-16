@@ -1,0 +1,2 @@
+        KEEP(*(MAUI_GFH))
+        KEEP(*(MAUI_GFH_EXT))

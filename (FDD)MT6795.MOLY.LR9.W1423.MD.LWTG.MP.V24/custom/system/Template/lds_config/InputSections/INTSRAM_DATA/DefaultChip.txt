@@ -1,0 +1,6 @@
+        * (INTSRAM_RODATA* INTSRAM_RW*)
+        
+        *libnucleus_v2_critical_data.a: (.data*)
+        *libnucleus_v2_ctrl_code.a: (.data*)
+        *libnucleus_critical_data.a: (.data*)
+        *libnucleus_ctrl_code.a: (.data*)

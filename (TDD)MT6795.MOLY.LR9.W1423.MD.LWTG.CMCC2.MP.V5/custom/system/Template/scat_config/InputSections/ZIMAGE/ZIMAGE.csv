@@ -1,0 +1,18 @@
+ModuleName,Attribute,FeatureOption,DummyScatter
+*,ZIMAGE_ROCODE  ZIMAGE_RODATA  ZIMAGE_RWDATA,,
+gdi_arm.lib,RO,(PLATFORM = MT6250) && (mmi_version = COSMOS_MMI),
+t9relChinese_rvct.o,RO-CODE  RO-DATA,mmi_version = NEPTUNE_MMI,
+t9relAlphabetic_rvct.o,RO-CODE  RO-DATA,mmi_version = NEPTUNE_MMI,
+kmxime_latin.o,RO-CODE  RO-DATA,mmi_version = NEPTUNE_MMI,
+vrt.lib,RO-CODE  RO-DATA,!(mmi_version = NEPTUNE_MMI) && (finger_touch_support = FTE) && (PLATFORM = MT6252 || PLATFORM = MT6250),
+l1d_data.obj,RO-CODE,!(mmi_version = NEPTUNE_MMI) && (finger_touch_support = FTE) && (PLATFORM = MT6252 || PLATFORM = MT6250),
+l1sm.obj    ,RO-CODE  RO-DATA,!(mmi_version = NEPTUNE_MMI) && (finger_touch_support = FTE) && (PLATFORM = MT6252 || PLATFORM = MT6250),
+l1csm.obj   ,RO-CODE  RO-DATA,!(mmi_version = NEPTUNE_MMI) && (finger_touch_support = FTE) && (PLATFORM = MT6252 || PLATFORM = MT6250),
+m12100.obj  ,RO-CODE  RO-DATA,!(mmi_version = NEPTUNE_MMI) && (finger_touch_support = FTE) && (PLATFORM = MT6252 || PLATFORM = MT6250),
+m12110.obj  ,RO-CODE  RO-DATA,!(mmi_version = NEPTUNE_MMI) && (finger_touch_support = FTE) && (PLATFORM = MT6252 || PLATFORM = MT6250),
+m12120.obj  ,RO-CODE  RO-DATA,!(mmi_version = NEPTUNE_MMI) && (finger_touch_support = FTE) && (PLATFORM = MT6252 || PLATFORM = MT6250),
+m12170.obj  ,RO-CODE  RO-DATA,!(mmi_version = NEPTUNE_MMI) && (finger_touch_support = FTE) && (PLATFORM = MT6252 || PLATFORM = MT6250),
+m12160.obj  ,RO-CODE  RO-DATA,!(mmi_version = NEPTUNE_MMI) && (finger_touch_support = FTE) && (PLATFORM = MT6252 || PLATFORM = MT6250),
+m12180.obj  ,RO-CODE  RO-DATA,!(mmi_version = NEPTUNE_MMI) && (finger_touch_support = FTE) && (PLATFORM = MT6252 || PLATFORM = MT6250),
+m11301.obj  ,RO-CODE  RO-DATA,!(mmi_version = NEPTUNE_MMI) && (finger_touch_support = FTE) && (PLATFORM = MT6252 || PLATFORM = MT6250)
+; *mmiresource.lib,RO-CODE  RO-DATA,!(mmi_version = NEPTUNE_MMI) && !((finger_touch_support = FTE) && (PLATFORM = MT6252 || PLATFORM = MT6250))

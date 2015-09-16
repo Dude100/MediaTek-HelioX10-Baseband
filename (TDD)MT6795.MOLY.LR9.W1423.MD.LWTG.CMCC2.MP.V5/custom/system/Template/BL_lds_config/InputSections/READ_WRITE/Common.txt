@@ -1,0 +1,7 @@
+         * (.data*)
+         * (EMIINITRW)
+         * (INTSRAM_RW)
+         * (CACHED_EXTSRAM_RW)
+         * (READ_WRITE)
+         * (INTERNDATA)
+         * (NONCACHEDRW)

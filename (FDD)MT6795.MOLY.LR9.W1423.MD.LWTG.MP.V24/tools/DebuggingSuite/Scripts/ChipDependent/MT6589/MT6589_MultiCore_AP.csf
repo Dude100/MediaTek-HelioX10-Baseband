@@ -1,0 +1,18 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; MT6589_MultiCore_AP.csf
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+do MT6589_MD_Info.cmm
+
+EDIT 6589_Android_AP.csf
+EDIT 6589_Android_AP.cmm
+
+MULtiCore.COUNT 3
+MULtiCore.INDEX 1
+MULtiCore.PORT 10000
+
+print "Master: AP ARMCA7MPCORE"
+
+print "[Step 2] Press enter to continue master..."
+enter &nop
+do MT6589_MultiCore_AP.cmm RESET

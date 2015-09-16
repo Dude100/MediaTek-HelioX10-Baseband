@@ -1,0 +1,67 @@
+ENTRY &OPT_RESET
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; CR4_connect.cmm
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+PRINT "Connection to MD (CR4) &OPT_RESET ... "
+;; CR4(MD) Connection
+SYStem.reset
+
+IF "&OPT_RESET"=="RESET"
+(
+    SYStem.Option ENRESET ON
+    SYStem.Option WaitReset 1.s
+)
+ELSE
+(
+    SYStem.Option ENRESET OFF
+    SYStem.Option WaitReset ON
+)
+
+SYStem.CPU CortexR4
+SYStem.JtagClock 10.MHz
+;; NOTE: CR4 Corebase address
+;;; for 6592: AHB-AP -> 0x20093000
+;;; for 6592: APB-AP -> 0x90123000 (Default)
+;;; for 6595: Coresight CR4 base 0x1022_3000 (high 8 bit don't care)
+;; In case connection fail or operation abnormal, try the other address
+SYStem.CONFIG COREBASE APB:0x10453000 ; CR4 Corebase
+SYStem.Option ResBreak ON
+SYStem.Option TRST off
+
+
+IF &OPT_JTAG==0
+(
+    SYStem.CONFIG SWDP OFF
+)
+ELSE IF &OPT_JTAG==1
+(
+    SYStem.CONFIG SWDP ON  
+)
+
+SYStem.Up
+
+;; Enable EAHB memory class access
+; ======== yy: confirm it ========
+; Data.Set a:0xA011A040 %LE %LONG 0x1
+
+;; Check CPU ID
+IF &OPT_CHECK_CPU_ID==1
+(
+	PRINT "Check MD CPU ID ... "
+	&CPU_ID=data.long(C15:0x0000)
+	IF ((&CPU_ID&(0x410FC140))!=0x410FC140)
+	(
+		PRINT "[FAIL]"
+		PRINT "Expected: 0x410FC140 (CR4)"
+		PRINT "Read Val: &CPU_ID"
+		;DIALOG.OK "[MD CONN] Wrong CPU ID: &CPU_ID"
+		END
+	)
+)
+
+;; Set base addresses
+&OPT_MD_START_ADDRESS=0x0
+&AP_APB_BASE=0xA0000000
+&MD1_WDT_BASE=0x80050000

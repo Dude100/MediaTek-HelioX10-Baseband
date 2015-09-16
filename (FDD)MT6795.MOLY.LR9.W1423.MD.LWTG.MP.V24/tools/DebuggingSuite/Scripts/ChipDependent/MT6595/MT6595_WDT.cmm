@@ -1,0 +1,126 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; MT6595_WDT.cmm
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+LOCAL &act
+ENTRY &act
+
+IF "&act"==""
+(
+    &act="none"
+)
+
+GOTO main
+
+END;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+fn_set_md_dbg_bit:
+(
+    ; Set bit0 for CCCI wait handshake forever
+    PRINT "[INFO] Set modem debug mode"
+    PRINT "[INFO] [0x1011_A010] <- (0x1)"
+    Data.Set eahb:1011A010 %LE %WORD DATA.LONG(eahb:1011A010)|(0x1)
+
+    RETURN;
+)
+
+END;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+fn_disable_wdt:
+LOCAL &ap_rgu &ap_spm &md_rgu
+ENTRY &ap_rgu &ap_spm &md_rgu
+(
+;; WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! ;
+;
+; To solve RGU access lookup bus issue, currently MT6572/MT6582/MT6592
+; will use SPM wdt instead of RGU wdt.
+; Beside, AP wdt driver will try to open wdt again after we disable
+; it by CMM, therefore after AP GO again, the wdt will also  enable
+; again To disable wdt permanently, use the following adb command:
+;
+;   adb echo 0 20 30 0 0 > /proc/wdk
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+    LOCAL &mclass &AP_APB_BASE &MD_WDT_BASE
+    &mclass="eahb"
+    &AP_APB_BASE=0x10000000
+    &MD_WDT_BASE=0x20050000
+
+    IF &ap_spm==1
+    (
+        PRINT "[INFO] Disable AP SPM WDT"
+        LOCAL &spm_reg
+        ; *(0x10006014) = *(0x10006014) | (0x1 << 22)
+        &spm_reg=Data.Long(&mclass:(&AP_APB_BASE+0x6014))
+        &spm_reg=&spm_reg|0x00400000
+        Data.Set &mclass:(&AP_APB_BASE+0x6014) %LE %LONG &spm_reg
+        ; *(0x10006014) = *(0x10006014) & ~(0x1 << 22)
+        &spm_reg=&spm_reg&0xFFBFFFFF
+        Data.Set &mclass:(&AP_APB_BASE+0x6014) %LE %LONG &spm_reg
+        ; *(0x10006314) = (0xb16 << 16) | (*(0x10006314) & ~(0x1 << 8))
+        &spm_reg=Data.Long(&mclass:(&AP_APB_BASE+0x6314))
+        &spm_reg=&spm_reg&0xFFFFFEFF
+        &spm_reg=&spm_reg|0x0b160000
+        Data.Set &mclass:(&AP_APB_BASE+0x6314) %LE %LONG &spm_reg
+        ; *(0x100063e4) = 0x0002
+        Data.Set &mclass:(&AP_APB_BASE+0x63e4) %LE %LONG 0x00000002
+    )
+
+    IF &ap_rgu==1
+    (
+        PRINT "[INFO] Disable AP RGU WDT"
+        Data.Set &mclass:(&AP_APB_BASE+0x00007000) %LE %LONG 0x22000000
+    )
+
+    IF &md_rgu==1
+    (
+        PRINT "[INFO] Disable MD RGU WDT"
+        Data.Set &mclass:(&MD_WDT_BASE+0x0000) %LE %WORD 0x2200
+    )
+    
+    RETURN;
+)
+
+END;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+opt_disable_ap_wdt:
+(
+    PRINT "[INFO][MAIN] Disable AP Watchdog"
+    IF STATE.RUN()
+    (
+        PRINT "[FATAL] This function didn't support at running state"
+        RETURN;
+    )
+    GOSUB fn_disable_wdt 1 1 0
+    RETURN;
+)
+
+END;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+opt_break_and_disable_ap_wdt:
+(
+    PRINT "[INFO][MAIN] Break and Disable AP Watchdog"
+    BREAK;
+    GOSUB fn_disable_wdt 1 1 0
+    RETURN;
+)
+
+END;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+main:
+    PRINT "[INFO] operation: &act"
+    IF "&act"!="none"
+    (
+        GOSUB opt_&act
+        PRINT "[INFO] operation &act completed"
+        END
+    )
+    ENDDO
+
+END;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

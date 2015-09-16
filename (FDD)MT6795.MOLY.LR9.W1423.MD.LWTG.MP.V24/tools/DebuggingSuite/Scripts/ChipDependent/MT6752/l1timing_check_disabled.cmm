@@ -1,0 +1,22 @@
+if !(Y.EXIST(TCD_Created_Tasks_List))
+(
+	PRINT "Not an valid nucleus/KAL load"
+	GOTO end_func
+)
+
+if (Y.EXIST(EDYN_EL1_ISR_BYPASS))
+(
+	D.S SD:EDYN_EL1_ISR_BYPASS  %LE %LONG 0x1
+)
+
+if (Y.EXIST(L1_ASSERT_BYPASS))
+(
+	D.S SD:L1_ASSERT_BYPASS %LE %WORD 0x0003
+)
+
+end_func:
+
+ENDDO
+
+
+

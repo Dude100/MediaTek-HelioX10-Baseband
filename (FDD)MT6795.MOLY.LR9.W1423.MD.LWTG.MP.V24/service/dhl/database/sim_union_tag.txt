@@ -1,0 +1,16 @@
+
+ sim_intsim_access_req_struct op req_field :
+ {
+      SIM_INTSIM_ACCESS_FLIE_INFO  file_info_req;
+      SIM_INTSIM_ACCESS_READ_BINARY  read_req;
+      SIM_INTSIM_ACCESS_READ_RECORD  read_req;
+      SIM_INTSIM_ACCESS_UPDATE_BINARY  update_req;
+      SIM_INTSIM_ACCESS_UPDATE_RECORD  update_req;
+      SIM_INTSIM_ACCESS_AUTHENTICATION  auth_req;
+      SIM_INTSIM_ACCESS_INCREASE  increase_req;
+      SIM_INTSIM_ACCESS_INVALIDATE  invalidate_req;
+      SIM_INTSIM_ACCESS_REHABILITATE  rehabilitate_req;
+   
+} ;
+
+ 

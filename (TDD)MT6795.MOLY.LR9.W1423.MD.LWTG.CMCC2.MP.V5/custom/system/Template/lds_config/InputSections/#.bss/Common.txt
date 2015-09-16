@@ -1,0 +1,3 @@
+        * (.bss*)
+        KEEP(* (Keep_ZI))
+        * (COMMON)

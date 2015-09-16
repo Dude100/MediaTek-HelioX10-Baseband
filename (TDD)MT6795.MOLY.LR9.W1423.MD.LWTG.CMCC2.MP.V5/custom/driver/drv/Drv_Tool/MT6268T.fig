@@ -1,0 +1,33 @@
+[Chip Type]
+Chip = MT6268T
+
+[GPIO]
+GPIO0 = MODE0(GPIO0)              MODE1(O:TDMA_CTIRQ1_B)    MODE2(O:PWM1)             MODE3()                      PU
+GPIO1 = MODE0(GPIO1)              MODE1(O:TDMA_CTIRQ2_B)    MODE2(O:PWM2)             MODE3()                      PU
+GPIO2 = MODE0(GPIO2)              MODE1(O:O:TDMA_BTXEN)     MODE2(O:TDMA_CK)          MODE3()                      PU
+GPIO3 = MODE0(GPIO3)              MODE1(O:TDMA_BTXFS)       MODE2(O:TDMA_FS)          MODE3()                      PU
+GPIO4 = MODE0(GPIO4)              MODE1(O:TDMA_BRXEN)       MODE2(O:TDMA_SDAT[0])     MODE3()                      PU
+GPIO5 = MODE0(GPIO5)              MODE1(O:TDMA_BRXFS)       MODE2(O:TDMA_SDAT[1])     MODE3()                      PU
+GPIO6 = MODE0(GPIO6)              MODE1(I:BSI_DIN)          MODE2()                   MODE3()                      PU
+GPIO7 = MODE0(GPIO7)              MODE1(O:DSP1_TID[0])      MODE2()                   MODE3()                      PU
+GPIO8 = MODE0(GPIO8)              MODE1(O:DSP1_TID[1])      MODE2()                   MODE3()                      PU
+GPIO9 = MODE0(GPIO9)              MODE1(O:DSP2_TID[0])      MODE2()                   MODE3()                      PU
+GPIO10= MODE0(GPIO10)             MODE1(O:DSP2_TID[1])      MODE2()                   MODE3()                      PU
+GPIO11= MODE0(GPIO11)             MODE1(O:DSP2_TID[2])      MODE2()                   MODE3()                      PU
+GPIO12= MODE0(GPIO12)             MODE1(O:DSP2_TID[3])      MODE2()                   MODE3()                      PU
+GPIO13= MODE0(GPIO13)             MODE1(O:DSP2_TID[4])      MODE2()                   MODE3()                      PU
+GPIO14= MODE0(GPIO14)             MODE1(O:DSP2_TID[5])      MODE2()                   MODE3()                      PU
+GPIO15= MODE0(GPIO15)             MODE1(O:DSP2_TID[6])      MODE2()                   MODE3()                      PU
+
+[GPO]
+
+[EINT]
+EINT_COUNT = 8
+EINT_DEBOUNCE_TIME_COUNT = 4
+
+[ADC]
+ADC_COUNT=8
+
+[KEYPAD]
+KEY_ROW=7
+KEY_COLUMN=8

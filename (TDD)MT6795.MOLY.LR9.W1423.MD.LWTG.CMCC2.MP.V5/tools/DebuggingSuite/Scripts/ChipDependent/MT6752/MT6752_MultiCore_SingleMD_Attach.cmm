@@ -1,0 +1,92 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; MT6752_MultiCore_SingleMD_Attach.cmm
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+&OPT_MD_ELF_PATH="N:\MOLY\TRUNK\WR8\mcu\build\MT6589_MD2_TDD128HSPA\COCLOCK\bin\MT6752_MD2_TDD128HSPA_PCB01_MT6589_S00.elf"
+&OPT_MD_SRC_PATH="N:\MOLY\TRUNK\WR8\mcu"
+
+;; Modem Selection
+;; 1: MD1 (CR4)
+;; 2: MD2 (ARM9)
+&OPT_MODEM_SEL=2
+
+&OPT_LOAD_ELF=1
+
+IF &OPT_LOAD_ELF==1
+(
+	D.LOAD.ELF &OPT_MD_ELF_PATH /RELPATH /PATH &OPT_MD_SRC_PATH /nocode
+)
+
+IF &OPT_MODEM_SEL==1
+(
+    ;; CR4(MD1) Connection
+    SYSTEM.reset
+    SYSTEM.CPU CortexR4
+    SYSTEM.JtagClock 5.MHz
+    ;; NOTE: CR4 Corebase address
+    ;; AHB-AP -> 0x20093000
+    ;; APB-AP -> 0x90123000 (Default)
+    ;; In case connection fail or operation abnormal, try the other address
+    SYSTEM.MULTICORE COREBASE EAPB:0x90123000 ; CR4 Corebase
+)
+ELSE IF &OPT_MODEM_SEL==2
+(
+    SYSTEM.reset
+    SYSTEM.CPU ARM926EJ
+    SYSTEM.JtagClock 5.MHz
+    SYSTEM.MULTICORE JTAGACCESSPORT 2
+    SYSTEM.MULTICORE COREJTAGPORT 0
+)
+
+;SYStem.Option.SYSPWRUPREQ off
+SYStem.Option ResBreak OFF
+SYStem.Option WaitReset OFF
+SYSTEM.Option EnReset Off
+SYSTEM.Option TRST off
+SYSTEM.up
+
+; Disable WDT
+print "Disable modem WDT"
+print "[0x80050000] <- 0x2200"
+D.S SD:0x80050000 %LE %WORD 0x2200
+; bypass_CTIRQ1_precision_check
+; Avoiding assert at CTIRQ1/2
+print "L1 Assert Bypass" 
+d.s L1_ASSERT_BYPASS 0x3     ; bit0: disable CTIRQ1/2 timing check
+
+;; workaournd for MD bus issue
+MemMap.MemRange 0xA0000000--0xAFFFFFFF ReadWrite W32
+
+; setting attribute of breakpoints
+Break.Select Program OnChip
+Break.Select Hll OnChip
+Break.Select Read OnChip
+Break.Select Write OnChip
+
+if version.build()==0x100000 
+(
+	task.config NUCLEUS
+)
+else
+(
+	if y.exist(TCT_Schedule)
+	(
+		task.config NUCLEUS
+		menu.reprogram NUCLEUS
+	)
+	else
+	(
+		task.config NUCLEUS_V2
+		menu.reprogram NUCLEUS_V2
+	)
+)
+
+IF &OPT_MODEM_SEL==1
+(
+  	menu.reprogram Cortex-R_MPU_View
+)
+
+
+d.l
+go

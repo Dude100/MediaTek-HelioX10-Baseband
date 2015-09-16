@@ -1,0 +1,5 @@
+        * (INTSRAM_ZI*)
+        *libnucleus_v2_critical_data.a: (.bss*)
+        *libnucleus_v2_ctrl_code.a: (.bss*)
+        *libnucleus_critical_data.a: (.bss*)
+        *libnucleus_ctrl_code.a: (.bss*)

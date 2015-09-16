@@ -1,0 +1,85 @@
+ADD
+TOOLBAR
+(
+  SEPARATOR
+  TOOLITEM "L1 Assert bypass after BREAK" "DO &MDONLY_PPD_PATH\l1timing_check_disabled.cmm"
+  [
+RRRR       gggg
+ R RR     gg   g
+ R  R  Y  g
+ RRRR YYY g
+ R  RR Y  g  ggg
+ R   R    gg  gg
+RRRRRR     ggg g
+
+
+ ccc  ccc  c  c
+ c c  c cc c c
+ c c  c  c cc
+ cccc ccc  ccc
+ c  c c c  c c
+ c  c c  c c  c
+ cccc c  c c  c
+  ]
+  SEPARATOR
+  TOOLITEM "Full Reset (&OPT_THIS_SCRIPT)" "DO &MDONLY_PPD_PATH\&OPT_THIS_SCRIPT 1"
+  [
+
+    XXX
+   XCCX
+  XCCCXXXXXXXXX
+ XCCCCCCCCCCCCX
+ XCCCCCCCCCCCCX
+  XCCCXXXXXXCCX
+   XCCX    XCCX
+    XXX    XCCX
+ XXXX      XCCX
+ XCCX      XCCX
+ XCCXXXXXXXXCCX
+ XCCCCCCCCCCCCX
+ XCCCCCCCCCCCCX
+ XXXXXXXXXXXXXX
+
+  ]
+  SEPARATOR
+  TOOLITEM "Back-Up RamFS to File" "DO &MDONLY_PPD_PATH\Ramfs_backup_restore.cmm 0 0"
+  [
+
+       XX
+      XIIX
+     XIGGGX
+    XIGGGGGX
+   XIGGGGGGGX
+   XIGGGGGGGX
+    XXIGGGXX
+     XIGGGXxX
+   XXXIGGGXxxX
+ XXxxXIGGGXxxxX
+XxxxxXIGGGXxxxxX
+ XxxxxXXXXxxxXX
+  XxxxxxxxxXX
+   XxxxxxXX
+
+  ]
+  TOOLITEM "Restore RamFS from File" "DO &MDONLY_PPD_PATH\Ramfs_backup_restore.cmm 1 0"
+  [
+
+      XXXX
+     XMMMMX
+     XMRRRX
+     XMRRRX
+     XMRRRX
+    XXMRRRXX
+   XMRRRRRRRX
+   XMRRRRRRRX
+   XXMRRRRRXxX
+ XXxxXMRRRXxxxX
+XxxxxxXMRXxxxxxX
+ XxxxxxXXxxxxXX
+  XxxxxxxxxXX
+   XxxxxxXX
+
+  ] 
+  SEPARATOR
+    
+)

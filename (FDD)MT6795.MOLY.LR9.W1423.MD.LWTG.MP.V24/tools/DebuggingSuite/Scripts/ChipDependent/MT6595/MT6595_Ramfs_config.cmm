@@ -1,0 +1,54 @@
+GLOBAL &OPT_RAMFS_MODE
+GLOBAL &OPT_RAMFS_FILENAME
+GLOBAL &OPT_RAMFS_START_ADDRESS   ;; RamFS Address (Need linker symbol)
+GLOBAL &OPT_RAMFS_LEN
+
+; If these option not configured previously, use default value here
+; (to be compatible with previous version, not totally the same to 72)
+
+IF "&OPT_LOAD_RAMFS"==""
+(
+    ;; ## RamFS
+    ;; Auto load RamFS on reset
+    ;; 0: Don't load RamFS on Reset
+    ;; 1: Load RamFS on Reset
+    &OPT_LOAD_RAMFS=0
+)
+
+IF "&OPT_RAMFS_MODE"==""
+(
+    ;; RamFS Backup/Restore Mode
+    ;; 0: Fast Mode, always backup/restore to the same file name
+    ;; 1: User Specify backup/restore file name
+    &OPT_RAMFS_MODE=0
+)
+
+IF "&OPT_RAMFS_FILENAME"==""
+(
+    ;; ## RamFS file name for fast mode
+    &OPT_RAMFS_FILENAME="RamFS_Backup.bin"
+)
+
+GLOBAL &OPT_MD_SEL ;fixed, since MT6595 has only 1 MD
+&OPT_MD_SEL=1
+
+IF y.exist(Image$$EXTSRAM_FS_ZI$$Base)
+(
+    &OPT_RAMFS_START_ADDRESS=Image$$EXTSRAM_FS_ZI$$Base+&OPT_MD_START_ADDRESS   ; shift 0x80000000 when connected through CA7
+    &OPT_RAMFS_LEN=(Image$$EXTSRAM_DSP_TX$$Base-Image$$EXTSRAM_FS_ZI$$Base)
+    
+    ;; if not restore ramdisk
+    IF &OPT_LOAD_RAMFS==0
+    (
+        ;; clear RamDisk header block (1KB)
+        print "Cleaning RamDisk header ... "
+        d.set &OPT_RAMFS_START_ADDRESS--(&OPT_RAMFS_START_ADDRESS+0x3FF) 0x0
+    )
+
+    ; Load RamFS
+    IF &OPT_LOAD_RAMFS==1
+    (
+    	print "Restore RamFS ... "
+    	do Ramfs_backup_restore.cmm 1 0
+    )
+)
